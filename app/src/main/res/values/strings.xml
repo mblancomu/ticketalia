@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Ticketalia</string>
+    <string name="title_dynamicfeature">build-logic</string>
+    <string name="not_connected">No internet connection</string>
+
+    <string name="events">Events</string>
+    <string name="venues">Venues</string>
+    <string name="favorites">Favorites</string>
+    <string name="no_info">No Info</string>
+</resources>
