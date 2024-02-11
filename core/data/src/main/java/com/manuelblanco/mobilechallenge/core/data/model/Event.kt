@@ -8,6 +8,7 @@ import com.manuelblanco.mobilechallenge.core.network.model.event.toPriceRange
 import com.manuelblanco.mobilechallenge.core.network.model.global.toExternalModel
 import com.manuelblanco.mobilechallenge.core.network.model.venue.toPlace
 import com.manuelblanco.mobilechallenge.core.network.retrofit.NetworkPageEventsResponse
+import com.manuelblanco.mobilechallenge.core.data.util.getImageUrlByRatio
 
 fun NetworkPageEventsResponse.asEventEntities(): List<EventEntity> {
     val page = this.page.number
@@ -23,11 +24,16 @@ fun NetworkPageEventsResponse.asEventEntities(): List<EventEntity> {
                     longitude = 0.0
                 )
             ),
-            imageUrl = if (!it.images.isNullOrEmpty()) it.images?.get(0)?.url ?: "" else "",
+            imageUrl = if (it.images.isNullOrEmpty()) "" else getImageUrlByRatio(
+                images = it.images ?: emptyList()
+            ),
             dateTime = it.dates?.start?.dateTime ?: "",
-            place = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.get(0)?.toPlace() ?: "" else it.place?.toExternalPlace() ?: "",
-            city = if (!it.venues?.venues.isNullOrEmpty())  it.venues?.venues?.get(0)?.city?.name ?: "" else it.place?.city?.name ?: "",
-            country = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.get(0)?.country?.name ?: "" else it.place?.country?.name ?: "" ,
+            place = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.get(0)?.toPlace()
+                ?: "" else it.place?.toExternalPlace() ?: "",
+            city = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.get(0)?.city?.name
+                ?: "" else it.place?.city?.name ?: "",
+            country = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.get(0)?.country?.name
+                ?: "" else it.place?.country?.name ?: "",
             genres = it.genre?.joinToString(separator = ",") ?: "",
             prices = it.priceRanges?.toPriceRange() ?: "",
             page = page ?: 0

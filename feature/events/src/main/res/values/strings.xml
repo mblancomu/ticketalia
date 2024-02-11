@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="no_events_found">No Events found</string>
+    <string name="button_location">Location</string>
+    <string name="button_tickets">Get Tickets</string>
+    <string name="fake_description">A description of an event is when we talk about something that happened. It’s like telling a story or sharing details about a specific occasion.
+        We give information about the event’s name, where it happened, the date, the people involved, and what actually took place.
+        The purpose is to help others understand what the event was like, to imagine being there.
+        We want to convey the atmosphere, feelings, and important moments.
+        Describing events can be done in different situations, such as writing articles, essays, blogs, talking about personal experiences, or discussing historical events.</string>
 </resources>

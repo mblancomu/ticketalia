@@ -13,6 +13,9 @@ android {
 
 dependencies {
 
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:common"))
+
     api(libs.androidx.compose.foundation)
     api(libs.androidx.compose.foundation.layout)
     api(libs.androidx.compose.material.iconsExtended)
@@ -20,6 +23,8 @@ dependencies {
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.ui.tooling.preview)
     api(libs.androidx.compose.ui.util)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.navigation.compose)
 
     debugApi(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.core.ktx)

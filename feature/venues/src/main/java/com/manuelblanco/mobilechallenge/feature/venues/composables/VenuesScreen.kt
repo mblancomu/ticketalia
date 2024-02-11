@@ -1,6 +1,7 @@
 package com.manuelblanco.mobilechallenge.feature.venues.composables
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContract
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesViewModel
@@ -52,7 +54,8 @@ fun VenuesScreen(
     ) {
         LazyColumn(
             modifier = Modifier
-                .padding(top = 72.dp, bottom = 8.dp)
+                .background(TicketsTheme.colors.surface)
+                .padding(top = TicketsTheme.dimensions.marginTopBar, bottom = 8.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
         ) {

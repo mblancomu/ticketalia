@@ -22,6 +22,8 @@ data class VenueEntity(
     val distance: String,
     @ColumnInfo(name = "page")
     var page: Int,
+    @ColumnInfo(defaultValue = "")
+    var url: String
 )
 
 fun VenueEntity.asExternalModel() = Venue(
@@ -33,5 +35,6 @@ fun VenueEntity.asExternalModel() = Venue(
     country = country,
     city = city,
     address = address,
-    distance = distance
+    distance = distance,
+    url = url
 )

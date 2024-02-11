@@ -7,7 +7,6 @@ import com.manuelblanco.mobilechallenge.core.database.TicketsCache
 import com.manuelblanco.mobilechallenge.core.database.model.asExternalModel
 import com.manuelblanco.mobilechallenge.core.model.data.Event
 import com.manuelblanco.mobilechallenge.core.model.data.Page
-import com.manuelblanco.mobilechallenge.core.network.model.event.toExternalModel
 import com.manuelblanco.mobilechallenge.core.network.model.global.toExternalModel
 import com.manuelblanco.mobilechallenge.core.network.retrofit.TicketsRemote
 import kotlinx.coroutines.flow.Flow
@@ -59,7 +58,7 @@ class EventsRepositoryImpl @Inject constructor(
             unitRadius = unitRadius
         )
 
-        emit(response.items.events.toExternalModel())
+        emit(response.asEventEntities().map { it.asExternalModel() })
     }.asResult()
 
     override fun getEventsFromRemoteByType(
@@ -73,7 +72,7 @@ class EventsRepositoryImpl @Inject constructor(
             type = type
         )
 
-        emit(response.items.events.toExternalModel())
+        emit(response.asEventEntities().map { it.asExternalModel() })
     }.asResult()
 
     override fun getEventsFromRemoteByCity(
@@ -87,7 +86,7 @@ class EventsRepositoryImpl @Inject constructor(
             city = city
         )
 
-        emit(response.items.events.toExternalModel())
+        emit(response.asEventEntities().map { it.asExternalModel() })
     }.asResult()
 
 }

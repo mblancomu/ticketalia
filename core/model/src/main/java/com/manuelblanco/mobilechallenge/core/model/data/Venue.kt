@@ -9,5 +9,6 @@ data class Venue(
     val country: String,
     val city: String,
     val address: String,
-    val distance: String
+    val distance: String,
+    val url: String
 )

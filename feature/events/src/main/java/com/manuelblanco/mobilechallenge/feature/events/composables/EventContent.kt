@@ -46,8 +46,10 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.manuelblanco.mobilechallenge.core.common.utils.formattedDate
 import com.manuelblanco.mobilechallenge.core.common.utils.formattedTime
+import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.designsystem.utils.rateColors
 import com.manuelblanco.mobilechallenge.core.model.data.Event
+import java.util.concurrent.ThreadLocalRandom
 
 /**
  * Created by Manuel Blanco Murillo on 31/1/24.
@@ -61,16 +63,16 @@ fun EventContent(
 ) {
     Card(
         modifier = modifier.clickable { onEventClicked(event.id, event.name) },
-        shape = RoundedCornerShape(size = 8.dp),
+        shape = RoundedCornerShape(size = TicketsTheme.dimensions.paddingSmallMediumDouble),
         elevation = CardDefaults.cardElevation(),
     ) {
         Box {
-            EventPoster(event.imageUrl, event.name)
+            EventPoster(event.imageUrl)
             EventInfo(
                 event,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .height(72.dp)
+                    .height(TicketsTheme.dimensions.cardInfoHeight)
                     .fillMaxWidth()
                     .background(Color(0x97000000)),
             )
@@ -79,7 +81,7 @@ fun EventContent(
 }
 
 @Composable
-private fun BoxScope.EventPoster(posterPath: String, eventName: String) {
+private fun BoxScope.EventPoster(posterPath: String) {
     val painter = rememberAsyncImagePainter(
         model = posterPath,
         error = rememberVectorPainter(Icons.Filled.BrokenImage),
@@ -92,8 +94,6 @@ private fun BoxScope.EventPoster(posterPath: String, eventName: String) {
 
         else -> null
     }
-    val scale =
-        if (painter.state !is AsyncImagePainter.State.Success) ContentScale.Crop else ContentScale.FillBounds
 
     Image(
         painter = painter,
@@ -108,23 +108,23 @@ private fun BoxScope.EventPoster(posterPath: String, eventName: String) {
 
 @Composable
 private fun EventRate(city: String, modifier: Modifier) {
-    val colors = Color.rateColors(eventRate = 10.0)
+    val colors = Color.rateColors(eventRate = ThreadLocalRandom.current().nextDouble(1.0, 10.0))
     val brush = remember(city) { Brush.horizontalGradient(colors) }
     Text(
         text = city,
-        style = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+        style = TicketsTheme.typography.bodyLarge.copy(color = TicketsTheme.colors.surface),
         modifier = modifier
             .background(brush, RoundedCornerShape(50))
-            .padding(horizontal = 10.dp)
-            .shadow(8.dp)
+            .padding(horizontal = TicketsTheme.dimensions.paddingMediumLarge)
+            .shadow(TicketsTheme.dimensions.paddingMedium)
     )
 }
 
 @Composable
 private fun EventInfo(event: Event, modifier: Modifier) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(TicketsTheme.dimensions.paddingSmall),
+        modifier = modifier.padding(horizontal = TicketsTheme.dimensions.paddingMedium, vertical = TicketsTheme.dimensions.paddingMedium),
     ) {
         EventName(name = event.name)
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
@@ -144,8 +144,8 @@ private fun EventInfo(event: Event, modifier: Modifier) {
                     event.city.ifEmpty { "" },
                     modifier = Modifier
                         .zIndex(2f)
-                        .padding(end = 8.dp)
-                        .offset(y = 4.dp),
+                        .padding(end = TicketsTheme.dimensions.paddingMedium)
+                        .offset(y = TicketsTheme.dimensions.paddingSmall),
                 )
             }
         }
@@ -155,8 +155,8 @@ private fun EventInfo(event: Event, modifier: Modifier) {
 @Composable
 private fun EventName(name: String) = Text(
     text = name,
-    style = MaterialTheme.typography.bodyMedium.copy(
-        color = Color.White,
+    style = TicketsTheme.typography.bodyMedium.copy(
+        color = TicketsTheme.colors.surface,
         letterSpacing = 1.5.sp,
         fontFamily = FontFamily.Serif,
         fontWeight = FontWeight.W500,
@@ -171,13 +171,13 @@ private fun EventFeature(icon: ImageVector, field: String) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = Color.White,
+            tint = TicketsTheme.colors.surface,
             modifier = Modifier.size(16.dp)
         )
         Text(
             text = field,
-            style = MaterialTheme.typography.bodySmall.copy(
-                color = Color.White,
+            style = TicketsTheme.typography.bodySmall.copy(
+                color = TicketsTheme.colors.surface,
                 letterSpacing = 1.5.sp,
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.W400,

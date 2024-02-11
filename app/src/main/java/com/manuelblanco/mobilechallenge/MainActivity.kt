@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                         .statusBarsPadding(),
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = TicketsTheme.colors.onBackground
                 ) {
                     val windowSizeClass = calculateWindowSizeClass(this)
 

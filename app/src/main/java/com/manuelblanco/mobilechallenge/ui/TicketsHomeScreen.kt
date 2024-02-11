@@ -22,11 +22,11 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.manuelblanco.mobilechallenge.ui.bottombar.BottomBar
-import com.manuelblanco.mobilechallenge.ui.navigation.Navigation.Routes.EVENTS_START
-import com.manuelblanco.mobilechallenge.ui.navigation.Navigation.Routes.FAVORITES_START
-import com.manuelblanco.mobilechallenge.ui.navigation.Navigation.Routes.VENUES_START
-import com.manuelblanco.mobilechallenge.ui.navigation.TicketsNavigation
+import com.manuelblanco.mobilechallenge.core.common.navigation.Navigation.Routes.EVENTS_START
+import com.manuelblanco.mobilechallenge.core.common.navigation.Navigation.Routes.FAVORITES_START
+import com.manuelblanco.mobilechallenge.core.common.navigation.Navigation.Routes.VENUES_START
+import com.manuelblanco.mobilechallenge.core.ui.components.bottombar.TicketsBottomBar
+import com.manuelblanco.mobilechallenge.navigation.TicketsNavigation
 
 /**
  * Created by Manuel Blanco Murillo on 8/2/24.
@@ -50,7 +50,7 @@ fun TicketsHomeScreen(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             if (showBottomBar) {
-                BottomBar(
+                TicketsBottomBar(
                     modifier = if (bottomBarVisible)
                         modifier.navigationBarsPadding()
                     else

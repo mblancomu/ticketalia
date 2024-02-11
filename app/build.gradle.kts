@@ -51,6 +51,7 @@ dependencies {
 
     implementation(project(":feature:events"))
     implementation(project(":feature:venues"))
+    implementation(project(":feature:favorites"))
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:data"))
@@ -71,6 +72,8 @@ dependencies {
     implementation(libs.lottie.compose)
 
     androidTestImplementation(libs.androidx.navigation.testing)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.ext)
     androidTestImplementation(libs.accompanist.testharness)
     debugImplementation(libs.androidx.compose.ui.testManifest)
 }

@@ -12,4 +12,5 @@ dependencies {
     implementation(project(":core:common"))
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.paging.runtime)
+    api(libs.junit4)
 }

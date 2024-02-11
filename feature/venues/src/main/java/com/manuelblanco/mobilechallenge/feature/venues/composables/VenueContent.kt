@@ -11,12 +11,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BrokenImage
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Card
@@ -33,7 +31,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -41,11 +38,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
+import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.designsystem.utils.distanceColors
-import com.manuelblanco.mobilechallenge.core.designsystem.utils.rateColors
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import com.manuelblanco.mobilechallenge.feature.venues.R
 
@@ -61,20 +57,27 @@ fun VenueContent(
 ) {
     Card(
         modifier = modifier
-            .height(240.dp)
-            .padding(top = 0.dp, start = 8.dp, end = 8.dp, bottom = 0.dp)
+            .height(TicketsTheme.dimensions.cardListHeight)
+            .padding(
+                top = 0.dp,
+                start = TicketsTheme.dimensions.paddingMedium,
+                end = TicketsTheme.dimensions.paddingMedium,
+                bottom = 0.dp
+            )
             .clickable { onVenueClicked(venue.id) },
-        shape = RoundedCornerShape(size = 8.dp),
+        shape = RoundedCornerShape(size = TicketsTheme.dimensions.roundedCornerItemList),
         elevation = CardDefaults.cardElevation(),
     ) {
         Box {
             VenuePoster(posterPath = venue.imageUrl)
-            VenueInfo(venue = venue,
+            VenueInfo(
+                venue = venue,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .height(72.dp)
+                    .height(TicketsTheme.dimensions.cardInfoHeight)
                     .fillMaxWidth()
-                    .background(Color(0x97000000)))
+                    .background(Color(0x97000000))
+            )
         }
     }
 }
@@ -96,7 +99,7 @@ private fun BoxScope.VenuePoster(posterPath: String) {
 
     Image(
         painter = painter,
-        contentDescription = "Image for Event",
+        contentDescription = "Image for Venue",
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .fillMaxSize()
@@ -107,8 +110,11 @@ private fun BoxScope.VenuePoster(posterPath: String) {
 @Composable
 private fun VenueInfo(venue: Venue, modifier: Modifier) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(TicketsTheme.dimensions.paddingSmall),
+        modifier = modifier.padding(
+            horizontal = TicketsTheme.dimensions.paddingMedium,
+            vertical = TicketsTheme.dimensions.paddingMedium
+        ),
     ) {
         VenueName(name = venue.name)
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
@@ -138,8 +144,8 @@ private fun VenueInfo(venue: Venue, modifier: Modifier) {
 @Composable
 private fun VenueName(name: String) = Text(
     text = name,
-    style = MaterialTheme.typography.bodyMedium.copy(
-        color = Color.White,
+    style = TicketsTheme.typography.bodyMedium.copy(
+        color = TicketsTheme.colors.surface,
         letterSpacing = 1.5.sp,
         fontFamily = FontFamily.Serif,
         fontWeight = FontWeight.W500,
@@ -154,13 +160,13 @@ private fun VenueFeature(icon: ImageVector, field: String) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = Color.White,
-            modifier = Modifier.size(16.dp)
+            tint = TicketsTheme.colors.surface,
+            modifier = Modifier.size(TicketsTheme.dimensions.paddingMediumDouble)
         )
         Text(
             text = field,
-            style = MaterialTheme.typography.bodySmall.copy(
-                color = Color.White,
+            style = TicketsTheme.typography.bodySmall.copy(
+                color = TicketsTheme.colors.surface,
                 letterSpacing = 1.5.sp,
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.W400,
@@ -178,10 +184,10 @@ private fun VenueDistance(distance: Double, modifier: Modifier) {
     val brush = remember(distance) { Brush.horizontalGradient(colors) }
     Text(
         text = distance.toString(),
-        style = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+        style = TicketsTheme.typography.bodyLarge.copy(color = TicketsTheme.colors.surface),
         modifier = modifier
             .background(brush, RoundedCornerShape(50))
-            .padding(horizontal = 10.dp)
-            .shadow(8.dp)
+            .padding(horizontal = TicketsTheme.dimensions.paddingMediumLarge)
+            .shadow(TicketsTheme.dimensions.paddingMedium)
     )
 }

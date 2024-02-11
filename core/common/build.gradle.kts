@@ -12,4 +12,5 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(project(":core:model"))
     testImplementation(project(":core:testing"))
+    api(libs.junit4)
 }

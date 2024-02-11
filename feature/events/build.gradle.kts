@@ -10,6 +10,7 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:ui"))
+    implementation(project(":core:common"))
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.compose.bom)
     implementation(libs.kotlinx.serialization.json)

@@ -18,15 +18,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
-import com.manuelblanco.mobilechallenge.feature.events.R
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsViewModel
 import kotlinx.coroutines.flow.collect
@@ -67,8 +64,8 @@ fun EventsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 64.dp)
-                    .background(Color.LightGray),
+                    .padding(top = TicketsTheme.dimensions.topAppBarHeight)
+                    .background(TicketsTheme.colors.surface),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

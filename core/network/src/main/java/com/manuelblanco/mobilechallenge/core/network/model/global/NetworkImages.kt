@@ -9,6 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NetworkImages(
     val url: String,
+    val ratio: RATIO? = null,
     val width: Int,
     val height: Int
 )
