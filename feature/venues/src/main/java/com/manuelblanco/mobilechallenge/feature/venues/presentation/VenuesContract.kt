@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 class VenuesContract {
 
     sealed class Event : ViewEvent {
-        object Refresh : Event()
         object Search : Event()
         object Filter : Event()
         data class VenueSelection(val venueId: String, val venueTitle: String) :

@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -33,7 +37,7 @@ import kotlinx.coroutines.flow.onEach
  * Created by Manuel Blanco Murillo on 27/6/23.
  */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun EventsScreen(
     viewModel: EventsViewModel = hiltViewModel(),
@@ -43,6 +47,9 @@ fun EventsScreen(
     val gridState = rememberLazyGridState()
     val state by viewModel.viewState.collectAsStateWithLifecycle()
     val effect = viewModel.effect
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, { viewModel.refresh() })
+
     var showProgress by remember { mutableStateOf(false) }
 
     LaunchedEffect(SIDE_EFFECTS_KEY) {
@@ -69,7 +76,11 @@ fun EventsScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = Modifier
+                        .pullRefresh(pullRefreshState),
+                    contentAlignment = Alignment.Center
+                ) {
                     LazyEventsGrid(
                         state = gridState,
                         events = state.events,
@@ -83,7 +94,14 @@ fun EventsScreen(
                         Progress()
                         showProgress = false
                     }
+
+                    PullRefreshIndicator(
+                        isRefreshing,
+                        pullRefreshState,
+                        Modifier.align(Alignment.TopCenter)
+                    )
                 }
+
                 showProgress = when {
                     state.isLoading -> true
                     state.isError -> {

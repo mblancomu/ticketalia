@@ -15,6 +15,7 @@ data class NetworkEvent(
     val id: String,
     val name: String? = "",
     val description: String? = "",
+    val url: String? = "",
     val location: NetworkLocation? = null,
     val images: List<NetworkImages>? = null,
     val dates: NetworkEventDates? = null,

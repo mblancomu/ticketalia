@@ -12,12 +12,18 @@ fun locationToString(location: Location): String {
     return "${location.latitude},${location.longitude}"
 }
 
-fun formattedDate(dateTime: String): String {
-    val formatted = ZonedDateTime.parse(dateTime)
-    return "${formatted.dayOfMonth}-${formatted.monthValue}-${formatted.year}"
+fun formattedDate(dateTime: String?): String {
+    dateTime?.let {
+        val formatted = ZonedDateTime.parse(dateTime)
+        return "${formatted.dayOfMonth}-${formatted.monthValue}-${formatted.year}"
+    }
+    return ""
 }
 
-fun formattedTime(dateTime: String): String {
-    val formatted = ZonedDateTime.parse(dateTime)
-    return "${formatted.hour}:${formatted.minute}"
+fun formattedTime(dateTime: String?): String {
+    dateTime?.let {
+        val formatted = ZonedDateTime.parse(dateTime)
+        return "${formatted.hour}:${formatted.minute}"
+    }
+    return ""
 }

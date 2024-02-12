@@ -13,6 +13,7 @@ data class EventEntity(
     val name: String,
     @ColumnInfo(defaultValue = "")
     val description: String,
+    val url: String,
     val location: String,
     val imageUrl: String,
     val dateTime: String,
@@ -22,6 +23,8 @@ data class EventEntity(
     val city: String,
     @ColumnInfo(defaultValue = "")
     val country: String,
+    @ColumnInfo(defaultValue = "")
+    val segment: String,
     @ColumnInfo(defaultValue = "")
     val genres: String,
     @ColumnInfo(defaultValue = "")
@@ -34,12 +37,14 @@ fun EventEntity.asExternalModel() = Event(
     id = id,
     name = name,
     description = description,
+    url = url,
     location = stringToLocation(location),
     imageUrl = imageUrl,
     dateTime = dateTime,
     place = place,
     city = city,
     country = country,
+    segment = segment,
     genres = genres,
     prices = prices
 )

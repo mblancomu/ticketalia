@@ -26,6 +26,8 @@ class EventDetailContract {
     sealed class Effect : ViewSideEffect {
         sealed class Navigation : Effect() {
             object Back : Navigation()
+            object Tickets: Navigation()
+            object Localization: Navigation()
         }
     }
 

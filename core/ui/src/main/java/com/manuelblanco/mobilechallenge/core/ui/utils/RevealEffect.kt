@@ -32,7 +32,7 @@ import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
  */
 fun Modifier.borderRevealAnimation(
     initialState: Float = 28f,
-    size: Dp = 60.dp,
+    size: Dp = 90.dp,
     shape: Shape = CircleShape,
 ): Modifier = composed {
 
@@ -43,10 +43,10 @@ fun Modifier.borderRevealAnimation(
     this
         .size(size)
         .clip(shape)
-        .background(color = TicketsTheme.colors.surface)
+        .background(color = TicketsTheme.colors.secondary)
         .border(
             width = Dp(animate.value),
-            color = TicketsTheme.colors.onSurface,
+            color = TicketsTheme.colors.primary,
             shape = shape,
         )
 }
@@ -59,7 +59,7 @@ fun Modifier.borderRevealAnimation(
 private fun RevealEffectAnimation(
     animateShape: Animatable<Float, AnimationVector1D>,
     targetValue: Float = 1f,
-    durationMillis: Int = 1000,
+    durationMillis: Int = 800,
     delayMillis: Int = 250,
     iterations: Int = 1
 ) {

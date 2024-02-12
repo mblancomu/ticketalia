@@ -30,8 +30,12 @@ class VenueDetailViewModel @Inject constructor(
 
     override fun handleEvents(event: VenueDetailContract.Event) {
         when (event) {
-            is VenueDetailContract.Event.DirectionButtonClicked -> {}
-            is VenueDetailContract.Event.LinkButtonClicked -> {}
+            is VenueDetailContract.Event.DirectionButtonClicked -> {
+                setEffect { VenueDetailContract.Effect.Navigation.Localization }
+            }
+            is VenueDetailContract.Event.LinkButtonClicked -> {
+                setEffect { VenueDetailContract.Effect.Navigation.Info }
+            }
             is VenueDetailContract.Event.BackButtonClicked -> {
                 setEffect { VenueDetailContract.Effect.Navigation.Back }
             }

@@ -7,5 +7,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class NetworkEventClassification(
+    val segment: NetworkEventSegment? = null,
     val genre: NetworkEventGenre? = null
 )

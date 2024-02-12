@@ -25,7 +25,7 @@ data class TicketsDimensions(
     val roundedCornerDetail: Dp = 24.dp,
     val cardInfoHeight: Dp = 72.dp,
     val posterDetailHeight : Dp = 400.dp,
-    val cardDetailPadding: Dp = 374.dp,
+    val cardDetailPadding: Dp = 320.dp,
     val buttonDetailWidth: Dp = 130.dp
 )
 

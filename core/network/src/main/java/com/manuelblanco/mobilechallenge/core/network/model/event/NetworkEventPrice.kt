@@ -10,7 +10,7 @@ data class NetworkEventPrice(
 )
 
 fun NetworkEventPrice.toPriceRange(): String {
-    return "$max-$min $currency"
+    return "$min $currency"
 }
 
 fun List<NetworkEventPrice?>.toPriceRange(): String {

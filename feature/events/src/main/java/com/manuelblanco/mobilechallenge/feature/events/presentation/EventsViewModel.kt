@@ -9,6 +9,9 @@ import com.manuelblanco.mobilechallenge.core.model.data.Event
 import com.manuelblanco.mobilechallenge.core.ui.mvi.TicketsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerializationException
 import javax.inject.Inject
@@ -23,11 +26,15 @@ class EventsViewModel @Inject constructor(
     private val getEventsFromCacheUseCase: GetEventsFromCacheUseCase,
 ) : TicketsViewModel<EventsContract.Event, EventsContract.State, EventsContract.Effect>() {
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing.asStateFlow()
+
     private var eventsJob: Job? = null
     private var totalPages = 1
 
     init {
-        getEvents()
+        refresh()
     }
 
     override fun setInitialState() = EventsContract.State(
@@ -48,6 +55,10 @@ class EventsViewModel @Inject constructor(
             is EventsContract.Event.Refresh -> {}
             is EventsContract.Event.Search -> {}
         }
+    }
+
+    fun refresh(){
+        getEvents()
     }
 
     fun getMoreEvents() {
@@ -96,6 +107,8 @@ class EventsViewModel @Inject constructor(
                             addNewEvents(events, viewState.value.events)
                         }
                         setEffect { EventsContract.Effect.DataWasLoaded }
+
+                        _isRefreshing.emit(false)
                     }
                 }
             }

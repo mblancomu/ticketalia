@@ -18,6 +18,7 @@ fun NetworkPageEventsResponse.asEventEntities(): List<EventEntity> {
             id = it.id,
             name = it.name ?: "",
             description = it.description ?: "",
+            url = it.url ?: "",
             location = locationToString(
                 it.location?.toExternalModel() ?: Location(
                     latitude = 0.0,
@@ -34,8 +35,9 @@ fun NetworkPageEventsResponse.asEventEntities(): List<EventEntity> {
                 ?: "" else it.place?.city?.name ?: "",
             country = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.get(0)?.country?.name
                 ?: "" else it.place?.country?.name ?: "",
-            genres = it.genre?.joinToString(separator = ",") ?: "",
-            prices = it.priceRanges?.toPriceRange() ?: "",
+            segment = it.genre?.first()?.segment?.name ?: "",
+            genres = it.genre?.first()?.genre?.name ?: "",
+            prices = it.priceRanges?.first()?.toPriceRange() ?: "",
             page = page ?: 0
         )
     }

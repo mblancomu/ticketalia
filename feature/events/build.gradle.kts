@@ -13,5 +13,6 @@ dependencies {
     implementation(project(":core:common"))
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.compose.bom)
+    implementation(libs.androidx.compose.material)
     implementation(libs.kotlinx.serialization.json)
 }

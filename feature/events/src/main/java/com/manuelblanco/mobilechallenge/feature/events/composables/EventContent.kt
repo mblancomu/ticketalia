@@ -1,11 +1,9 @@
 package com.manuelblanco.mobilechallenge.feature.events.composables
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,17 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
-import androidx.compose.material.icons.filled.BrokenImage
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -32,23 +25,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
 import com.manuelblanco.mobilechallenge.core.common.utils.formattedDate
 import com.manuelblanco.mobilechallenge.core.common.utils.formattedTime
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.designsystem.utils.rateColors
 import com.manuelblanco.mobilechallenge.core.model.data.Event
+import com.manuelblanco.mobilechallenge.core.ui.components.FeatureItemList
+import com.manuelblanco.mobilechallenge.core.ui.components.NameItemList
+import com.manuelblanco.mobilechallenge.core.ui.components.TicketsPoster
 import java.util.concurrent.ThreadLocalRandom
 
 /**
@@ -67,47 +52,26 @@ fun EventContent(
         elevation = CardDefaults.cardElevation(),
     ) {
         Box {
-            EventPoster(event.imageUrl)
+            TicketsPoster(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.Center),
+                posterPath = event.imageUrl
+            )
             EventInfo(
                 event,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .height(TicketsTheme.dimensions.cardInfoHeight)
                     .fillMaxWidth()
-                    .background(Color(0x97000000)),
+                    .background(TicketsTheme.colors.primary.copy(alpha = 0.9f)),
             )
         }
     }
 }
 
 @Composable
-private fun BoxScope.EventPoster(posterPath: String) {
-    val painter = rememberAsyncImagePainter(
-        model = posterPath,
-        error = rememberVectorPainter(Icons.Filled.BrokenImage),
-        placeholder = rememberVectorPainter(Icons.Default.Movie),
-    )
-    val colorFilter = when (painter.state) {
-        is AsyncImagePainter.State.Loading, is AsyncImagePainter.State.Error -> ColorFilter.tint(
-            MaterialTheme.colorScheme.background
-        )
-
-        else -> null
-    }
-
-    Image(
-        painter = painter,
-        colorFilter = colorFilter,
-        contentDescription = "Image for Event",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .fillMaxSize()
-            .align(Alignment.Center),
-    )
-}
-
-@Composable
-private fun EventRate(city: String, modifier: Modifier) {
+private fun EventMainInfo(city: String, modifier: Modifier) {
     val colors = Color.rateColors(eventRate = ThreadLocalRandom.current().nextDouble(1.0, 10.0))
     val brush = remember(city) { Brush.horizontalGradient(colors) }
     Text(
@@ -121,27 +85,30 @@ private fun EventRate(city: String, modifier: Modifier) {
 }
 
 @Composable
-private fun EventInfo(event: Event, modifier: Modifier) {
+private fun EventInfo(event: Event?, modifier: Modifier) {
     Column(
         verticalArrangement = Arrangement.spacedBy(TicketsTheme.dimensions.paddingSmall),
-        modifier = modifier.padding(horizontal = TicketsTheme.dimensions.paddingMedium, vertical = TicketsTheme.dimensions.paddingMedium),
+        modifier = modifier.padding(
+            horizontal = TicketsTheme.dimensions.paddingMedium,
+            vertical = TicketsTheme.dimensions.paddingMedium
+        ),
     ) {
-        EventName(name = event.name)
+        NameItemList(name = event?.name.toString())
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
             Column {
-                EventFeature(
+                FeatureItemList(
                     Icons.Default.DateRange,
-                    if (event.dateTime.isNotEmpty()) formattedDate(event.dateTime) else ""
+                    if (!event?.dateTime.isNullOrBlank()) formattedDate(event?.dateTime) else ""
                 )
-                EventFeature(
+                FeatureItemList(
                     Icons.Default.AccessTime,
-                    if (event.dateTime.isNotEmpty()) formattedTime(event.dateTime) else ""
+                    if (!event?.dateTime.isNullOrBlank()) formattedTime(event?.dateTime) else ""
                 )
             }
 
-            if (event.city.isNotEmpty()) {
-                EventRate(
-                    event.city.ifEmpty { "" },
+            if (!event?.city.isNullOrBlank()) {
+                EventMainInfo(
+                    event?.city?.ifEmpty { "" }.toString(),
                     modifier = Modifier
                         .zIndex(2f)
                         .padding(end = TicketsTheme.dimensions.paddingMedium)
@@ -149,42 +116,5 @@ private fun EventInfo(event: Event, modifier: Modifier) {
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun EventName(name: String) = Text(
-    text = name,
-    style = TicketsTheme.typography.bodyMedium.copy(
-        color = TicketsTheme.colors.surface,
-        letterSpacing = 1.5.sp,
-        fontFamily = FontFamily.Serif,
-        fontWeight = FontWeight.W500,
-    ),
-    maxLines = 1,
-    overflow = TextOverflow.Ellipsis,
-)
-
-@Composable
-private fun EventFeature(icon: ImageVector, field: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = TicketsTheme.colors.surface,
-            modifier = Modifier.size(16.dp)
-        )
-        Text(
-            text = field,
-            style = TicketsTheme.typography.bodySmall.copy(
-                color = TicketsTheme.colors.surface,
-                letterSpacing = 1.5.sp,
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight.W400,
-            ),
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-            modifier = Modifier.padding(horizontal = 2.dp),
-        )
     }
 }

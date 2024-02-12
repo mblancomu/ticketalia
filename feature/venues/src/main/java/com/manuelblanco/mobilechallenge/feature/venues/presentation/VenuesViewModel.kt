@@ -44,7 +44,6 @@ class VenuesViewModel @Inject constructor(
             }
 
             is VenuesContract.Event.Filter -> {}
-            is VenuesContract.Event.Refresh -> {}
             is VenuesContract.Event.Search -> {}
         }
     }

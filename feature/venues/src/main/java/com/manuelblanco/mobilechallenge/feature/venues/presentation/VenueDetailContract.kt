@@ -26,6 +26,8 @@ class VenueDetailContract {
     sealed class Effect : ViewSideEffect {
         sealed class Navigation : Effect() {
             object Back : Navigation()
+            object Localization: Navigation()
+            object Info: Navigation()
         }
     }
 

@@ -30,12 +30,16 @@ class EventDetailViewModel @Inject constructor(
 
     override fun handleEvents(event: EventDetailContract.Event) {
         when (event) {
-            is EventDetailContract.Event.Direction -> {}
+            is EventDetailContract.Event.Direction -> {
+                setEffect { EventDetailContract.Effect.Navigation.Localization }
+            }
             is EventDetailContract.Event.GoBack -> {
                 setEffect { EventDetailContract.Effect.Navigation.Back }
             }
 
-            is EventDetailContract.Event.Link -> {}
+            is EventDetailContract.Event.Link -> {
+                setEffect { EventDetailContract.Effect.Navigation.Tickets }
+            }
         }
     }
 
