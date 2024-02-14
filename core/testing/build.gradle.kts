@@ -10,6 +10,10 @@ android {
 
 dependencies {
 
+    implementation(project(":core:data"))
+    implementation(project(":core:model"))
+    implementation(project(":core:common"))
+
     api(libs.androidx.compose.ui.test)
     api(libs.androidx.test.core)
     api(libs.androidx.test.espresso.core)
@@ -18,6 +22,9 @@ dependencies {
     api(libs.hilt.android.testing)
     api(libs.junit4)
     api(libs.kotlinx.coroutines.test)
+
+    implementation(libs.androidx.paging.common)
+    implementation(libs.androidx.paging.compose)
 
     debugApi(libs.androidx.compose.ui.testManifest)
 
