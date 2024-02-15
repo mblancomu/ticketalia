@@ -9,6 +9,8 @@ import com.manuelblanco.mobilechallenge.core.model.data.Venue
  * Created by Manuel Blanco Murillo on 13/2/24.
  */
 
+val pagingVenuesEmpty = PagingData.empty<Venue>()
+
 val pagingVenues: PagingData<Venue> = PagingData.from(
     data = listOf(
         Venue(
@@ -19,19 +21,19 @@ val pagingVenues: PagingData<Venue> = PagingData.from(
             city = "Madrid",
             country = "Spain",
             location = Location(latitude = 30.1, longitude = 4.0),
-            imageUrl = "",
+            imageUrl = "https://www.canalextremadura.es/sites/default/files/Media/Images/2021-02/A_TEATRO_ROMANO_MERIDA_01.jpg",
             address = "",
             distance = ""
         ),
         Venue(
             id = "2",
-            name = "Coliseum Arthore",
+            name = "Coliseum Alfonso Pérez",
             description = "",
             url = "https://www.google.com/",
             city = "Madrid",
             country = "Spain",
             location = Location(latitude = 30.1, longitude = 4.0),
-            imageUrl = "",
+            imageUrl = "https://www.lavanguardia.com/files/image_948_465/uploads/2023/10/04/651d103955ac6.jpeg",
             address = "",
             distance = ""
         ),
@@ -43,7 +45,7 @@ val pagingVenues: PagingData<Venue> = PagingData.from(
             city = "Madrid",
             country = "Spain",
             location = Location(latitude = 30.1, longitude = 4.0),
-            imageUrl = "",
+            imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e8/Tigers_opening_day2_2007.jpg",
             address = "",
             distance = ""
         ),
@@ -55,7 +57,7 @@ val pagingVenues: PagingData<Venue> = PagingData.from(
             city = "Madrid",
             country = "Spain",
             location = Location(latitude = 30.1, longitude = 4.0),
-            imageUrl = "",
+            imageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/8b/24/a1/vista-del-teatro-la-latina.jpg?w=1200&h=1200&s=1",
             address = "",
             distance = ""
         )
@@ -71,7 +73,7 @@ val venueDetail = Result.Success(
         city = "Madrid",
         country = "Spain",
         location = Location(latitude = 30.1, longitude = 4.0),
-        imageUrl = "",
+        imageUrl = "https://www.canalextremadura.es/sites/default/files/Media/Images/2021-02/A_TEATRO_ROMANO_MERIDA_01.jpg",
         address = "",
         distance = ""
     )
@@ -85,7 +87,7 @@ val firstVenue = Venue(
     city = "Madrid",
     country = "Spain",
     location = Location(latitude = 30.1, longitude = 4.0),
-    imageUrl = "",
+    imageUrl = "https://www.canalextremadura.es/sites/default/files/Media/Images/2021-02/A_TEATRO_ROMANO_MERIDA_01.jpg",
     address = "",
     distance = ""
 )
@@ -98,7 +100,7 @@ val lastVenue = Venue(
     city = "Madrid",
     country = "Spain",
     location = Location(latitude = 30.1, longitude = 4.0),
-    imageUrl = "",
+    imageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/8b/24/a1/vista-del-teatro-la-latina.jpg?w=1200&h=1200&s=1",
     address = "",
     distance = ""
 )

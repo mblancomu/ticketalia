@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("mobilechallenge.android.library")
     id("mobilechallenge.android.library.compose")
@@ -13,6 +15,7 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:model"))
     implementation(project(":core:common"))
+    implementation(project(":core:designsystem"))
 
     api(libs.androidx.compose.ui.test)
     api(libs.androidx.test.core)
@@ -27,6 +30,10 @@ dependencies {
     implementation(libs.androidx.paging.compose)
 
     debugApi(libs.androidx.compose.ui.testManifest)
+    implementation(libs.androidx.activity.compose)
 
     implementation(libs.kotlinx.datetime)
+    implementation(libs.robolectric)
+    api(libs.roborazzi)
+    implementation(libs.accompanist.testharness)
 }

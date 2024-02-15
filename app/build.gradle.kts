@@ -14,7 +14,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner =
+            "com.manuelblanco.mobilechallenge.core.testing.TicketsTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -43,6 +44,12 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
         }
     }
 }

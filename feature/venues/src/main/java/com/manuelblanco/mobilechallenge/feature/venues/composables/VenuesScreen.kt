@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.items
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
@@ -35,7 +34,7 @@ import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContra
 /**
  * Created by Manuel Blanco Murillo on 27/6/23.
  */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun VenuesScreen(
@@ -69,9 +68,8 @@ fun VenuesScreen(
                     Alignment.CenterVertically
                 ),
             ) {
-                items(
-                    items = venues
-                ) { venue ->
+                items(venues.itemCount) { index ->
+                    val venue = venues[index]
                     venue?.let {
                         VenueContent(venue = venue, onVenueClicked = {
                             onNavigationRequested(
