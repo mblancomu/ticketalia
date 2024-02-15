@@ -28,7 +28,6 @@ import com.manuelblanco.mobilechallenge.core.ui.components.HeaderTitleDetail
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsPoster
 import com.manuelblanco.mobilechallenge.feature.events.R
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventDetailContract
-import com.manuelblanco.mobilechallenge.feature.events.presentation.EventDetailViewModel
 
 /**
  * Created by Manuel Blanco Murillo on 7/2/24.
@@ -39,7 +38,7 @@ import com.manuelblanco.mobilechallenge.feature.events.presentation.EventDetailV
 fun EventDetailContent(
     event: Event?,
     eventTitle: String,
-    eventDetailViewModel: EventDetailViewModel
+    onSendEvent: (EventDetailContract.Event) -> Unit
 ) {
 
     Box(
@@ -67,10 +66,10 @@ fun EventDetailContent(
                 ticketUrl = event?.url,
                 uriLocation = event?.location?.toGoogleUri(),
                 onClickTicket = {
-                    eventDetailViewModel.setEvent(EventDetailContract.Event.Link)
+                    onSendEvent(EventDetailContract.Event.Link)
                 },
                 onClickLocation = {
-                    eventDetailViewModel.setEvent(EventDetailContract.Event.Direction)
+                    onSendEvent(EventDetailContract.Event.Direction)
                 }
             )
             DescriptionTextDetail(text = event?.description.toString())

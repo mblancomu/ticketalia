@@ -45,3 +45,30 @@ suspend fun <T : Any> PagingData<T>.collectDataForTest(): List<T> {
     dif.collectFrom(this)
     return items
 }
+
+@SuppressLint("RestrictedApi")
+suspend fun <T : Any> PagingData<T>.collectData(): List<T> {
+    val dcb = @SuppressLint("RestrictedApi")
+    object : DifferCallback {
+        override fun onChanged(position: Int, count: Int) {}
+        override fun onInserted(position: Int, count: Int) {}
+        override fun onRemoved(position: Int, count: Int) {}
+    }
+    val items = mutableListOf<T>()
+    val dif = @SuppressLint("RestrictedApi")
+    object : PagingDataDiffer<T>(dcb, StandardTestDispatcher()) {
+        @SuppressLint("RestrictedApi")
+        override suspend fun presentNewList(
+            previousList: NullPaddedList<T>,
+            newList: NullPaddedList<T>,
+            lastAccessedIndex: Int,
+            onListPresentable: () -> Unit
+        ): Int? {
+            for (idx in 0 until newList.size)
+                items.add(newList.getFromStorage(idx))
+            return null
+        }
+    }
+    dif.collectFrom(this)
+    return items
+}

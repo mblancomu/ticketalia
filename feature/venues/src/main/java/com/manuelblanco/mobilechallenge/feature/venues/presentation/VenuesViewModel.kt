@@ -48,7 +48,7 @@ class VenuesViewModel @Inject constructor(
         }
     }
 
-    private fun getVenues() {
+    fun getVenues() {
         viewModelScope.launch {
             setState { copy(isLoading = true, isError = false) }
             getVenuesUseCase().cachedIn(viewModelScope).asResult().collect { result ->

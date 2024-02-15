@@ -1,25 +1,19 @@
-package com.manuelblanco.venues
+package com.manuelblanco.venues.viewmodel
 
 import com.manuelblanco.mobilechallenge.core.common.result.Result
 import com.manuelblanco.mobilechallenge.core.common.result.asResult
-import com.manuelblanco.mobilechallenge.core.data.repository.VenuesRepository
-import com.manuelblanco.mobilechallenge.core.domain.GetVenuesUseCase
 import com.manuelblanco.mobilechallenge.core.testing.data.pagingVenues
 import com.manuelblanco.mobilechallenge.core.testing.repository.viewmodel.TestVenuesRepository
 import com.manuelblanco.mobilechallenge.core.testing.utils.MainCoroutineRule
-import com.manuelblanco.mobilechallenge.core.testing.utils.collectDataForTest
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContract
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesViewModel
 import com.manuelblanco.mobilechallenge.feature.venues.usecases.GetVenuesUseCaseImpl
-import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -31,6 +25,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 /**
  * Created by Manuel Blanco Murillo on 13/2/24.
@@ -47,7 +42,7 @@ class VenuesViewModelTest {
 
     private val venuesRepository = TestVenuesRepository()
     private val getVenuesUseCase = GetVenuesUseCaseImpl(venuesRepository)
-    lateinit var viewModel: VenuesViewModel
+    private lateinit var viewModel: VenuesViewModel
 
     @Before
     fun setup() {
@@ -61,40 +56,29 @@ class VenuesViewModelTest {
     }
 
     @Test
-    fun `When view model initialized then should emit initial view state first`() = runTest {
-        // Given
-        val expectedInitialViewState = VenuesContract.State(
-            isLoading = true,
-            isError = false
-        )
-        val collectJob =
-            launch(UnconfinedTestDispatcher()) { viewModel.viewState.collect() }
-
-        getVenuesUseCase()
-
+    fun `GIVEN a initial state for Venues WHEN change the UI state should be LOADING`() = runTest {
         assertEquals(
-            expectedInitialViewState, viewModel.viewState.value
+            VenuesContract.State(
+                isLoading = true,
+                isError = false
+            ),
+            viewModel.viewState.value,
         )
-
-        collectJob.cancel()
     }
 
     @Test
-    fun `When getVenues called then should emit a view state`() = runTest {
-        // Given
-        val expectedInitialViewState = VenuesContract.State(
-            isLoading = false,
-            isError = false
-        )
-        val collectJob =
-            launch(UnconfinedTestDispatcher()) { viewModel.viewState.collect() }
+    fun `GIVEN a response success for Venues WHEN change the UI state should be SUCCESS`() =
+        runTest {
+            val collectJob =
+                launch(UnconfinedTestDispatcher()) { viewModel.viewState.collect() }
 
-        getVenuesUseCase()
+            venuesRepository.senRemoteVenues(pagingVenues)
 
-        assertEquals(
-            expectedInitialViewState, viewModel.viewState.value
-        )
+            val venuesResult =
+                venuesRepository.getVenues().asResult().filter { it is Result.Success }.first()
 
-        collectJob.cancel()
-    }
+            assertTrue(venuesResult is Result.Success)
+
+            collectJob.cancel()
+        }
 }

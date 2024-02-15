@@ -76,3 +76,29 @@ val venueDetail = Result.Success(
         distance = ""
     )
 )
+
+val firstVenue = Venue(
+    id = "1",
+    name = "Teatro Romano",
+    description = "",
+    url = "https://www.google.com/",
+    city = "Madrid",
+    country = "Spain",
+    location = Location(latitude = 30.1, longitude = 4.0),
+    imageUrl = "",
+    address = "",
+    distance = ""
+)
+
+val lastVenue = Venue(
+    id = "4",
+    name = "Benito Villamarín",
+    description = "",
+    url = "https://www.google.com/",
+    city = "Madrid",
+    country = "Spain",
+    location = Location(latitude = 30.1, longitude = 4.0),
+    imageUrl = "",
+    address = "",
+    distance = ""
+)

@@ -22,14 +22,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
-import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
@@ -40,27 +38,29 @@ import kotlinx.coroutines.flow.onEach
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun EventsScreen(
-    viewModel: EventsViewModel = hiltViewModel(),
+    stateUi: EventsContract.State,
+    effect: Flow<EventsContract.Effect>?,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
+    onPaginate: () -> Unit,
+    onSendEvent: (EventsContract.Event) -> Unit,
     onNavigationRequested: (navigationEffect: EventsContract.Effect.Navigation) -> Unit
 ) {
 
     val gridState = rememberLazyGridState()
-    val state by viewModel.viewState.collectAsStateWithLifecycle()
-    val effect = viewModel.effect
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-    val pullRefreshState = rememberPullRefreshState(isRefreshing, { viewModel.refresh() })
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, { onRefresh() })
 
     var showProgress by remember { mutableStateOf(false) }
 
     LaunchedEffect(SIDE_EFFECTS_KEY) {
-        effect.onEach { effect ->
+        effect?.onEach { effect ->
             when (effect) {
                 is EventsContract.Effect.DataWasLoaded -> {
                 }
 
                 is EventsContract.Effect.Navigation.ToEvent -> onNavigationRequested(effect)
             }
-        }.collect()
+        }?.collect()
     }
 
     Scaffold(
@@ -83,12 +83,12 @@ fun EventsScreen(
                 ) {
                     LazyEventsGrid(
                         state = gridState,
-                        events = state.events,
-                        isLoading = state.isLoading,
-                        page = state.page,
-                        getEvents = { viewModel.getMoreEvents() },
+                        events = stateUi.events,
+                        isLoading = stateUi.isLoading,
+                        page = stateUi.page,
+                        getEvents = { onPaginate() },
                         onItemClick = { id, title ->
-                            viewModel.setEvent(EventsContract.Event.EventSelection(id, title))
+                            onSendEvent(EventsContract.Event.EventSelection(id, title))
                         })
                     if (showProgress) {
                         Progress()
@@ -103,8 +103,8 @@ fun EventsScreen(
                 }
 
                 showProgress = when {
-                    state.isLoading -> true
-                    state.isError -> {
+                    stateUi.isLoading -> true
+                    stateUi.isError -> {
                         false
                     }
 

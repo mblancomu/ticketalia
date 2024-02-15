@@ -1,9 +1,6 @@
 package com.manuelblanco.mobilechallenge.feature.venues.composables
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,12 +20,9 @@ import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import com.manuelblanco.mobilechallenge.core.designsystem.component.TicketsOutlinedButton
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
@@ -40,7 +34,6 @@ import com.manuelblanco.mobilechallenge.core.ui.components.HeaderTitleDetail
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsPoster
 import com.manuelblanco.mobilechallenge.feature.venues.R
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenueDetailContract
-import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenueDetailViewModel
 
 /**
  * Created by Manuel Blanco Murillo on 7/2/24.
@@ -51,7 +44,7 @@ import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenueDetailV
 fun VenueDetailContent(
     venue: Venue?,
     venueTitle: String,
-    venueDetailViewModel: VenueDetailViewModel
+    onSendEvent: (VenueDetailContract.Event) -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -80,10 +73,10 @@ fun VenueDetailContent(
                 info = venue?.url,
                 uriLocation = venue?.location?.toGoogleUri(),
                 onClickInfo = {
-                    venueDetailViewModel.setEvent(VenueDetailContract.Event.LinkButtonClicked)
+                    onSendEvent(VenueDetailContract.Event.LinkButtonClicked)
                 },
                 onClickLocation = {
-                    venueDetailViewModel.setEvent(VenueDetailContract.Event.DirectionButtonClicked)
+                    onSendEvent(VenueDetailContract.Event.DirectionButtonClicked)
                 }
             )
             DescriptionTextDetail(text = venue?.description.toString())

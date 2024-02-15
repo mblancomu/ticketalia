@@ -1,4 +1,4 @@
-package com.manuelblanco.mobilechallenge.feature.events
+package com.manuelblanco.mobilechallenge.feature.events.viewmodel
 
 import com.manuelblanco.mobilechallenge.core.testing.data.eventPageFromRemote
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
@@ -39,7 +39,7 @@ class EventsViewModelTest {
     }
 
     @Test
-    fun stateIsInitiallyLoading() = runTest {
+    fun `GIVEN a initial state for Events WHEN change the UI state should be LOADING`() = runTest {
         assertEquals(
             EventsContract.State(
                 events = emptyList(),
@@ -52,22 +52,23 @@ class EventsViewModelTest {
     }
 
     @Test
-    fun stateIsShowWhenEventsAreLoadingFromRemote() = runTest {
-        val collectJob =
-            launch(UnconfinedTestDispatcher()) { viewModel.viewState.collect() }
+    fun `GIVEN a response success for Events WHEN change the UI state should be SUCCESS`() =
+        runTest {
+            val collectJob =
+                launch(UnconfinedTestDispatcher()) { viewModel.viewState.collect() }
 
-        eventsRepository.sendRemoteEvents(eventPageFromRemote)
-        eventsRepository.sendCacheEvents(eventsFromCacheList)
+            eventsRepository.sendRemoteEvents(eventPageFromRemote)
+            eventsRepository.sendCacheEvents(eventsFromCacheList)
 
-        assertEquals(
-            EventsContract.State(
-                events = eventsFromCacheList,
-                isLoading = false,
-                isError = false,
-                page = 1
-            ), viewModel.viewState.value
-        )
+            assertEquals(
+                EventsContract.State(
+                    events = eventsFromCacheList,
+                    isLoading = false,
+                    isError = false,
+                    page = 1
+                ), viewModel.viewState.value
+            )
 
-        collectJob.cancel()
-    }
+            collectJob.cancel()
+        }
 }

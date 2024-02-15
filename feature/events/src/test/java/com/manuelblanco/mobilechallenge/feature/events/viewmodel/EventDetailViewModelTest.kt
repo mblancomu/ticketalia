@@ -1,13 +1,11 @@
-package com.manuelblanco.mobilechallenge.feature.events
+package com.manuelblanco.mobilechallenge.feature.events.viewmodel
 
 import com.manuelblanco.mobilechallenge.core.common.result.Result
-import com.manuelblanco.mobilechallenge.core.model.data.Event
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
 import com.manuelblanco.mobilechallenge.core.testing.repository.viewmodel.TestEventsRepository
 import com.manuelblanco.mobilechallenge.core.testing.utils.MainCoroutineRule
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventDetailContract
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventDetailViewModel
-import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
 import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventFromCacheUseCaseImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,9 +14,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -26,7 +22,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 /**
@@ -57,7 +52,7 @@ class EventDetailViewModelTest {
     }
 
     @Test
-    fun stateIsInitiallyLoading() = runTest {
+    fun `GIVEN a initial state for an Event WHEN change the UI state should be INITIAL`() = runTest {
         assertEquals(
             EventDetailContract.State(
                 event = null,
@@ -70,16 +65,18 @@ class EventDetailViewModelTest {
     }
 
     @Test
-    fun stateIsShowWhenEventsAreLoadingFromRemote() = runTest{
-        val collectJob =
-            launch(StandardTestDispatcher()) { viewModel.viewState.collect() }
+    fun `GIVEN a response success for an Event WHEN change the UI state should be SUCCESS`() =
+        runTest {
+            val collectJob =
+                launch(StandardTestDispatcher()) { viewModel.viewState.collect() }
 
-        eventsRepository.sendCacheEvents(eventsFromCacheList)
+            eventsRepository.sendCacheEvents(eventsFromCacheList)
 
-        val eventResult = eventsRepository.getEventFromCache(id = "1").filter { it is Result.Success }.first()
+            val eventResult =
+                eventsRepository.getEventFromCache(id = "1").filter { it is Result.Success }.first()
 
-        assertTrue(eventResult is Result.Success)
+            assertTrue(eventResult is Result.Success)
 
-        collectJob.cancel()
-    }
+            collectJob.cancel()
+        }
 }

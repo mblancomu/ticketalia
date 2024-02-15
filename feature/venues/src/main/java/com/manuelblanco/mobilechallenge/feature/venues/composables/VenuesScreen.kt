@@ -23,15 +23,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
+import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContract
-import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesViewModel
 
 /**
  * Created by Manuel Blanco Murillo on 27/6/23.
@@ -40,11 +39,10 @@ import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesViewMo
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun VenuesScreen(
-    onNavigationRequested: (navigationEffect: VenuesContract.Effect.Navigation) -> Unit,
-    venuesViewModel: VenuesViewModel = hiltViewModel()
+    venues: LazyPagingItems<Venue>,
+    onNavigationRequested: (navigationEffect: VenuesContract.Effect.Navigation) -> Unit
 ) {
 
-    val venues = venuesViewModel.venues.collectAsLazyPagingItems()
     val pullRefreshState = rememberPullRefreshState(
         venues.loadState.refresh is LoadState.Loading,
         { venues.refresh() })
