@@ -15,6 +15,7 @@ dependencies {
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:common"))
+    implementation(libs.lottie.compose)
 
     api(libs.androidx.compose.foundation)
     api(libs.androidx.compose.foundation.layout)

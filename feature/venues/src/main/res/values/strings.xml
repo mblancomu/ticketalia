@@ -3,4 +3,8 @@
     <string name="button_location">Location</string>
     <string name="button_info">+ Info</string>
     <string name="feature_venues_loading">Loading for you…</string>
+    <string name="refresh_loading">Refresh Loading</string>
+    <string name="initial_loading">Initial Loading</string>
+    <string name="global_error">Ops…Something was wrong</string>
+    <string name="empty_list_venues">No Venues available</string>
 </resources>

@@ -9,6 +9,7 @@ import com.manuelblanco.mobilechallenge.core.model.data.Event
 import com.manuelblanco.mobilechallenge.core.ui.mvi.TicketsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,7 +41,8 @@ class EventsViewModel @Inject constructor(
     override fun setInitialState() = EventsContract.State(
         events = emptyList(),
         isLoading = false,
-        isError = false
+        isError = false,
+        page = 1
     )
 
     override fun handleEvents(event: EventsContract.Event) {
@@ -57,7 +59,8 @@ class EventsViewModel @Inject constructor(
         }
     }
 
-    fun refresh(){
+    fun refresh() {
+        setInitialState()
         getEvents()
     }
 
@@ -71,24 +74,27 @@ class EventsViewModel @Inject constructor(
 
     private fun getEvents() {
         eventsJob = viewModelScope.launch {
+            delay(1000L)
             setState { copy(isLoading = true, isError = false) }
             getEventsFromRemoteUseCase(
                 page = viewState.value.page.toString(),
             ).collect { result ->
                 when (result) {
                     is Result.Error -> {
+                        setState { copy(isLoading = false, isError = true) }
                         if (result.exception !is SerializationException) {
-                            setState { copy(isLoading = false, isError = true) }
                             getEventsFromCacheUseCase(
                                 PAGE_SIZE,
                                 (PAGE_SIZE * (viewState.value.page - 1))
                             ).collect { events ->
-                                setState {
-                                    copy(
-                                        isLoading = false,
-                                        isError = false,
-                                        events = events
-                                    )
+                                if (events.isNotEmpty()) {
+                                    setState {
+                                        copy(
+                                            isLoading = false,
+                                            isError = false,
+                                            events = events
+                                        )
+                                    }
                                 }
                             }
                         }

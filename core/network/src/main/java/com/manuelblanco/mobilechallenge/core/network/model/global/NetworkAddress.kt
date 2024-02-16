@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NetworkAddress(
-    val line1: String,
+    val line1: String? = "",
     val line2: String? = "",
     val line3: String? = ""
 )

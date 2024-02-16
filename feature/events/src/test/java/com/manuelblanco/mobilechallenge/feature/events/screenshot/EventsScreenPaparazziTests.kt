@@ -15,7 +15,7 @@ import org.junit.Test
  * Created by Manuel Blanco Murillo on 15/2/24.
  */
 
-class EventsScreenScreenshotPaparazziTests {
+class EventsScreenPaparazziTests {
 
     @get:Rule
     val paparazzi = Paparazzi(
@@ -33,7 +33,8 @@ class EventsScreenScreenshotPaparazziTests {
                     stateUi = EventsContract.State(
                         events = eventsFromCacheList,
                         isLoading = false,
-                        isError = false
+                        isError = false,
+                        page = 1
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
                     isRefreshing = false,
@@ -56,7 +57,7 @@ class EventsScreenScreenshotPaparazziTests {
                         isLoading = false,
                         isError = false
                     ),
-                    effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
+                    effect = flowOf(EventsContract.Effect.DataWasLoaded),
                     isRefreshing = false,
                     onRefresh = {},
                     onPaginate = {},

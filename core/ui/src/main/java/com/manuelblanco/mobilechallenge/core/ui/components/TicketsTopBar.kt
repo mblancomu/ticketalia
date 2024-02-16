@@ -29,7 +29,7 @@ fun TicketsTopBar(
     title: String = "",
     onBack: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    containerColor: Color = TicketsTheme.colors.onPrimaryContainer,
+    containerColor: Color = TicketsTheme.colors.primary,
     isCentered: Boolean,
     isNavigable: Boolean = false
 ) {
@@ -79,7 +79,7 @@ fun TicketsTopBarPreview() {
 private fun BackArrow(onBack: () -> Unit = {}) {
     FilledIconButton(
         onClick = { onBack() },
-        colors = IconButtonDefaults.iconButtonColors(containerColor = TicketsTheme.colors.onPrimaryContainer)
+        colors = IconButtonDefaults.iconButtonColors(containerColor = TicketsTheme.colors.primary)
     ) {
         Icon(
             imageVector = Icons.Default.ArrowBackIosNew,

@@ -26,7 +26,10 @@ data class TicketsDimensions(
     val cardInfoHeight: Dp = 72.dp,
     val posterDetailHeight : Dp = 400.dp,
     val cardDetailPadding: Dp = 320.dp,
-    val buttonDetailWidth: Dp = 130.dp
+    val buttonDetailWidth: Dp = 130.dp,
+    val progressBoxHeight: Dp = 68.dp,
+    val progressBoxWidth: Dp = 200.dp,
+    val progressBoxCorners: Dp = 40.dp
 )
 
 internal val LocalDimensions = staticCompositionLocalOf { TicketsDimensions() }

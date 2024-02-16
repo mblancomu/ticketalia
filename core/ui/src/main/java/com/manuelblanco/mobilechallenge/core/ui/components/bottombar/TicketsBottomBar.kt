@@ -32,7 +32,7 @@ fun TicketsBottomBar(modifier: Modifier, navController: NavHostController) {
         modifier = modifier
             .height(TicketsTheme.dimensions.bottomBarHeight)
             .padding(0.dp)
-            .background(TicketsTheme.colors.onPrimaryContainer)
+            .background(TicketsTheme.colors.primary)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically

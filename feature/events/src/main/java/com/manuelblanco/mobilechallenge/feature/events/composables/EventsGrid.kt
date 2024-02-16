@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.manuelblanco.mobilechallenge.core.data.mediator.PAGE_SIZE
+import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.model.data.Event
 import com.manuelblanco.mobilechallenge.core.ui.components.ErrorRow
 import com.manuelblanco.mobilechallenge.feature.events.R
@@ -53,12 +54,12 @@ fun LazyEventsGrid(
             if (events.isEmpty()) {
                 ErrorRow(stringResource(R.string.no_events_found))
             } else {
-                EventContent(event, Modifier.height(240.dp)
+                EventContent(
+                    event, Modifier.height(TicketsTheme.dimensions.cardListHeight)
                 ) { id, title ->
                     onItemClick(id, title)
                 }
             }
         }
-
     }
 }

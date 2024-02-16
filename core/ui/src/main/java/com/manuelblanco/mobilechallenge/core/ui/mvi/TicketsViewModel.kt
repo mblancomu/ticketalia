@@ -23,6 +23,7 @@ interface ViewState
 interface ViewSideEffect
 
 const val SIDE_EFFECTS_KEY = "side-effects_key"
+const val SIDE_STATES_KEY = "side-states_key"
 
 abstract class TicketsViewModel<Event: ViewEvent, UiState: ViewState, Effect: ViewSideEffect> : ViewModel() {
 

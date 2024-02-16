@@ -15,7 +15,6 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.paparazzi) apply false
     alias(libs.plugins.roborazzi) apply false
-    id("org.jetbrains.kotlin.android") version "1.8.20" apply false
     alias(libs.plugins.android.library) apply false
 }
 

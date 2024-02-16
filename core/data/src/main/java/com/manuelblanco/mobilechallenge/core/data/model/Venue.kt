@@ -22,7 +22,7 @@ fun NetworkPageVenuesResponse.asVenueEntities(): List<VenueEntity> {
                     longitude = 0.0
                 )
             ),
-            imageUrl = if (it.images.isNullOrEmpty()) "" else getImageUrlByRatio(images = it.images ?: emptyList()),
+            imageUrl = if (it.images.isNullOrEmpty()) "" else getImageUrlByRatio(images = it.images ?: emptyList()) ?: "",
             country = it.country?.name ?: "",
             city = it.city?.name ?: "",
             address = it.address?.toFinalAddress() ?: "",

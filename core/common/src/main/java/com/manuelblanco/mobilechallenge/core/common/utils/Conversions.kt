@@ -13,17 +13,29 @@ fun locationToString(location: Location): String {
 }
 
 fun formattedDate(dateTime: String?): String {
+    var formatted = ""
     dateTime?.let {
-        val formatted = ZonedDateTime.parse(dateTime)
-        return "${formatted.dayOfMonth}-${formatted.monthValue}-${formatted.year}"
+        try {
+            val date = ZonedDateTime.parse(it)
+            formatted = "${date.dayOfMonth}-${date.monthValue}-${date.year}"
+        } catch (_: Exception) {
+        }
+
+        return formatted
     }
     return ""
 }
 
 fun formattedTime(dateTime: String?): String {
+    var formatted = ""
     dateTime?.let {
-        val formatted = ZonedDateTime.parse(dateTime)
-        return "${formatted.hour}:${formatted.minute}"
+        try {
+            val time = ZonedDateTime.parse(it)
+            formatted = "${time.hour}:${time.minute}"
+        } catch (_: Exception) {
+        }
+
+        return formatted
     }
     return ""
 }

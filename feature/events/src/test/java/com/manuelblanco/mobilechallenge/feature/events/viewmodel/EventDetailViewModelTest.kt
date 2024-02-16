@@ -52,7 +52,7 @@ class EventDetailViewModelTest {
     }
 
     @Test
-    fun `GIVEN a initial state for an Event WHEN change the UI state should be INITIAL`() = runTest {
+    fun `GIVEN a initial state for an Event WHEN change the UI state should be INITIAL STATE`() = runTest {
         assertEquals(
             EventDetailContract.State(
                 event = null,

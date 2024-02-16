@@ -1,19 +1,24 @@
 package com.manuelblanco.mobilechallenge.feature.venues.composables
 
 import android.annotation.SuppressLint
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import com.manuelblanco.mobilechallenge.core.common.utils.launchGoogleMaps
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import com.manuelblanco.mobilechallenge.core.model.data.toGoogleUri
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
+import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_STATES_KEY
+import com.manuelblanco.mobilechallenge.feature.venues.R
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenueDetailContract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -24,7 +29,6 @@ import kotlinx.coroutines.flow.onEach
  */
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VenueDetailScreen(
     venueId: String,
@@ -36,6 +40,9 @@ fun VenueDetailScreen(
     onGetVenue: (id: String) -> Unit,
     onNavigationRequested: (navigationEffect: VenueDetailContract.Effect.Navigation) -> Unit
 ) {
+
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val snackBarMessage = stringResource(R.string.global_error)
 
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
@@ -61,6 +68,17 @@ fun VenueDetailScreen(
         }?.collect()
     }
 
+    LaunchedEffect(SIDE_STATES_KEY) {
+        when {
+            stateUi.isError -> {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = snackBarMessage,
+                    duration = SnackbarDuration.Short
+                )
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             TicketsTopBar(
@@ -71,10 +89,6 @@ fun VenueDetailScreen(
         }
     ) {
         when {
-            stateUi.isError -> {
-
-            }
-
             stateUi.isLoading -> {
                 Progress()
             }

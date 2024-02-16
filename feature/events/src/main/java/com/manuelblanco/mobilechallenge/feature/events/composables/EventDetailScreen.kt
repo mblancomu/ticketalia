@@ -1,19 +1,24 @@
 package com.manuelblanco.mobilechallenge.feature.events.composables
 
 import android.annotation.SuppressLint
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import com.manuelblanco.mobilechallenge.core.common.utils.launchGoogleMaps
 import com.manuelblanco.mobilechallenge.core.model.data.Event
 import com.manuelblanco.mobilechallenge.core.model.data.toGoogleUri
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
+import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_STATES_KEY
+import com.manuelblanco.mobilechallenge.feature.events.R
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventDetailContract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -23,7 +28,6 @@ import kotlinx.coroutines.flow.onEach
  * Created by Manuel Blanco Murillo on 7/2/24.
  */
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun EventDetailScreen(
@@ -36,6 +40,9 @@ fun EventDetailScreen(
     onGetEvent: (id: String) -> Unit,
     onNavigationRequested: (navigationEffect: EventDetailContract.Effect.Navigation) -> Unit
 ) {
+
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val snackBarMessage = stringResource(R.string.global_error)
 
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
@@ -61,6 +68,17 @@ fun EventDetailScreen(
         }?.collect()
     }
 
+    LaunchedEffect(SIDE_STATES_KEY) {
+        when {
+            stateUi.isError -> {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = snackBarMessage,
+                    duration = SnackbarDuration.Short
+                )
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             TicketsTopBar(
@@ -71,7 +89,6 @@ fun EventDetailScreen(
         }
     ) {
         when {
-            stateUi.isError -> {}
             stateUi.isLoading -> {
                 Progress()
             }

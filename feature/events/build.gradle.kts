@@ -2,6 +2,7 @@ plugins {
     id("mobilechallenge.android.feature")
     id("mobilechallenge.android.library.compose")
     alias(libs.plugins.paparazzi)
+    alias(libs.plugins.roborazzi)
 }
 
 android {

@@ -12,8 +12,11 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarDuration.*
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,10 +25,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
+import com.manuelblanco.mobilechallenge.core.ui.components.EmptyListScreen
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
+import com.manuelblanco.mobilechallenge.feature.events.R
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -35,7 +41,7 @@ import kotlinx.coroutines.flow.onEach
  * Created by Manuel Blanco Murillo on 27/6/23.
  */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun EventsScreen(
     stateUi: EventsContract.State,
@@ -47,15 +53,20 @@ fun EventsScreen(
     onNavigationRequested: (navigationEffect: EventsContract.Effect.Navigation) -> Unit
 ) {
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarMessage = stringResource(R.string.global_error)
+
     val gridState = rememberLazyGridState()
     val pullRefreshState = rememberPullRefreshState(isRefreshing, { onRefresh() })
 
     var showProgress by remember { mutableStateOf(false) }
+    var isDataLoaded by remember { mutableStateOf(false) }
 
     LaunchedEffect(SIDE_EFFECTS_KEY) {
         effect?.onEach { effect ->
             when (effect) {
                 is EventsContract.Effect.DataWasLoaded -> {
+                    isDataLoaded = true
                 }
 
                 is EventsContract.Effect.Navigation.ToEvent -> onNavigationRequested(effect)
@@ -63,7 +74,17 @@ fun EventsScreen(
         }?.collect()
     }
 
+    if (stateUi.isError) {
+        LaunchedEffect(snackbarHostState) {
+            snackbarHostState.showSnackbar(
+                message = snackBarMessage,
+                duration = SnackbarDuration.Short
+            )
+        }
+    }
+
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TicketsTopBar(isCentered = true)
         },
@@ -81,6 +102,15 @@ fun EventsScreen(
                         .pullRefresh(pullRefreshState),
                     contentAlignment = Alignment.Center
                 ) {
+                    if (isDataLoaded) {
+                        if (stateUi.events.isEmpty() && !stateUi.isLoading) {
+                            EmptyListScreen(
+                                title = stringResource(id = R.string.empty_list_events),
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
+
                     LazyEventsGrid(
                         state = gridState,
                         events = stateUi.events,

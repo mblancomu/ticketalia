@@ -2,6 +2,7 @@ plugins {
     id("mobilechallenge.android.feature")
     id("mobilechallenge.android.library.compose")
     alias(libs.plugins.paparazzi)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -10,8 +11,6 @@ android {
 }
 
 dependencies {
-    androidTestImplementation(project(":core:testing"))
-    testImplementation(project(":core:testing"))
     implementation(project(":core:common"))
 
     implementation(libs.accompanist.permissions)
@@ -19,7 +18,10 @@ dependencies {
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.compose.material)
     implementation(libs.accompanist.drawablepainter)
-    testImplementation(libs.mockk)
+
+    testImplementation(project(":core:testing"))
     testImplementation(libs.robolectric)
     testImplementation(libs.hilt.android.testing)
+
+    androidTestImplementation(project(":core:testing"))
 }

@@ -27,7 +27,7 @@ fun NetworkPageEventsResponse.asEventEntities(): List<EventEntity> {
             ),
             imageUrl = if (it.images.isNullOrEmpty()) "" else getImageUrlByRatio(
                 images = it.images ?: emptyList()
-            ),
+            ) ?: "",
             dateTime = it.dates?.start?.dateTime ?: "",
             place = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.get(0)?.toPlace()
                 ?: "" else it.place?.toExternalPlace() ?: "",

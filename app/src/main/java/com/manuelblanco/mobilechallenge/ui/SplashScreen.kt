@@ -1,5 +1,6 @@
 package com.manuelblanco.mobilechallenge.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -28,6 +29,7 @@ import kotlinx.coroutines.delay
  * Created by Manuel Blanco Murillo on 29/6/23.
  */
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun SplashScreen(modifier: Modifier = Modifier, onTimeout: () -> Unit) {
     BoxWithConstraints(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
