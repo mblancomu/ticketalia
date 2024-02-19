@@ -17,13 +17,8 @@ class VenueDetailViewModel @Inject constructor(
     private val getVenueUseCase: GetVenueUseCase,
 ) : TicketsViewModel<VenueDetailContract.Event, VenueDetailContract.State, VenueDetailContract.Effect>() {
 
-    init {
-        setState { copy(isInit = true, isLoading = false, isError = false) }
-    }
-
     override fun setInitialState(): VenueDetailContract.State = VenueDetailContract.State(
         venue = null,
-        isInit = false,
         isLoading = false,
         isError = false
     )
@@ -33,9 +28,11 @@ class VenueDetailViewModel @Inject constructor(
             is VenueDetailContract.Event.DirectionButtonClicked -> {
                 setEffect { VenueDetailContract.Effect.Navigation.Localization }
             }
+
             is VenueDetailContract.Event.LinkButtonClicked -> {
                 setEffect { VenueDetailContract.Effect.Navigation.Info }
             }
+
             is VenueDetailContract.Event.BackButtonClicked -> {
                 setEffect { VenueDetailContract.Effect.Navigation.Back }
             }
@@ -44,21 +41,20 @@ class VenueDetailViewModel @Inject constructor(
 
     fun getVenue(venueId: String) {
         viewModelScope.launch {
-            setState { copy(isInit = false, isLoading = true, isError = false) }
+            setState { copy(isLoading = true, isError = false) }
             getVenueUseCase(venueId).collect { result ->
                 when (result) {
                     is Result.Error -> {
-                        setState { copy(isInit = false, isLoading = false, isError = true) }
+                        setState { copy(isLoading = false, isError = true) }
                     }
 
                     is Result.Loading -> {
-                        setState { copy(isInit = false, isLoading = true, isError = false) }
+                        setState { copy(isLoading = true, isError = false) }
                     }
 
                     is Result.Success -> {
                         setState {
                             copy(
-                                isInit = false,
                                 isLoading = false,
                                 isError = false,
                                 venue = result.data

@@ -8,12 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import com.manuelblanco.mobilechallenge.core.common.utils.launchGoogleMaps
-import com.manuelblanco.mobilechallenge.core.model.data.Venue
-import com.manuelblanco.mobilechallenge.core.model.data.toGoogleUri
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
@@ -31,38 +26,21 @@ import kotlinx.coroutines.flow.onEach
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun VenueDetailScreen(
-    venueId: String,
     venueTitle: String,
-    venue: Venue?,
     stateUi: VenueDetailContract.State,
     effect: Flow<VenueDetailContract.Effect>?,
     onSendEvent: (VenueDetailContract.Event) -> Unit,
-    onGetVenue: (id: String) -> Unit,
     onNavigationRequested: (navigationEffect: VenueDetailContract.Effect.Navigation) -> Unit
 ) {
 
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val snackBarMessage = stringResource(R.string.global_error)
 
-    val uriHandler = LocalUriHandler.current
-    val context = LocalContext.current
-
     LaunchedEffect(SIDE_EFFECTS_KEY) {
         effect?.onEach { effect ->
             when (effect) {
-                is VenueDetailContract.Effect.Navigation.Back -> {
+                is VenueDetailContract.Effect.Navigation -> {
                     onNavigationRequested(effect)
-                }
-
-                VenueDetailContract.Effect.Navigation.Info -> {
-                    uriHandler.openUri(venue?.url.toString())
-                }
-
-                VenueDetailContract.Effect.Navigation.Localization -> {
-                    launchGoogleMaps(
-                        venue?.location?.toGoogleUri().toString(),
-                        context
-                    )
                 }
             }
         }?.collect()
@@ -93,12 +71,8 @@ fun VenueDetailScreen(
                 Progress()
             }
 
-            stateUi.isInit -> {
-                onGetVenue(venueId)
-            }
-
             else -> {
-                VenueDetailContent(venue, venueTitle, onSendEvent)
+                VenueDetailContent(stateUi.venue, venueTitle, onSendEvent)
             }
         }
     }

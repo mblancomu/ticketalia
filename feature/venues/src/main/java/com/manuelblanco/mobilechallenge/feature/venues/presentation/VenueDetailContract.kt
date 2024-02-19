@@ -18,7 +18,6 @@ class VenueDetailContract {
 
     data class State(
         val venue: Venue?,
-        val isInit: Boolean,
         val isLoading: Boolean,
         val isError: Boolean
     ) : ViewState
@@ -26,8 +25,8 @@ class VenueDetailContract {
     sealed class Effect : ViewSideEffect {
         sealed class Navigation : Effect() {
             object Back : Navigation()
-            object Localization: Navigation()
-            object Info: Navigation()
+            object Localization : Navigation()
+            object Info : Navigation()
         }
     }
 

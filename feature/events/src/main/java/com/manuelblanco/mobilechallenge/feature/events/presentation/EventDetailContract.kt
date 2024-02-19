@@ -18,7 +18,6 @@ class EventDetailContract {
 
     data class State(
         val event: com.manuelblanco.mobilechallenge.core.model.data.Event?,
-        val isInit: Boolean,
         val isLoading: Boolean,
         val isError: Boolean,
     ) : ViewState
@@ -26,8 +25,8 @@ class EventDetailContract {
     sealed class Effect : ViewSideEffect {
         sealed class Navigation : Effect() {
             object Back : Navigation()
-            object Tickets: Navigation()
-            object Localization: Navigation()
+            object Tickets : Navigation()
+            object Localization : Navigation()
         }
     }
 

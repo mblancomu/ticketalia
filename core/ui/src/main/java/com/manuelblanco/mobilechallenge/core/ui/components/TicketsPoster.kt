@@ -11,6 +11,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
+import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.ui.R
 
 /**
@@ -28,17 +29,9 @@ fun BoxScope.TicketsPoster(
         error = placeholder,
         placeholder = placeholder,
     )
-    val colorFilter = when (painter.state) {
-        is AsyncImagePainter.State.Loading -> ColorFilter.tint(
-            MaterialTheme.colorScheme.background
-        )
-
-        else -> null
-    }
 
     Image(
         painter = painter,
-        colorFilter = colorFilter,
         contentDescription = "Image for Poster",
         contentScale = ContentScale.Crop,
         modifier = modifier,

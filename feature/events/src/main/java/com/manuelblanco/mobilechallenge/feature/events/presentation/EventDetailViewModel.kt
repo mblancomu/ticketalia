@@ -17,13 +17,8 @@ class EventDetailViewModel @Inject constructor(
     private val getEventFromCacheUseCase: GetEventFromCacheUseCase,
 ) : TicketsViewModel<EventDetailContract.Event, EventDetailContract.State, EventDetailContract.Effect>() {
 
-    init {
-        setState { copy(isInit = true, isLoading = false, isError = false) }
-    }
-
     override fun setInitialState() = EventDetailContract.State(
         event = null,
-        isInit = false,
         isLoading = false,
         isError = false
     )
@@ -33,6 +28,7 @@ class EventDetailViewModel @Inject constructor(
             is EventDetailContract.Event.Direction -> {
                 setEffect { EventDetailContract.Effect.Navigation.Localization }
             }
+
             is EventDetailContract.Event.GoBack -> {
                 setEffect { EventDetailContract.Effect.Navigation.Back }
             }
@@ -45,21 +41,21 @@ class EventDetailViewModel @Inject constructor(
 
     fun getEvent(id: String) {
         viewModelScope.launch {
-            setState { copy(isInit = false, isLoading = true, isError = false) }
+            setState { copy(isLoading = true, isError = false) }
             getEventFromCacheUseCase(
                 id,
             ).collect { result ->
                 when (result) {
                     is Result.Error -> {
-                        setState { copy(isInit = false, isLoading = false, isError = true) }
+                        setState { copy(isLoading = false, isError = true) }
                     }
 
                     is Result.Loading -> {
-                        setState { copy(isInit = false, isLoading = true, isError = false) }
+                        setState { copy(isLoading = true, isError = false) }
                     }
 
                     is Result.Success -> {
-                        setState { copy(isInit = false, isLoading = false, isError = false, event = result.data) }
+                        setState { copy(isLoading = false, isError = false, event = result.data) }
                     }
                 }
             }

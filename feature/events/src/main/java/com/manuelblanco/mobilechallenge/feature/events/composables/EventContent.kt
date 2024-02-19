@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,6 +49,7 @@ fun EventContent(
 ) {
     Card(
         modifier = modifier.clickable { onEventClicked(event.id, event.name) },
+        colors = CardDefaults.cardColors().copy(contentColor = TicketsTheme.colors.outline),
         shape = RoundedCornerShape(size = TicketsTheme.dimensions.paddingSmallMediumDouble),
         elevation = CardDefaults.cardElevation(),
     ) {
