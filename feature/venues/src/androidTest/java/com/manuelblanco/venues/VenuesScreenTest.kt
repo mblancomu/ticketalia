@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onFirst
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.manuelblanco.mobilechallenge.core.testing.data.pagingVenues
 import com.manuelblanco.mobilechallenge.feature.venues.composables.VenuesScreen
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContract
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +24,8 @@ class VenuesScreenTest {
     fun showListOfVenues_whenFinishTheDownload(){
         composeTestRule.setContent {
             VenuesScreen(
-                venues = flowOf(pagingVenues).collectAsLazyPagingItems()
+                venues = flowOf(pagingVenues).collectAsLazyPagingItems(),
+                stateUi = VenuesContract.State(isLoading = false, isError = false)
             ) {}
         }
 
