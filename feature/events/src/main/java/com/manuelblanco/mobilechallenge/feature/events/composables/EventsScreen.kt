@@ -28,7 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.ui.components.EmptyListScreen
+import com.manuelblanco.mobilechallenge.core.ui.components.ItemType
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
+import com.manuelblanco.mobilechallenge.core.ui.components.ShimmerEffectList
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
 import com.manuelblanco.mobilechallenge.feature.events.R
@@ -58,8 +60,6 @@ fun EventsScreen(
 
     val gridState = rememberLazyGridState()
     val pullRefreshState = rememberPullRefreshState(isRefreshing, { onRefresh() })
-
-    var showProgress by remember { mutableStateOf(false) }
     var isDataLoaded by remember { mutableStateOf(false) }
 
     LaunchedEffect(SIDE_EFFECTS_KEY) {
@@ -111,6 +111,10 @@ fun EventsScreen(
                         }
                     }
 
+                    if (stateUi.events.isEmpty() && !isDataLoaded) {
+                        ShimmerEffectList(type = ItemType.EVENT)
+                    }
+
                     LazyEventsGrid(
                         state = gridState,
                         events = stateUi.events,
@@ -120,9 +124,9 @@ fun EventsScreen(
                         onItemClick = { id, title ->
                             onSendEvent(EventsContract.Event.EventSelection(id, title))
                         })
-                    if (showProgress) {
+
+                    if (isRefreshing){
                         Progress()
-                        showProgress = false
                     }
 
                     PullRefreshIndicator(
@@ -132,16 +136,6 @@ fun EventsScreen(
                     )
                 }
 
-                showProgress = when {
-                    stateUi.isLoading -> true
-                    stateUi.isError -> {
-                        false
-                    }
-
-                    else -> {
-                        false
-                    }
-                }
             }
 
         }

@@ -42,8 +42,8 @@ import java.util.concurrent.ThreadLocalRandom
 
 @Composable
 fun EventContent(
-    event: Event,
     modifier: Modifier = Modifier,
+    event: Event,
     onEventClicked: (id: String, title: String) -> Unit
 ) {
     Card(

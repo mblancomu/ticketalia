@@ -35,7 +35,7 @@ class EventsViewModel @Inject constructor(
     private var totalPages = 1
 
     init {
-        refresh()
+        getEvents()
     }
 
     override fun setInitialState() = EventsContract.State(
@@ -60,6 +60,7 @@ class EventsViewModel @Inject constructor(
     }
 
     fun refresh() {
+        _isRefreshing.value = true
         setInitialState()
         getEvents()
     }
@@ -88,13 +89,9 @@ class EventsViewModel @Inject constructor(
                                 (PAGE_SIZE * (viewState.value.page - 1))
                             ).collect { events ->
                                 if (events.isNotEmpty()) {
-                                    setState {
-                                        copy(
-                                            isLoading = false,
-                                            isError = false,
-                                            events = events
-                                        )
-                                    }
+                                    finishedDownload(events)
+
+                                    _isRefreshing.emit(false)
                                 }
                             }
                         }
@@ -111,10 +108,9 @@ class EventsViewModel @Inject constructor(
                             (PAGE_SIZE * (viewState.value.page - 1))
                         ).collect { events ->
                             addNewEvents(events, viewState.value.events)
-                        }
-                        setEffect { EventsContract.Effect.DataWasLoaded }
 
-                        _isRefreshing.emit(false)
+                            _isRefreshing.emit(false)
+                        }
                     }
                 }
             }
@@ -124,7 +120,12 @@ class EventsViewModel @Inject constructor(
     private fun addNewEvents(newEvents: List<Event>, oldEvents: List<Event>) {
         val events = ArrayList(oldEvents)
         events.addAll(newEvents)
+        finishedDownload(events)
+    }
+
+    private fun finishedDownload(events: List<Event>) {
         setState { copy(isLoading = false, isError = false, events = events) }
+        setEffect { EventsContract.Effect.DataWasLoaded }
     }
 
 }
