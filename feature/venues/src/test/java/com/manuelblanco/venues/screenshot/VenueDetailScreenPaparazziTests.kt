@@ -29,18 +29,14 @@ class VenueDetailScreenPaparazziTests {
         paparazzi.snapshot {
             TicketsTheme {
                 VenueDetailScreen(
-                    venueId = "1",
                     venueTitle = "Camela",
-                    venue = firstVenue,
                     stateUi = VenueDetailContract.State(
                         venue = firstVenue,
-                        isInit = false,
                         isLoading = false,
                         isError = false
                     ),
                     effect = null,
                     onSendEvent = {},
-                    onGetVenue = {},
                     onNavigationRequested = {}
                 )
             }
@@ -52,18 +48,14 @@ class VenueDetailScreenPaparazziTests {
         paparazzi.snapshot {
             TicketsTheme {
                 VenueDetailScreen(
-                    venueId = "1",
                     venueTitle = "Camela",
-                    venue = firstVenue,
                     stateUi = VenueDetailContract.State(
                         venue = firstVenue,
-                        isInit = false,
                         isLoading = true,
                         isError = false
                     ),
                     effect = null,
                     onSendEvent = {},
-                    onGetVenue = {},
                     onNavigationRequested = {}
                 )
             }

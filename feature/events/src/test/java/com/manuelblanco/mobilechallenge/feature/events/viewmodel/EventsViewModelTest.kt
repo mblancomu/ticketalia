@@ -23,6 +23,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -59,17 +60,18 @@ class EventsViewModelTest {
     }
 
     @Test
-    fun `GIVEN a initial state for Events WHEN change the UI state should be INITIAL STATE`() = runTest {
-        assertEquals(
-            EventsContract.State(
-                events = emptyList(),
-                isLoading = false,
-                isError = false,
-                page = 1
-            ),
-            viewModel.viewState.value,
-        )
-    }
+    fun `GIVEN a initial state for Events WHEN change the UI state should be INITIAL STATE`() =
+        runTest {
+            assertEquals(
+                EventsContract.State(
+                    events = emptyList(),
+                    isLoading = false,
+                    isError = false,
+                    page = 1
+                ),
+                viewModel.viewState.value,
+            )
+        }
 
     @Test
     fun `GIVEN a response success for Events WHEN change the UI state should be SUCCESS`() =
@@ -81,7 +83,8 @@ class EventsViewModelTest {
             eventsRepository.sendCacheEvents(eventsFromCacheList)
 
             val eventResult =
-                eventsRepository.getEventsFromCache(limit = 0, offset = 4).asResult().filter { it is Result.Success }.first()
+                eventsRepository.getEventsFromCache(limit = 0, offset = 4).asResult()
+                    .filter { it is Result.Success }.first()
 
             assertTrue(eventResult is Result.Success)
 

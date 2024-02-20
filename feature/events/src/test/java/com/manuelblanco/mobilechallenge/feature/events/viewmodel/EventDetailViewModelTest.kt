@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -56,7 +57,6 @@ class EventDetailViewModelTest {
         assertEquals(
             EventDetailContract.State(
                 event = null,
-                isInit = true,
                 isLoading = false,
                 isError = false
             ),
@@ -68,7 +68,7 @@ class EventDetailViewModelTest {
     fun `GIVEN a response success for an Event WHEN change the UI state should be SUCCESS`() =
         runTest {
             val collectJob =
-                launch(StandardTestDispatcher()) { viewModel.viewState.collect() }
+                launch(UnconfinedTestDispatcher()) { viewModel.viewState.collect() }
 
             eventsRepository.sendCacheEvents(eventsFromCacheList)
 

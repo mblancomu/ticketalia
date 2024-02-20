@@ -1,6 +1,8 @@
 # Manuel Blanco Ticketalia Challenge
 ## Creating an offline app
 
+![](img/ticketalia.gif)
+
 ## Challenge
 
 In the development of this app, the Ticketmaster API (https://developer.ticketmaster.com/products-and-docs/apis/getting-started/) has been used to download the Events ordered by name (and for now a default country: Spain), which are stored locally with Room, which allows information about them to always be available even if there is no internet connection, being Offline first.
