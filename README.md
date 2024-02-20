@@ -1,6 +1,8 @@
 # Manuel Blanco Ticketalia Challenge
 ## Creating an offline app
 
+<img src="img/ticketalia.gif" alt="ticketalia" width="200"/>
+
 ## Challenge
 
 In the development of this app, the Ticketmaster API (https://developer.ticketmaster.com/products-and-docs/apis/getting-started/) has been used to download the Events ordered by name (and for now a default country: Spain), which are stored locally with Room, which allows information about them to always be available even if there is no internet connection, being Offline first.
@@ -8,6 +10,12 @@ In the development of this app, the Ticketmaster API (https://developer.ticketma
 The app has two sections, Events and Venues, available in the BottomBarNavigation, which are two lists, using different technologies to page and download information locally. In the case of Events, manual pagination is used, with the logic in the ViewModel, and the data is stored in the local database for each page that is called remotely. In Venues, however, the Paging3 library is used to perform paging and local storage, using a Mediator that brings together all this logic.
 
 In addition to the main screen with the lists of both sections, there is a detail screen for each list, which is executed by clicking on any element in the list, showing more detailed information, and using the Jetpack Compose Navigation.
+
+To build this repository, you need to initialize this variables in the local.properties:
+
+HOST_URL="https://app.ticketmaster.com/"
+CONSUMER_KEY=""
+CONSUMER_SECRET=""
 
 ## References
 

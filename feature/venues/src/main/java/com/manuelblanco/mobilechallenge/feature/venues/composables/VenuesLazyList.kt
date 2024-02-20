@@ -2,21 +2,19 @@ package com.manuelblanco.mobilechallenge.feature.venues.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import com.manuelblanco.mobilechallenge.core.ui.components.ErrorScreen
-import com.manuelblanco.mobilechallenge.core.ui.components.LoadingScreen
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
-import com.manuelblanco.mobilechallenge.feature.venues.R
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContract
 
 /**
@@ -31,11 +29,11 @@ fun VenuesLazyList(
     LazyColumn(
         modifier = Modifier
             .background(TicketsTheme.colors.surface)
-            .padding(
-                top = TicketsTheme.dimensions.marginTopBar,
-                bottom = TicketsTheme.dimensions.paddingMedium
-            )
             .fillMaxSize(),
+        contentPadding = PaddingValues(
+            top = TicketsTheme.dimensions.paddingMedium,
+            bottom = TicketsTheme.dimensions.paddingMedium,
+        ),
         verticalArrangement = Arrangement.spacedBy(
             TicketsTheme.dimensions.paddingMedium,
             Alignment.CenterVertically
@@ -57,14 +55,7 @@ fun VenuesLazyList(
 
         val loadState = venues.loadState.mediator
         item {
-            if (loadState?.refresh == LoadState.Loading) {
-                LoadingScreen(
-                    title = stringResource(id = R.string.refresh_loading),
-                    modifier = Modifier.fillParentMaxSize()
-                )
-            }
-
-            if (loadState?.append == LoadState.Loading) {
+            if (loadState?.refresh is LoadState.Loading || loadState?.append is LoadState.Loading) {
                 Progress()
             }
 

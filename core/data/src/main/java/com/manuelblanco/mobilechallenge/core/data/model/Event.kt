@@ -29,15 +29,15 @@ fun NetworkPageEventsResponse.asEventEntities(): List<EventEntity> {
                 images = it.images ?: emptyList()
             ) ?: "",
             dateTime = it.dates?.start?.dateTime ?: "",
-            place = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.get(0)?.toPlace()
+            place = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.firstOrNull()?.toPlace()
                 ?: "" else it.place?.toExternalPlace() ?: "",
-            city = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.get(0)?.city?.name
+            city = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.firstOrNull()?.city?.name
                 ?: "" else it.place?.city?.name ?: "",
-            country = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.get(0)?.country?.name
+            country = if (!it.venues?.venues.isNullOrEmpty()) it.venues?.venues?.firstOrNull()?.country?.name
                 ?: "" else it.place?.country?.name ?: "",
-            segment = it.genre?.first()?.segment?.name ?: "",
-            genres = it.genre?.first()?.genre?.name ?: "",
-            prices = it.priceRanges?.first()?.toPriceRange() ?: "",
+            segment = it.genre?.firstOrNull()?.segment?.name ?: "",
+            genres = it.genre?.firstOrNull()?.genre?.name ?: "",
+            prices = it.priceRanges?.firstOrNull()?.toPriceRange() ?: "",
             page = page ?: 0
         )
     }

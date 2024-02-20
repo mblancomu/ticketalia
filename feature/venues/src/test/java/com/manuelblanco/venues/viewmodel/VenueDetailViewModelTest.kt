@@ -60,7 +60,6 @@ class VenueDetailViewModelTest {
         assertEquals(
             VenueDetailContract.State(
                 venue = null,
-                isInit = true,
                 isLoading = false,
                 isError = false
             ),

@@ -25,22 +25,18 @@ class EventDetailScreenPaparazziTests {
     )
 
     @Test
-    fun venueDetailScreen_ShowingDetail() {
+    fun eventDetailScreen_ShowingDetail() {
         paparazzi.snapshot {
             TicketsTheme {
                 EventDetailScreen(
-                    eventId = "1",
                     eventTitle = "Camela",
-                    event = eventsFromCacheList[0],
                     stateUi = EventDetailContract.State(
                         event = eventsFromCacheList[0],
-                        isInit = false,
                         isLoading = false,
                         isError = false
                     ),
                     effect = null,
                     onSendEvent = {},
-                    onGetEvent = {},
                     onNavigationRequested = {}
                 )
             }
@@ -48,22 +44,18 @@ class EventDetailScreenPaparazziTests {
     }
 
     @Test
-    fun venueDetailScreen_LoadingDetail() {
+    fun eventDetailScreen_LoadingDetail() {
         paparazzi.snapshot {
             TicketsTheme {
                 EventDetailScreen(
-                    eventId = "1",
                     eventTitle = "Camela",
-                    event = eventsFromCacheList[0],
                     stateUi = EventDetailContract.State(
                         event = eventsFromCacheList[0],
-                        isInit = false,
                         isLoading = true,
                         isError = false
                     ),
                     effect = null,
                     onSendEvent = {},
-                    onGetEvent = {},
                     onNavigationRequested = {}
                 )
             }

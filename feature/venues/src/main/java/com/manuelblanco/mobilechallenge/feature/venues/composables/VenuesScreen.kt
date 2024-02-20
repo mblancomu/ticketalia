@@ -1,8 +1,12 @@
 package com.manuelblanco.mobilechallenge.feature.venues.composables
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -64,35 +68,44 @@ fun VenuesScreen(
             TicketsTopBar(isCentered = true)
         },
     ) {
-        Box(
-            Modifier
-                .pullRefresh(pullRefreshState)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = TicketsTheme.dimensions.topAppBarHeight)
+                .background(TicketsTheme.colors.surface),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (venues.itemCount == 0 && stateUi.isLoading) {
-                ShimmerItemList(type = ItemType.VENUE)
-            }
+            Box(
+                Modifier
+                    .pullRefresh(pullRefreshState)
+            ) {
+                if (venues.itemCount == 0 && stateUi.isLoading) {
+                    ShimmerItemList(type = ItemType.VENUE)
+                }
 
-            if (venues.itemCount == 0 && !stateUi.isLoading) {
-                EmptyListScreen(
-                    title = stringResource(id = R.string.empty_list_venues),
-                    modifier = Modifier.fillMaxSize()
+                if (venues.itemCount == 0 && !stateUi.isLoading) {
+                    EmptyListScreen(
+                        title = stringResource(id = R.string.empty_list_venues),
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
+                VenuesLazyList(
+                    venues = venues,
+                    onNavigationRequested = { onNavigationRequested(it) })
+
+                if (venues.loadState.refresh is LoadState.Loading) {
+                    Progress()
+                }
+
+                PullRefreshIndicator(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    refreshing = venues.loadState.refresh is LoadState.Loading,
+                    state = pullRefreshState,
+                    contentColor = TicketsTheme.colors.primary
                 )
             }
-
-            VenuesLazyList(
-                venues = venues,
-                onNavigationRequested = { onNavigationRequested(it) })
-
-            if (venues.loadState.refresh is LoadState.Loading){
-                Progress()
-            }
-
-            PullRefreshIndicator(
-                modifier = Modifier.align(Alignment.TopCenter),
-                refreshing = venues.loadState.refresh is LoadState.Loading,
-                state = pullRefreshState,
-                contentColor = TicketsTheme.colors.primary
-            )
         }
     }
 }
