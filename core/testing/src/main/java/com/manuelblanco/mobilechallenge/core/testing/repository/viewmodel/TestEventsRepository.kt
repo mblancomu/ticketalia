@@ -29,7 +29,7 @@ class TestEventsRepository : EventsRepository {
         eventsFromCacheFlow.tryEmit(events)
     }
 
-    override fun getEventsFromRemote(page: String): Flow<Result<Page>> = eventsFromRemoteFlow
+    override fun getEventsFromRemote(page: String, isRefreshing: Boolean): Flow<Result<Page>> = eventsFromRemoteFlow
 
     override fun getEventsFromCache(limit: Int, offset: Int): Flow<List<Event>> =
         eventsFromCacheFlow

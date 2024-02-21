@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flow
  * Created by Manuel Blanco Murillo on 13/2/24.
  */
 class FakeEventsRepository : EventsRepository {
-    override fun getEventsFromRemote(page: String): Flow<Result<Page>> = flow {
+    override fun getEventsFromRemote(page: String, isRefreshing: Boolean): Flow<Result<Page>> = flow {
         emit(Result.Loading)
         if (page.isNotBlank()) {
             println("PAGE ES $page")

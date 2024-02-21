@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -26,8 +28,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.ui.components.EmptyListScreen
+import com.manuelblanco.mobilechallenge.core.ui.components.EndlessLazyColumn
+import com.manuelblanco.mobilechallenge.core.ui.components.ErrorRow
 import com.manuelblanco.mobilechallenge.core.ui.components.ItemType
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.ShimmerEffectList
@@ -59,6 +64,7 @@ fun EventsScreen(
     val snackBarMessage = stringResource(R.string.global_error)
 
     val gridState = rememberLazyGridState()
+    val listState = rememberLazyListState()
     val pullRefreshState = rememberPullRefreshState(isRefreshing, { onRefresh() })
     var isDataLoaded by remember { mutableStateOf(false) }
 
@@ -115,17 +121,38 @@ fun EventsScreen(
                         ShimmerEffectList(type = ItemType.EVENT)
                     }
 
-                    LazyEventsGrid(
-                        state = gridState,
-                        events = stateUi.events,
-                        isLoading = stateUi.isLoading,
-                        page = stateUi.page,
-                        getEvents = { onPaginate() },
-                        onItemClick = { id, title ->
-                            onSendEvent(EventsContract.Event.EventSelection(id, title))
-                        })
+                    EndlessLazyColumn(
+                        loading = stateUi.isLoading,
+                        listState = listState,
+                        items = stateUi.events,
+                        itemContent = { event ->
+                            EventContent(
+                                Modifier.height(TicketsTheme.dimensions.cardListHeight),
+                                event,
+                            ) { id, title ->
+                                onSendEvent(EventsContract.Event.EventSelection(id, title))
+                            }
+                        },
+                        emptyList = { ErrorRow(stringResource(R.string.no_events_found)) },
+                        loadMore = { onPaginate() },
+                        loadingItem = {
+                            Box(modifier = Modifier.height(160.dp)){
+                                Progress()
+                            }
+                        }
+                    )
 
-                    if (isRefreshing){
+                    /*                    LazyEventsGrid(
+                                            state = gridState,
+                                            events = stateUi.events,
+                                            isLoading = stateUi.isLoading,
+                                            page = stateUi.page,
+                                            getEvents = { onPaginate() },
+                                            onItemClick = { id, title ->
+                                                onSendEvent(EventsContract.Event.EventSelection(id, title))
+                                            })*/
+
+                    if (isRefreshing) {
                         Progress()
                     }
 

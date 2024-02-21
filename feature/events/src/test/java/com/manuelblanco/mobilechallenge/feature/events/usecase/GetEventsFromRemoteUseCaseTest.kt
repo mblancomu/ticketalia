@@ -26,7 +26,7 @@ class GetEventsFromRemoteUseCaseTest {
 
     @Test
     fun `Get page from remote, correct page return`(): Unit = runBlocking {
-        val page = getEventsFromRemoteUseCase(page = "1")
+        val page = getEventsFromRemoteUseCase(page = "1", isRefreshing = false)
         page.collect { result ->
             when (result) {
                 is Result.Error -> {}
@@ -40,7 +40,7 @@ class GetEventsFromRemoteUseCaseTest {
 
     @Test
     fun `Get page from remote, wrong current page return`(): Unit = runBlocking {
-        val page = getEventsFromRemoteUseCase(page = "1")
+        val page = getEventsFromRemoteUseCase(page = "1", isRefreshing = false)
         page.collect { result ->
             when (result) {
                 is Result.Error -> {}
@@ -54,7 +54,7 @@ class GetEventsFromRemoteUseCaseTest {
 
     @Test
     fun `Get page from remote, correct total pages return`(): Unit = runBlocking {
-        val page = getEventsFromRemoteUseCase(page = "1")
+        val page = getEventsFromRemoteUseCase(page = "1", isRefreshing = false)
         page.collect { result ->
             when (result) {
                 is Result.Error -> {}
@@ -68,7 +68,7 @@ class GetEventsFromRemoteUseCaseTest {
 
     @Test
     fun `Get page from remote, wrong total pages return`(): Unit = runBlocking {
-        val page = getEventsFromRemoteUseCase(page = "1")
+        val page = getEventsFromRemoteUseCase(page = "1", isRefreshing = false)
         page.collect { result ->
             when (result) {
                 is Result.Error -> {}
@@ -82,7 +82,7 @@ class GetEventsFromRemoteUseCaseTest {
 
     @Test
     fun `Get page from remote, correct total elements return`(): Unit = runBlocking {
-        val page = getEventsFromRemoteUseCase(page = "1")
+        val page = getEventsFromRemoteUseCase(page = "1", isRefreshing = false)
         page.collect { result ->
             when (result) {
                 is Result.Error -> {}
@@ -96,7 +96,7 @@ class GetEventsFromRemoteUseCaseTest {
 
     @Test
     fun `Get page from remote, wrong total elements return`(): Unit = runBlocking {
-        val page = getEventsFromRemoteUseCase(page = "1")
+        val page = getEventsFromRemoteUseCase(page = "1", isRefreshing = false)
         page.collect { result ->
             when (result) {
                 is Result.Error -> {}
@@ -110,7 +110,7 @@ class GetEventsFromRemoteUseCaseTest {
 
     @Test
     fun `Get page from remote, wrong parameter page calling method`(): Unit = runBlocking {
-        val page = getEventsFromRemoteUseCase(page = "")
+        val page = getEventsFromRemoteUseCase(page = "", isRefreshing = false)
         page.collect { result ->
             when (result) {
                 is Result.Error -> {
@@ -125,7 +125,7 @@ class GetEventsFromRemoteUseCaseTest {
 
     @Test
     fun `Get page from remote, return a page number different than that of the parameter`(): Unit = runBlocking {
-        val page = getEventsFromRemoteUseCase(page = "2")
+        val page = getEventsFromRemoteUseCase(page = "2", isRefreshing = false)
         page.collect { result ->
             when (result) {
                 is Result.Error -> {

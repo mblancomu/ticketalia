@@ -39,4 +39,8 @@ class TicketsCache @Inject constructor(
 
     override fun getEventsFromCache(limit: Int, offset: Int): Flow<List<EventEntity>> =
         eventsDao.getEventEntities(limit, offset)
+
+    override suspend fun invalidateCache() {
+        eventsDao.deleteAll()
+    }
 }

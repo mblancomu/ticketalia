@@ -13,7 +13,7 @@ import javax.inject.Inject
 class GetEventsFromRemoteUseCaseImpl @Inject constructor(
     private val eventsRepository: EventsRepository
 ) : GetEventsFromRemoteUseCase {
-    override fun invoke(page: String): Flow<Result<Page>> =
-        eventsRepository.getEventsFromRemote(page)
+    override fun invoke(page: String, isRefreshing: Boolean): Flow<Result<Page>> =
+        eventsRepository.getEventsFromRemote(page, isRefreshing)
 
 }
