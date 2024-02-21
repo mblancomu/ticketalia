@@ -6,7 +6,7 @@ import com.manuelblanco.mobilechallenge.core.model.data.Page
 import kotlinx.coroutines.flow.Flow
 
 interface EventsRepository {
-    fun getEventsFromRemote(page: String): Flow<Result<Page>>
+    fun getEventsFromRemote(page: String, isRefreshing: Boolean): Flow<Result<Page>>
     fun getEventsFromCache(limit: Int, offset: Int): Flow<List<Event>>
     fun getEventFromCache(id: String): Flow<Result<Event>>
     fun getEventsFromRemoteByRadius(

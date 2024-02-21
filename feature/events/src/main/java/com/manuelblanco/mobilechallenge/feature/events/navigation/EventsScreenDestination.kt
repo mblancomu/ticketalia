@@ -32,6 +32,8 @@ fun EventsScreenDestination(
         },
         onRefresh = { viewModel.refresh() },
         onSendEvent = { event -> viewModel.setEvent(event) },
-        onPaginate = { viewModel.getMoreEvents() }
+        onPaginate = {
+            viewModel.loadMoreEvents()
+        }
     )
 }

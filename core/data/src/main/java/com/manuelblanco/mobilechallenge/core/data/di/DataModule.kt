@@ -1,5 +1,7 @@
 package com.manuelblanco.mobilechallenge.core.data.di
 
+import com.manuelblanco.mobilechallenge.core.data.repository.EventsOfflineFirstRepository
+import com.manuelblanco.mobilechallenge.core.data.repository.EventsOfflineFirstRepositoryImpl
 import com.manuelblanco.mobilechallenge.core.data.repository.EventsRepository
 import com.manuelblanco.mobilechallenge.core.data.repository.EventsRepositoryImpl
 import com.manuelblanco.mobilechallenge.core.data.repository.VenuesRepository
@@ -23,6 +25,11 @@ interface DataModule {
     fun bindsEventsRepository(
         eventsRepository: EventsRepositoryImpl,
     ): EventsRepository
+
+    @Binds
+    fun bindEventsOfflineFirstRepository(
+        eventsOfflineFirstRepository: EventsOfflineFirstRepositoryImpl
+    ): EventsOfflineFirstRepository
 
     @Binds
     fun bindsVenuesRepository(

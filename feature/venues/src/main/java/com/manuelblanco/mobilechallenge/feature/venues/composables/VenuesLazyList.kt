@@ -8,15 +8,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import com.manuelblanco.mobilechallenge.core.ui.components.ErrorScreen
-import com.manuelblanco.mobilechallenge.core.ui.components.LoadingScreen
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
-import com.manuelblanco.mobilechallenge.feature.venues.R
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContract
 
 /**
@@ -57,14 +54,7 @@ fun VenuesLazyList(
 
         val loadState = venues.loadState.mediator
         item {
-            if (loadState?.refresh == LoadState.Loading) {
-                LoadingScreen(
-                    title = stringResource(id = R.string.refresh_loading),
-                    modifier = Modifier.fillParentMaxSize()
-                )
-            }
-
-            if (loadState?.append == LoadState.Loading) {
+            if (loadState?.refresh is LoadState.Loading || loadState?.append is LoadState.Loading) {
                 Progress()
             }
 

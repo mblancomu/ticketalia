@@ -25,7 +25,8 @@ class EventsRepositoryImpl @Inject constructor(
     private val COUNTRY_CODE = "ES"
 
     override fun getEventsFromRemote(
-        page: String
+        page: String,
+        isRefreshing: Boolean
     ): Flow<Result<Page>> = flow {
         val response = api.getEvents(
             page = page,
@@ -33,7 +34,9 @@ class EventsRepositoryImpl @Inject constructor(
             sort = SORT_BY,
             countryCode = COUNTRY_CODE
         )
-        cache.saveEventsInCache(response.asEventEntities())
+        cache.saveEventsInCache(
+            events = response.asEventEntities()
+        )
         emit(response.page.toExternalModel())
     }.asResult()
 

@@ -5,5 +5,5 @@ import com.manuelblanco.mobilechallenge.core.model.data.Page
 import kotlinx.coroutines.flow.Flow
 
 interface GetEventsFromRemoteUseCase {
-    operator fun invoke(page: String): Flow<Result<Page>>
+    operator fun invoke(page: String, isRefreshing: Boolean): Flow<Result<Page>>
 }
