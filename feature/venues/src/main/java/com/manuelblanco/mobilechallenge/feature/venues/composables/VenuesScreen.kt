@@ -1,7 +1,12 @@
 package com.manuelblanco.mobilechallenge.feature.venues.composables
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -25,8 +30,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import com.manuelblanco.mobilechallenge.core.ui.components.ItemType
-import com.manuelblanco.mobilechallenge.core.ui.components.Progress
-import com.manuelblanco.mobilechallenge.core.ui.components.ShimmerItemList
+import com.manuelblanco.mobilechallenge.core.ui.components.ShimmerEffectList
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
 import com.manuelblanco.mobilechallenge.feature.venues.R
@@ -87,29 +91,34 @@ fun VenuesScreen(
             TicketsTopBar(isCentered = true)
         },
     ) {
-        Box(
-            Modifier
-                .pullRefresh(pullRefreshState)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = TicketsTheme.dimensions.topAppBarHeight)
+                .background(TicketsTheme.colors.surface),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Box(
+                Modifier
+                    .pullRefresh(pullRefreshState)
+            ) {
 
-            if (isShimmerVisible(isDataLoaded, stateUi.isRefreshing)) {
-                ShimmerItemList(type = ItemType.VENUE)
+                if (isShimmerVisible(isDataLoaded, stateUi.isRefreshing)) {
+                    ShimmerEffectList(type = ItemType.VENUE)
+                }
+
+                VenuesLazyList(
+                    venues = venues,
+                    onSendVenue = { onSendEvent(it) })
+
+                PullRefreshIndicator(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    refreshing = venues.loadState.refresh is LoadState.Loading,
+                    state = pullRefreshState,
+                    contentColor = TicketsTheme.colors.primary
+                )
             }
-
-            VenuesLazyList(
-                venues = venues,
-                onSendVenue = { onSendEvent(it) })
-
-            if (stateUi.isRefreshing) {
-                Progress()
-            }
-
-            PullRefreshIndicator(
-                modifier = Modifier.align(Alignment.TopCenter),
-                refreshing = venues.loadState.refresh is LoadState.Loading,
-                state = pullRefreshState,
-                contentColor = TicketsTheme.colors.primary
-            )
         }
     }
 }

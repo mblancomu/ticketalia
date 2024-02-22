@@ -33,11 +33,11 @@ class EventsScreenPaparazziTests {
                     stateUi = EventsContract.State(
                         events = eventsFromCacheList,
                         isLoading = false,
+                        isRefreshing = false,
                         isError = false,
                         page = 1
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
-                    isRefreshing = false,
                     onRefresh = {},
                     onPaginate = {},
                     onSendEvent = {},
@@ -55,10 +55,10 @@ class EventsScreenPaparazziTests {
                     stateUi = EventsContract.State(
                         events = emptyList(),
                         isLoading = false,
+                        isRefreshing = false,
                         isError = false
                     ),
                     effect = flowOf(EventsContract.Effect.DataWasLoaded),
-                    isRefreshing = false,
                     onRefresh = {},
                     onPaginate = {},
                     onSendEvent = {},
@@ -76,10 +76,10 @@ class EventsScreenPaparazziTests {
                     stateUi = EventsContract.State(
                         events = emptyList(),
                         isLoading = true,
+                        isRefreshing = false,
                         isError = false
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
-                    isRefreshing = false,
                     onRefresh = {},
                     onPaginate = {},
                     onSendEvent = {},
@@ -97,10 +97,10 @@ class EventsScreenPaparazziTests {
                     stateUi = EventsContract.State(
                         events = emptyList(),
                         isLoading = false,
+                        isRefreshing = false,
                         isError = true
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
-                    isRefreshing = false,
                     onRefresh = {},
                     onPaginate = {},
                     onSendEvent = {},
@@ -118,10 +118,10 @@ class EventsScreenPaparazziTests {
                     stateUi = EventsContract.State(
                         events = eventsFromCacheList,
                         isLoading = false,
+                        isRefreshing = true,
                         isError = false
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
-                    isRefreshing = true,
                     onRefresh = {},
                     onPaginate = {},
                     onSendEvent = {},

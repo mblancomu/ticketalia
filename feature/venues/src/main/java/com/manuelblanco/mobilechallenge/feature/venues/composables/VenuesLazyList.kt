@@ -2,6 +2,7 @@ package com.manuelblanco.mobilechallenge.feature.venues.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,12 +31,11 @@ fun VenuesLazyList(
 ) {
     LazyColumn(
         modifier = Modifier
-            .background(TicketsTheme.colors.surface)
-            .padding(
-                top = TicketsTheme.dimensions.marginTopBar,
-                bottom = TicketsTheme.dimensions.paddingMedium
-            )
-            .fillMaxSize(),
+            .background(TicketsTheme.colors.surface),
+        contentPadding = PaddingValues(
+            top = TicketsTheme.dimensions.paddingMedium,
+            bottom = TicketsTheme.dimensions.paddingMedium,
+        ),
         verticalArrangement = Arrangement.spacedBy(
             TicketsTheme.dimensions.paddingMedium,
             Alignment.CenterVertically
