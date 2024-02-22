@@ -15,9 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,11 +28,7 @@ class EventsViewModel @Inject constructor(
     private val invalidateCacheUseCase: InvalidateCacheUseCase
 ) : TicketsViewModel<EventsContract.Event, EventsContract.State, EventsContract.Effect>() {
 
-    private val _isRefreshing = MutableStateFlow(false)
     private var canPaginate by mutableStateOf(false)
-
-    val isRefreshing: StateFlow<Boolean>
-        get() = _isRefreshing.asStateFlow()
 
     private var eventsJob: Job? = null
 
@@ -46,6 +39,7 @@ class EventsViewModel @Inject constructor(
     override fun setInitialState() = EventsContract.State(
         events = emptyList(),
         isLoading = false,
+        isRefreshing = false,
         isError = false,
         page = 1
     )
@@ -59,7 +53,7 @@ class EventsViewModel @Inject constructor(
             }
 
             is EventsContract.Event.Filter -> {}
-            is EventsContract.Event.Refresh -> {}
+            is EventsContract.Event.Refresh -> setEffect { EventsContract.Effect.RefreshingData }
             is EventsContract.Event.Search -> {}
         }
     }
@@ -67,9 +61,8 @@ class EventsViewModel @Inject constructor(
     fun refresh() {
         invalidateCache()
         eventsJob?.cancel()
-        _isRefreshing.value = true
         canPaginate = false
-        setState { copy(page = 1) }
+        setState { copy(page = 1, isRefreshing = true, events = emptyList()) }
         getEventsOfflineFirst()
     }
 
@@ -90,7 +83,13 @@ class EventsViewModel @Inject constructor(
                 ).asResult().collect { result ->
                     when (result) {
                         is Result.Error -> {
-                            setState { copy(isLoading = false, isError = true) }
+                            setState {
+                                copy(
+                                    isLoading = false,
+                                    isRefreshing = false,
+                                    isError = true
+                                )
+                            }
                         }
 
                         is Result.Loading -> {
@@ -102,8 +101,6 @@ class EventsViewModel @Inject constructor(
                                 canPaginate = result.data.size == PAGE_SIZE
 
                                 addNewEvents(result.data, viewState.value.events)
-
-                                _isRefreshing.emit(false)
 
                                 if (canPaginate)
                                     setState { copy(page = viewState.value.page + 1) }
@@ -129,7 +126,7 @@ class EventsViewModel @Inject constructor(
     }
 
     private fun finishedDownload(events: List<Event>) {
-        setState { copy(isLoading = false, isError = false, events = events) }
+        setState { copy(isLoading = false, isRefreshing = false, isError = false, events = events) }
         setEffect { EventsContract.Effect.DataWasLoaded }
     }
 

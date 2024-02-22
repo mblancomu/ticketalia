@@ -1,11 +1,8 @@
 package com.manuelblanco.mobilechallenge.feature.venues.presentation
 
-import androidx.paging.PagingData
-import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import com.manuelblanco.mobilechallenge.core.ui.mvi.ViewEvent
 import com.manuelblanco.mobilechallenge.core.ui.mvi.ViewSideEffect
 import com.manuelblanco.mobilechallenge.core.ui.mvi.ViewState
-import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by Manuel Blanco Murillo on 31/1/24.
@@ -13,19 +10,22 @@ import kotlinx.coroutines.flow.Flow
 class VenuesContract {
 
     sealed class Event : ViewEvent {
-        object Search : Event()
-        object Filter : Event()
+        data object Search : Event()
+        data object Filter : Event()
+        data object Refresh : Event()
         data class VenueSelection(val venueId: String, val venueTitle: String) :
             Event()
     }
 
     data class State(
         val isLoading: Boolean,
+        val isRefreshing: Boolean,
         val isError: Boolean
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {
-        object DataWasLoaded : Effect()
+        data object DataWasLoaded : Effect()
+        data object RefreshingData : Effect()
 
         sealed class Navigation : Effect() {
             data class ToVenue(val venueId: String, val venueTitle: String) : Navigation()

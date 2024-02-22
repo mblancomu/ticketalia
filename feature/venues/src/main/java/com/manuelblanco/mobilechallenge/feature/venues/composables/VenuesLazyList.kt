@@ -8,12 +8,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
+import com.manuelblanco.mobilechallenge.core.ui.components.EmptyListScreen
 import com.manuelblanco.mobilechallenge.core.ui.components.ErrorScreen
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
+import com.manuelblanco.mobilechallenge.feature.venues.R
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContract
 
 /**
@@ -23,7 +26,7 @@ import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContra
 @Composable
 fun VenuesLazyList(
     venues: LazyPagingItems<Venue>,
-    onNavigationRequested: (navigationEffect: VenuesContract.Effect.Navigation) -> Unit
+    onSendVenue: (VenuesContract.Event) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -39,16 +42,18 @@ fun VenuesLazyList(
         ),
     ) {
         items(venues.itemCount) { index ->
-            val venue = venues[index]
-            venue?.let {
-                VenueContent(venue = venue, onVenueClicked = {
-                    onNavigationRequested(
-                        VenuesContract.Effect.Navigation.ToVenue(
-                            venue.id,
-                            venue.name
-                        )
-                    )
-                })
+            if (venues.itemCount == 0) {
+                EmptyListScreen(
+                    title = stringResource(id = R.string.empty_list_venues),
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
+                val venue = venues[index]
+                venue?.let {
+                    VenueContent(venue = venue, onVenueClicked = {
+                        onSendVenue(VenuesContract.Event.VenueSelection(venue.id, venue.name))
+                    })
+                }
             }
         }
 

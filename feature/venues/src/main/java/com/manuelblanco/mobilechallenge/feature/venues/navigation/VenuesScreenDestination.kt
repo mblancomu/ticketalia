@@ -18,11 +18,18 @@ fun VenuesScreenDestination(
     navigateTo: (id: String, title: String) -> Unit
 ) {
     val venues = venuesViewModel.venues.collectAsLazyPagingItems()
-    val stateUi = venuesViewModel.viewState.collectAsStateWithLifecycle()
+    val state = venuesViewModel.viewState.collectAsStateWithLifecycle()
+    val effect = venuesViewModel.effect
 
     VenuesScreen(
         venues = venues,
-        stateUi = stateUi.value
+        effect = effect,
+        stateUi = state.value,
+        onRefresh = {
+            venuesViewModel.refreshStateUi()
+            venues.refresh()
+        },
+        onSendEvent = { event -> venuesViewModel.setEvent(event) }
     ) { navigationEffect ->
         if (navigationEffect is VenuesContract.Effect.Navigation.ToVenue) {
             navigateTo(navigationEffect.venueId, navigationEffect.venueTitle)

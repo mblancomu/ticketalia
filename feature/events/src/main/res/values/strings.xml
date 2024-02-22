@@ -6,6 +6,6 @@
     <string name="subtitle_price">Tickets from</string>
     <string name="subtitle_type">Event type</string>
     <string name="subtitle_genre">Genre</string>
-    <string name="global_error">Ops…Something was wrong</string>
+    <string name="global_error">Check your network. Something was wrong</string>
     <string name="empty_list_events">No Events available</string>
 </resources>

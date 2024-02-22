@@ -30,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
-import com.manuelblanco.mobilechallenge.core.ui.components.EmptyListScreen
 import com.manuelblanco.mobilechallenge.core.ui.components.EndlessLazyColumn
 import com.manuelblanco.mobilechallenge.core.ui.components.ErrorRow
 import com.manuelblanco.mobilechallenge.core.ui.components.ItemType
@@ -53,7 +52,6 @@ import kotlinx.coroutines.flow.onEach
 fun EventsScreen(
     stateUi: EventsContract.State,
     effect: Flow<EventsContract.Effect>?,
-    isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onPaginate: () -> Unit,
     onSendEvent: (EventsContract.Event) -> Unit,
@@ -65,7 +63,8 @@ fun EventsScreen(
 
     val gridState = rememberLazyGridState()
     val listState = rememberLazyListState()
-    val pullRefreshState = rememberPullRefreshState(isRefreshing, { onRefresh() })
+    val pullRefreshState =
+        rememberPullRefreshState(stateUi.isRefreshing, { onSendEvent(EventsContract.Event.Refresh) })
     var isDataLoaded by remember { mutableStateOf(false) }
 
     LaunchedEffect(SIDE_EFFECTS_KEY) {
@@ -76,6 +75,7 @@ fun EventsScreen(
                 }
 
                 is EventsContract.Effect.Navigation.ToEvent -> onNavigationRequested(effect)
+                is EventsContract.Effect.RefreshingData -> onRefresh()
             }
         }?.collect()
     }
@@ -108,16 +108,8 @@ fun EventsScreen(
                         .pullRefresh(pullRefreshState),
                     contentAlignment = Alignment.Center
                 ) {
-                    if (isDataLoaded) {
-                        if (stateUi.events.isEmpty() && !stateUi.isLoading) {
-                            EmptyListScreen(
-                                title = stringResource(id = R.string.empty_list_events),
-                                modifier = Modifier.fillMaxSize()
-                            )
-                        }
-                    }
 
-                    if (stateUi.events.isEmpty() && !isDataLoaded) {
+                    if (isShimmerVisible(stateUi.events.isEmpty(), isDataLoaded, stateUi.isRefreshing)) {
                         ShimmerEffectList(type = ItemType.EVENT)
                     }
 
@@ -136,28 +128,14 @@ fun EventsScreen(
                         emptyList = { ErrorRow(stringResource(R.string.no_events_found)) },
                         loadMore = { onPaginate() },
                         loadingItem = {
-                            Box(modifier = Modifier.height(160.dp)){
+                            Box(modifier = Modifier.height(160.dp)) {
                                 Progress()
                             }
                         }
                     )
 
-                    /*                    LazyEventsGrid(
-                                            state = gridState,
-                                            events = stateUi.events,
-                                            isLoading = stateUi.isLoading,
-                                            page = stateUi.page,
-                                            getEvents = { onPaginate() },
-                                            onItemClick = { id, title ->
-                                                onSendEvent(EventsContract.Event.EventSelection(id, title))
-                                            })*/
-
-                    if (isRefreshing) {
-                        Progress()
-                    }
-
                     PullRefreshIndicator(
-                        isRefreshing,
+                        stateUi.isRefreshing,
                         pullRefreshState,
                         Modifier.align(Alignment.TopCenter)
                     )
@@ -168,3 +146,6 @@ fun EventsScreen(
         }
     )
 }
+
+private fun isShimmerVisible(isEmpty: Boolean, isLoaded: Boolean, isRefreshing: Boolean): Boolean =
+    isEmpty && !isLoaded || isRefreshing
