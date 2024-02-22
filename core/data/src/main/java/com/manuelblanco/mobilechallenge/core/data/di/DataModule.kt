@@ -20,8 +20,8 @@ import dagger.hilt.components.SingletonComponent
 interface DataModule {
 
     @Binds
-    fun bindsEventsRepository(
-        eventsRepository: EventsRepositoryImpl,
+    fun bindEventsOfflineFirstRepository(
+        eventsOfflineFirstRepository: EventsRepositoryImpl
     ): EventsRepository
 
     @Binds

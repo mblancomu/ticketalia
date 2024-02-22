@@ -14,4 +14,5 @@ interface Cache {
     fun getEventFromCacheByType(type: String, limit: Int, offset: Int): Flow<List<EventEntity>>
     fun getEventFromCacheByCountry(country: String, limit: Int, offset: Int): Flow<List<EventEntity>>
     fun getEventsFromCache(limit: Int, offset: Int): Flow<List<EventEntity>>
+    suspend fun invalidateCache()
 }

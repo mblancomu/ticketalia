@@ -1,20 +1,22 @@
 package com.manuelblanco.mobilechallenge.feature.events.presentation
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.manuelblanco.mobilechallenge.core.common.result.Result
+import com.manuelblanco.mobilechallenge.core.common.result.asResult
 import com.manuelblanco.mobilechallenge.core.data.mediator.PAGE_SIZE
-import com.manuelblanco.mobilechallenge.core.domain.GetEventsFromCacheUseCase
-import com.manuelblanco.mobilechallenge.core.domain.GetEventsFromRemoteUseCase
+import com.manuelblanco.mobilechallenge.core.domain.GetEventsOfflineFirstUseCase
+import com.manuelblanco.mobilechallenge.core.domain.GetEventsRemoteFirstUseCase
 import com.manuelblanco.mobilechallenge.core.model.data.Event
 import com.manuelblanco.mobilechallenge.core.ui.mvi.TicketsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.serialization.SerializationException
 import javax.inject.Inject
 
 /**
@@ -23,24 +25,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EventsViewModel @Inject constructor(
-    private val getEventsFromRemoteUseCase: GetEventsFromRemoteUseCase,
-    private val getEventsFromCacheUseCase: GetEventsFromCacheUseCase,
+    private val getEventsRemoteFirstUseCase: GetEventsRemoteFirstUseCase,
+    private val getEventsOfflineFirstUseCase: GetEventsOfflineFirstUseCase
 ) : TicketsViewModel<EventsContract.Event, EventsContract.State, EventsContract.Effect>() {
 
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing: StateFlow<Boolean>
-        get() = _isRefreshing.asStateFlow()
+    private var canPaginate by mutableStateOf(false)
 
     private var eventsJob: Job? = null
-    private var totalPages = 1
 
     init {
-        getEvents()
+        getEventsOfflineFirst()
     }
 
     override fun setInitialState() = EventsContract.State(
         events = emptyList(),
         isLoading = false,
+        isRefreshing = false,
         isError = false,
         page = 1
     )
@@ -54,62 +54,64 @@ class EventsViewModel @Inject constructor(
             }
 
             is EventsContract.Event.Filter -> {}
-            is EventsContract.Event.Refresh -> {}
+            is EventsContract.Event.Refresh -> setEffect { EventsContract.Effect.RefreshingData }
             is EventsContract.Event.Search -> {}
         }
     }
 
     fun refresh() {
-        _isRefreshing.value = true
-        setInitialState()
-        getEvents()
-    }
-
-    fun getMoreEvents() {
         eventsJob?.cancel()
-        if ((totalPages > 1) && (viewState.value.page < totalPages)) {
-            setState { copy(page = viewState.value.page + 1) }
-            getEvents()
+        canPaginate = false
+        setState { copy(page = 1, isRefreshing = true, events = emptyList()) }
+        viewModelScope.launch {
+            val eventsRefreshDeferred = async { getEventsRemoteFirstUseCase(page = "1", true) }
+            try {
+                awaitAll(eventsRefreshDeferred)
+            } finally {
+                getEventsOfflineFirst()
+            }
         }
     }
 
-    private fun getEvents() {
-        eventsJob = viewModelScope.launch {
-            delay(1000L)
-            setState { copy(isLoading = true, isError = false) }
-            getEventsFromRemoteUseCase(
-                page = viewState.value.page.toString(),
-            ).collect { result ->
-                when (result) {
-                    is Result.Error -> {
-                        setState { copy(isLoading = false, isError = true) }
-                        if (result.exception !is SerializationException) {
-                            getEventsFromCacheUseCase(
-                                PAGE_SIZE,
-                                (PAGE_SIZE * (viewState.value.page - 1))
-                            ).collect { events ->
-                                if (events.isNotEmpty()) {
-                                    finishedDownload(events)
+    fun loadMoreEvents() {
+        eventsJob?.cancel()
+        getEventsOfflineFirst()
+    }
 
-                                    _isRefreshing.emit(false)
-                                }
+    private fun getEventsOfflineFirst() {
+        eventsJob = viewModelScope.launch {
+            if (viewState.value.page == 1 || (viewState.value.page != 1 && canPaginate)) {
+                delay(1000L)
+                setState { copy(isLoading = true, isError = false) }
+                getEventsOfflineFirstUseCase(
+                    page = viewState.value.page.toString(),
+                    limit = PAGE_SIZE,
+                    offset = (PAGE_SIZE * (viewState.value.page - 1))
+                ).asResult().collect { result ->
+                    when (result) {
+                        is Result.Error -> {
+                            setState {
+                                copy(
+                                    isLoading = false,
+                                    isRefreshing = false,
+                                    isError = true
+                                )
                             }
                         }
-                    }
 
-                    is Result.Loading -> {
-                        setState { copy(isLoading = true, isError = false) }
-                    }
+                        is Result.Loading -> {
+                            setState { copy(isLoading = true, isError = false) }
+                        }
 
-                    is Result.Success -> {
-                        totalPages = result.data.totalPages ?: 41
-                        getEventsFromCacheUseCase(
-                            PAGE_SIZE,
-                            (PAGE_SIZE * (viewState.value.page - 1))
-                        ).collect { events ->
-                            addNewEvents(events, viewState.value.events)
+                        is Result.Success -> {
+                            if (result.data.isNotEmpty()) {
+                                canPaginate = result.data.size == PAGE_SIZE
 
-                            _isRefreshing.emit(false)
+                                addNewEvents(result.data, viewState.value.events)
+
+                                if (canPaginate)
+                                    setState { copy(page = viewState.value.page + 1) }
+                            }
                         }
                     }
                 }
@@ -124,7 +126,7 @@ class EventsViewModel @Inject constructor(
     }
 
     private fun finishedDownload(events: List<Event>) {
-        setState { copy(isLoading = false, isError = false, events = events) }
+        setState { copy(isLoading = false, isRefreshing = false, isError = false, events = events) }
         setEffect { EventsContract.Effect.DataWasLoaded }
     }
 

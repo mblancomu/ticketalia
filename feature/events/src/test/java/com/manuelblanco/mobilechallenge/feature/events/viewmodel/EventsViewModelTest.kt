@@ -2,14 +2,13 @@ package com.manuelblanco.mobilechallenge.feature.events.viewmodel
 
 import com.manuelblanco.mobilechallenge.core.common.result.Result
 import com.manuelblanco.mobilechallenge.core.common.result.asResult
-import com.manuelblanco.mobilechallenge.core.testing.data.eventPageFromRemote
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
 import com.manuelblanco.mobilechallenge.core.testing.repository.viewmodel.TestEventsRepository
 import com.manuelblanco.mobilechallenge.core.testing.utils.MainCoroutineRule
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsViewModel
-import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventsFromCacheUseCaseImpl
-import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventsFromRemoteUseCaseImpl
+import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventsOfflineFirstUseCaseImpl
+import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventsRemoteFirstUseCaseImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -23,7 +22,6 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -41,16 +39,18 @@ class EventsViewModelTest {
     val mainCoroutineRule = MainCoroutineRule()
 
     private val eventsRepository = TestEventsRepository()
-    private val getEventsFromCacheUseCase = GetEventsFromCacheUseCaseImpl(eventsRepository)
-    private val getEventsFromRemoteUseCase = GetEventsFromRemoteUseCaseImpl(eventsRepository)
+    private val getEventsOfflineFirstUseCase =
+        GetEventsOfflineFirstUseCaseImpl(eventsRepository)
+    private val getEventsRemoteFirstUseCase =
+        GetEventsRemoteFirstUseCaseImpl(eventsRepository)
+
 
     private lateinit var viewModel: EventsViewModel
 
     @Before
     fun setUp() {
-        viewModel = EventsViewModel(
-            getEventsFromRemoteUseCase, getEventsFromCacheUseCase
-        )
+        viewModel = EventsViewModel(getEventsRemoteFirstUseCase, getEventsOfflineFirstUseCase)
+
         Dispatchers.setMain(testDispatcher)
     }
 
@@ -66,6 +66,7 @@ class EventsViewModelTest {
                 EventsContract.State(
                     events = emptyList(),
                     isLoading = false,
+                    isRefreshing = false,
                     isError = false,
                     page = 1
                 ),
@@ -79,11 +80,11 @@ class EventsViewModelTest {
             val collectJob =
                 launch(UnconfinedTestDispatcher()) { viewModel.viewState.collect() }
 
-            eventsRepository.sendRemoteEvents(eventPageFromRemote)
             eventsRepository.sendCacheEvents(eventsFromCacheList)
 
             val eventResult =
-                eventsRepository.getEventsFromCache(limit = 0, offset = 4).asResult()
+                eventsRepository.getEventsFromCache(page = "1", limit = 0, offset = 4)
+                    .asResult()
                     .filter { it is Result.Success }.first()
 
             assertTrue(eventResult is Result.Success)
