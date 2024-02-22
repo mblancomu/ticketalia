@@ -32,6 +32,7 @@ class VenuesViewModel @Inject constructor(
 
     override fun setInitialState(): VenuesContract.State = VenuesContract.State(
         isLoading = false,
+        isRefreshing = false,
         isError = false
     )
 
@@ -45,6 +46,7 @@ class VenuesViewModel @Inject constructor(
 
             is VenuesContract.Event.Filter -> {}
             is VenuesContract.Event.Search -> {}
+            is VenuesContract.Event.Refresh -> setEffect { VenuesContract.Effect.RefreshingData }
         }
     }
 
@@ -63,12 +65,16 @@ class VenuesViewModel @Inject constructor(
 
                     is Result.Success -> {
                         _venues.value = result.data
-                        setState { copy(isLoading = false, isError = false) }
+                        setState { copy(isLoading = false, isError = false, isRefreshing = false) }
                         setEffect { VenuesContract.Effect.DataWasLoaded }
                     }
                 }
             }
         }
+    }
+
+    fun refreshStateUi(){
+        setState { copy(isRefreshing = true) }
     }
 
 }

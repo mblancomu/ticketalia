@@ -19,12 +19,10 @@ fun EventsScreenDestination(
 ) {
     val state by viewModel.viewState.collectAsStateWithLifecycle()
     val effect = viewModel.effect
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     EventsScreen(
         stateUi = state,
         effect = effect,
-        isRefreshing = isRefreshing,
         onNavigationRequested = { navigationEffect ->
             if (navigationEffect is EventsContract.Effect.Navigation.ToEvent) {
                 navigateTo(navigationEffect.eventId, navigationEffect.eventTitle)

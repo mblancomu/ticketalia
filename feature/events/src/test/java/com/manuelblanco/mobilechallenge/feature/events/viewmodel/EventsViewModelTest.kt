@@ -65,6 +65,7 @@ class EventsViewModelTest {
                 EventsContract.State(
                     events = emptyList(),
                     isLoading = false,
+                    isRefreshing = false,
                     isError = false,
                     page = 1
                 ),

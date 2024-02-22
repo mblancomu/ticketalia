@@ -10,9 +10,9 @@ import com.manuelblanco.mobilechallenge.core.ui.mvi.ViewState
 class EventsContract {
 
     sealed class Event : ViewEvent {
-        object Refresh : Event()
-        object Search : Event()
-        object Filter : Event()
+        data object Refresh : Event()
+        data object Search : Event()
+        data object Filter : Event()
         data class EventSelection(val eventId: String, val eventTitle: String) :
             Event()
     }
@@ -20,12 +20,14 @@ class EventsContract {
     data class State(
         val events: List<com.manuelblanco.mobilechallenge.core.model.data.Event>,
         val isLoading: Boolean,
+        val isRefreshing: Boolean,
         val isError: Boolean,
         val page: Int = 1
     ) : ViewState
 
     sealed class Effect : ViewSideEffect {
-        object DataWasLoaded : Effect()
+        data object DataWasLoaded : Effect()
+        data object RefreshingData : Effect()
 
         sealed class Navigation : Effect() {
             data class ToEvent(val eventId: String, val eventTitle: String) : Navigation()

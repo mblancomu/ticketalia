@@ -58,7 +58,7 @@ fun <T> EndlessLazyColumn(
         itemsIndexed(
             items = items,
         ) { index, item ->
-            if (items.isEmpty()) {
+            if (items.isEmpty() && !loading) {
                 emptyList()
             } else {
                 Column {
