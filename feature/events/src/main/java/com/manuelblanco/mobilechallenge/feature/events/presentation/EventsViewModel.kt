@@ -8,12 +8,13 @@ import com.manuelblanco.mobilechallenge.core.common.result.Result
 import com.manuelblanco.mobilechallenge.core.common.result.asResult
 import com.manuelblanco.mobilechallenge.core.data.mediator.PAGE_SIZE
 import com.manuelblanco.mobilechallenge.core.domain.GetEventsOfflineFirstUseCase
-import com.manuelblanco.mobilechallenge.core.domain.InvalidateCacheUseCase
+import com.manuelblanco.mobilechallenge.core.domain.GetEventsRemoteFirstUseCase
 import com.manuelblanco.mobilechallenge.core.model.data.Event
 import com.manuelblanco.mobilechallenge.core.ui.mvi.TicketsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,8 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EventsViewModel @Inject constructor(
-    private val getEventsOfflineFirstUseCase: GetEventsOfflineFirstUseCase,
-    private val invalidateCacheUseCase: InvalidateCacheUseCase
+    private val getEventsRemoteFirstUseCase: GetEventsRemoteFirstUseCase,
+    private val getEventsOfflineFirstUseCase: GetEventsOfflineFirstUseCase
 ) : TicketsViewModel<EventsContract.Event, EventsContract.State, EventsContract.Effect>() {
 
     private var canPaginate by mutableStateOf(false)
@@ -59,11 +60,17 @@ class EventsViewModel @Inject constructor(
     }
 
     fun refresh() {
-        invalidateCache()
         eventsJob?.cancel()
         canPaginate = false
         setState { copy(page = 1, isRefreshing = true, events = emptyList()) }
-        getEventsOfflineFirst()
+        viewModelScope.launch {
+            val eventsRefreshDeferred = async { getEventsRemoteFirstUseCase(page = "1", true) }
+            try {
+                awaitAll(eventsRefreshDeferred)
+            } finally {
+                getEventsOfflineFirst()
+            }
+        }
     }
 
     fun loadMoreEvents() {
@@ -109,13 +116,6 @@ class EventsViewModel @Inject constructor(
                     }
                 }
             }
-        }
-    }
-
-    private fun invalidateCache() {
-        viewModelScope.launch {
-            val clearCache = async { invalidateCacheUseCase() }
-            clearCache.await()
         }
     }
 

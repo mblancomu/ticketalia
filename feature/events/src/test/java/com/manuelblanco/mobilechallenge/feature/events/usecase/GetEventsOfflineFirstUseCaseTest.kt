@@ -1,10 +1,7 @@
 package com.manuelblanco.mobilechallenge.feature.events.usecase
 
-import com.manuelblanco.mobilechallenge.core.domain.GetEventsFromCacheUseCase
 import com.manuelblanco.mobilechallenge.core.domain.GetEventsOfflineFirstUseCase
-import com.manuelblanco.mobilechallenge.core.testing.repository.usecase.FakeEventsOfflineFirstRepository
 import com.manuelblanco.mobilechallenge.core.testing.repository.usecase.FakeEventsRepository
-import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventsFromCacheUseCaseImpl
 import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventsOfflineFirstUseCaseImpl
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -18,12 +15,12 @@ class GetEventsOfflineFirstUseCaseTest {
 
 
     private lateinit var getEventsOfflineFirstUseCase: GetEventsOfflineFirstUseCase
-    private lateinit var fakeEventsOfflineFirstUseCase: FakeEventsOfflineFirstRepository
+    private lateinit var fakeEventsUseCase: FakeEventsRepository
 
     @Before
     fun setUp() {
-        fakeEventsOfflineFirstUseCase = FakeEventsOfflineFirstRepository()
-        getEventsOfflineFirstUseCase = GetEventsOfflineFirstUseCaseImpl(fakeEventsOfflineFirstUseCase)
+        fakeEventsUseCase = FakeEventsRepository()
+        getEventsOfflineFirstUseCase = GetEventsOfflineFirstUseCaseImpl(fakeEventsUseCase)
     }
 
     @Test

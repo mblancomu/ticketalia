@@ -9,6 +9,7 @@ import com.manuelblanco.mobilechallenge.core.domain.GetVenuesUseCase
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import com.manuelblanco.mobilechallenge.core.ui.mvi.TicketsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -64,6 +65,7 @@ class VenuesViewModel @Inject constructor(
                     }
 
                     is Result.Success -> {
+                        delay(1000L)
                         _venues.value = result.data
                         setState { copy(isLoading = false, isError = false, isRefreshing = false) }
                         setEffect { VenuesContract.Effect.DataWasLoaded }
@@ -75,6 +77,7 @@ class VenuesViewModel @Inject constructor(
 
     fun refreshStateUi(){
         setState { copy(isRefreshing = true) }
+        _venues.value = PagingData.empty()
     }
 
 }

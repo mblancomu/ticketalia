@@ -31,8 +31,7 @@ fun VenuesLazyList(
 ) {
     LazyColumn(
         modifier = Modifier
-            .background(TicketsTheme.colors.surface)
-            .fillMaxSize(),
+            .background(TicketsTheme.colors.surface),
         contentPadding = PaddingValues(
             top = TicketsTheme.dimensions.paddingMedium,
             bottom = TicketsTheme.dimensions.paddingMedium,
