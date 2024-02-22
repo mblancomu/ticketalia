@@ -1,9 +1,11 @@
 package com.manuelblanco.mobilechallenge.feature.venues.composables
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,10 +27,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.designsystem.utils.distanceColors
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
+import com.manuelblanco.mobilechallenge.core.testing.data.venueDetail
 import com.manuelblanco.mobilechallenge.core.ui.components.FeatureItemList
 import com.manuelblanco.mobilechallenge.core.ui.components.NameItemList
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsPoster
@@ -114,4 +118,17 @@ private fun VenueDistance(distance: Double, modifier: Modifier) {
             .padding(horizontal = TicketsTheme.dimensions.paddingMediumLarge)
             .shadow(TicketsTheme.dimensions.paddingMedium)
     )
+}
+
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@Preview
+@Composable
+fun VenueContentComponentPreview(
+    venue: Venue = venueDetail.data
+) {
+    BoxWithConstraints {
+        TicketsTheme {
+            VenueContent(venue = venue)
+        }
+    }
 }

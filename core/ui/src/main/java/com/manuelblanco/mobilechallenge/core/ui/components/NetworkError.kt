@@ -53,6 +53,6 @@ fun NetworkError(
 
 @Preview(showBackground = true)
 @Composable
-fun NetworkErrorPreview() {
+fun NetworkErrorScreenPreview() {
     NetworkError(modifier = Modifier, onRetryButtonClick = {})
 }

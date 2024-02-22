@@ -1,9 +1,11 @@
 package com.manuelblanco.mobilechallenge.feature.events.composables
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,12 +27,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
 import com.manuelblanco.mobilechallenge.core.common.utils.formattedDate
 import com.manuelblanco.mobilechallenge.core.common.utils.formattedTime
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.designsystem.utils.rateColors
 import com.manuelblanco.mobilechallenge.core.model.data.Event
+import com.manuelblanco.mobilechallenge.core.testing.data.eventDetail
 import com.manuelblanco.mobilechallenge.core.ui.components.FeatureItemList
 import com.manuelblanco.mobilechallenge.core.ui.components.NameItemList
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsPoster
@@ -117,6 +120,19 @@ private fun EventInfo(event: Event?, modifier: Modifier) {
                         .offset(y = TicketsTheme.dimensions.paddingSmall),
                 )
             }
+        }
+    }
+}
+
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@Preview
+@Composable
+fun EventContentComponentPreview(
+    event: Event = eventDetail.data
+) {
+    BoxWithConstraints {
+        TicketsTheme {
+            EventContent(event = event, onEventClicked = { _, _ -> })
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.manuelblanco.mobilechallenge.core.ui.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -9,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.ui.utils.borderRevealAnimation
@@ -54,4 +57,16 @@ private fun CircleInfoSubtitle(
         modifier = Modifier.padding(vertical = 8.dp),
         color = TicketsTheme.colors.surface
     )
+}
+
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@Preview
+@Composable
+fun CircleInfoAnimatedComponentPreview(
+) {
+    BoxWithConstraints {
+        TicketsTheme {
+            CircleInfoAnimated(info = "Test", subtitle = "Animation")
+        }
+    }
 }

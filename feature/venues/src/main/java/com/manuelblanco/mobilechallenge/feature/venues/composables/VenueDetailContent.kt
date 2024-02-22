@@ -3,6 +3,7 @@ package com.manuelblanco.mobilechallenge.feature.venues.composables
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,11 +23,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.manuelblanco.mobilechallenge.core.designsystem.component.TicketsOutlinedButton
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import com.manuelblanco.mobilechallenge.core.model.data.toGoogleUri
+import com.manuelblanco.mobilechallenge.core.testing.data.venueDetail
 import com.manuelblanco.mobilechallenge.core.ui.components.AnimatedTextVisibility
 import com.manuelblanco.mobilechallenge.core.ui.components.CardContentDetail
 import com.manuelblanco.mobilechallenge.core.ui.components.DescriptionTextDetail
@@ -144,6 +147,23 @@ private fun VenueDetailButtonsRow(
                     enabled = true,
                 )
             }
+        }
+    }
+}
+
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@Preview
+@Composable
+fun VenueDetailContentComponentPreview(
+    venue: Venue = venueDetail.data
+) {
+    BoxWithConstraints {
+        TicketsTheme {
+            VenueDetailContent(
+                venue = venue,
+                venueTitle = venue.name,
+                onSendEvent = {},
+            )
         }
     }
 }

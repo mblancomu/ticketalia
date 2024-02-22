@@ -42,7 +42,7 @@ import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
  */
 
 enum class ItemType {
-    EVENT,VENUE
+    EVENT, VENUE
 }
 
 @Composable
@@ -111,7 +111,7 @@ fun ShimmerItemList(modifier: Modifier = Modifier, type: ItemType) {
                                 .shimmerEffect()
                         )
                     }
-                    if (type == ItemType.EVENT){
+                    if (type == ItemType.EVENT) {
                         Box(
                             modifier = Modifier
                                 .padding(start = 32.dp, top = 12.dp)
@@ -158,6 +158,8 @@ fun Modifier.shimmerEffect(): Modifier = composed {
 
 @Preview
 @Composable
-fun ShimmerAnimationPreview() {
-    ShimmerItemList(type = ItemType.EVENT)
+fun ShimmerAnimationComponentPreview() {
+    TicketsTheme {
+        ShimmerItemList(type = ItemType.EVENT)
+    }
 }

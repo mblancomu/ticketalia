@@ -30,8 +30,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun AnimatedTextVisibility(
-    info: String,
-    icon: ImageVector
+    info: String, icon: ImageVector
 ) {
 
     var state by remember {
@@ -49,7 +48,11 @@ fun AnimatedTextVisibility(
         exit = fadeOut(animationSpec = tween(2000)) + slideOutHorizontally(),
     ) {
         Row {
-            Icon(imageVector = icon, contentDescription = "Icon", tint = TicketsTheme.colors.secondary)
+            Icon(
+                imageVector = icon,
+                contentDescription = "Icon",
+                tint = TicketsTheme.colors.secondary
+            )
             Text(
                 modifier = Modifier.padding(
                     start = TicketsTheme.dimensions.paddingMedium,

@@ -62,6 +62,8 @@ fun Progress(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun ProgressPreview() {
-    Progress()
+fun ProgressComponentPreview() {
+    TicketsTheme {
+        Progress()
+    }
 }

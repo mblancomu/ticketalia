@@ -29,7 +29,9 @@ data class TicketsDimensions(
     val buttonDetailWidth: Dp = 130.dp,
     val progressBoxHeight: Dp = 68.dp,
     val progressBoxWidth: Dp = 200.dp,
-    val progressBoxCorners: Dp = 40.dp
+    val progressBoxCorners: Dp = 40.dp,
+    val iconSizeSearchBar: Dp = 24.dp,
+    val searchBarHeight: Dp = 48.dp
 )
 
 internal val LocalDimensions = staticCompositionLocalOf { TicketsDimensions() }

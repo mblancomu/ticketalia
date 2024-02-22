@@ -1,7 +1,9 @@
 package com.manuelblanco.mobilechallenge.core.ui.components.bottombar
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -10,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 
 /**
@@ -45,5 +49,16 @@ fun TicketsBottomBar(modifier: Modifier, navController: NavHostController) {
             )
         }
     }
+}
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@Preview
+@Composable
+fun TicketsBottomBarComponentPreview(
+) {
+    BoxWithConstraints {
+        TicketsTheme {
+            TicketsBottomBar(modifier = Modifier, navController = rememberNavController())
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.manuelblanco.mobilechallenge.feature.venues.composables
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.rememberScaffoldState
@@ -9,6 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
+import com.manuelblanco.mobilechallenge.core.model.data.Venue
+import com.manuelblanco.mobilechallenge.core.testing.data.venueDetail
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
@@ -17,6 +22,7 @@ import com.manuelblanco.mobilechallenge.feature.venues.R
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenueDetailContract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 
 /**
@@ -74,6 +80,29 @@ fun VenueDetailScreen(
             else -> {
                 VenueDetailContent(stateUi.venue, venueTitle, onSendEvent)
             }
+        }
+    }
+}
+
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@Preview
+@Composable
+fun VenuesDetailScreenPreviewIdle(
+    venue: Venue = venueDetail.data
+) {
+    BoxWithConstraints {
+        TicketsTheme {
+            VenueDetailScreen(
+                venueTitle = venue.name,
+                stateUi = VenueDetailContract.State(
+                    venue = venue,
+                    isLoading = false,
+                    isError = false,
+                ),
+                effect = flow {},
+                onSendEvent = {},
+                onNavigationRequested = {}
+            )
         }
     }
 }

@@ -60,6 +60,7 @@ class VenuesViewModelTest {
         assertEquals(
             VenuesContract.State(
                 isLoading = true,
+                isRefreshing = false,
                 isError = false
             ),
             viewModel.viewState.value,

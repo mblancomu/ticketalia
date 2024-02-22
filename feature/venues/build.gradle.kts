@@ -20,6 +20,7 @@ dependencies {
     implementation(libs.accompanist.drawablepainter)
 
     testImplementation(project(":core:testing"))
+    implementation(project(":core:testing"))
     testImplementation(libs.robolectric)
     testImplementation(libs.hilt.android.testing)
 
