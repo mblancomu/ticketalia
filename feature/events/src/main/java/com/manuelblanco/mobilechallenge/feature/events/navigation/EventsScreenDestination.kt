@@ -28,10 +28,6 @@ fun EventsScreenDestination(
                 navigateTo(navigationEffect.eventId, navigationEffect.eventTitle)
             }
         },
-        onRefresh = { viewModel.refresh() },
         onSendEvent = { event -> viewModel.setEvent(event) },
-        onPaginate = {
-            viewModel.loadMoreEvents()
-        }
     )
 }

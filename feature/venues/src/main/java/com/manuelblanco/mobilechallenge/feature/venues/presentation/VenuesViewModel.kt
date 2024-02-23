@@ -47,11 +47,11 @@ class VenuesViewModel @Inject constructor(
 
             is VenuesContract.Event.Filter -> {}
             is VenuesContract.Event.Search -> {}
-            is VenuesContract.Event.Refresh -> setEffect { VenuesContract.Effect.RefreshingData }
+            is VenuesContract.Event.Refresh -> { refreshStateUi() }
         }
     }
 
-    fun getVenues() {
+    private fun getVenues() {
         viewModelScope.launch {
             setState { copy(isLoading = true, isError = false) }
             getVenuesUseCase().cachedIn(viewModelScope).asResult().collect { result ->
@@ -75,7 +75,7 @@ class VenuesViewModel @Inject constructor(
         }
     }
 
-    fun refreshStateUi(){
+    private fun refreshStateUi(){
         setState { copy(isRefreshing = true) }
         _venues.value = PagingData.empty()
     }

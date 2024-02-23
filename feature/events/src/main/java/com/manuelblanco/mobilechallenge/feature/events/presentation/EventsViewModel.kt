@@ -54,12 +54,21 @@ class EventsViewModel @Inject constructor(
             }
 
             is EventsContract.Event.Filter -> {}
-            is EventsContract.Event.Refresh -> setEffect { EventsContract.Effect.RefreshingData }
-            is EventsContract.Event.Search -> {}
+            is EventsContract.Event.Refresh -> {
+                refresh()
+            }
+
+            is EventsContract.Event.Search -> {
+                searchByQuery(event.query)
+            }
+
+            is EventsContract.Event.Paginate -> {
+                loadMoreEvents()
+            }
         }
     }
 
-    fun refresh() {
+    private fun refresh() {
         eventsJob?.cancel()
         canPaginate = false
         setState { copy(page = 1, isRefreshing = true, events = emptyList()) }
@@ -73,7 +82,7 @@ class EventsViewModel @Inject constructor(
         }
     }
 
-    fun loadMoreEvents() {
+    private fun loadMoreEvents() {
         eventsJob?.cancel()
         getEventsOfflineFirst()
     }
@@ -117,6 +126,10 @@ class EventsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun searchByQuery(query: String) {
+        //Needs to be implement
     }
 
     private fun addNewEvents(newEvents: List<Event>, oldEvents: List<Event>) {

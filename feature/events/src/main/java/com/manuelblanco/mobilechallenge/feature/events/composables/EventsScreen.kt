@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -28,19 +28,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
+import com.manuelblanco.mobilechallenge.core.model.data.Event
+import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
 import com.manuelblanco.mobilechallenge.core.ui.components.EndlessLazyColumn
 import com.manuelblanco.mobilechallenge.core.ui.components.ErrorRow
 import com.manuelblanco.mobilechallenge.core.ui.components.ItemType
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.ShimmerEffectList
+import com.manuelblanco.mobilechallenge.core.ui.components.TicketsSearchBar
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
 import com.manuelblanco.mobilechallenge.feature.events.R
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 
 /**
@@ -52,8 +57,6 @@ import kotlinx.coroutines.flow.onEach
 fun EventsScreen(
     stateUi: EventsContract.State,
     effect: Flow<EventsContract.Effect>?,
-    onRefresh: () -> Unit,
-    onPaginate: () -> Unit,
     onSendEvent: (EventsContract.Event) -> Unit,
     onNavigationRequested: (navigationEffect: EventsContract.Effect.Navigation) -> Unit
 ) {
@@ -61,11 +64,13 @@ fun EventsScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val snackBarMessage = stringResource(R.string.global_error)
 
-    val gridState = rememberLazyGridState()
     val listState = rememberLazyListState()
     val pullRefreshState =
-        rememberPullRefreshState(stateUi.isRefreshing, { onSendEvent(EventsContract.Event.Refresh) })
+        rememberPullRefreshState(
+            stateUi.isRefreshing,
+            { onSendEvent(EventsContract.Event.Refresh) })
     var isDataLoaded by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
 
     LaunchedEffect(SIDE_EFFECTS_KEY) {
         effect?.onEach { effect ->
@@ -75,7 +80,6 @@ fun EventsScreen(
                 }
 
                 is EventsContract.Effect.Navigation.ToEvent -> onNavigationRequested(effect)
-                is EventsContract.Effect.RefreshingData -> onRefresh()
             }
         }?.collect()
     }
@@ -92,7 +96,23 @@ fun EventsScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            TicketsTopBar(isCentered = true)
+            TicketsTopBar(isCentered = true, searchBar = {
+                TicketsSearchBar(
+                    text = searchQuery,
+                    placeHolder = stringResource(id = R.string.search_events),
+                    onTextChange = {
+                        searchQuery = it
+                        onSendEvent(EventsContract.Event.Search(query = it))
+
+                    },
+                    onCloseClicked = { searchQuery = "" },
+                    onSearchClicked = {
+                        onSendEvent(EventsContract.Event.Search(query = it))
+                    }
+                ) {
+
+                }
+            })
         },
         content = {
             Column(
@@ -109,7 +129,12 @@ fun EventsScreen(
                     contentAlignment = Alignment.Center
                 ) {
 
-                    if (isShimmerVisible(stateUi.events.isEmpty(), isDataLoaded, stateUi.isRefreshing)) {
+                    if (isShimmerVisible(
+                            stateUi.events.isEmpty(),
+                            isDataLoaded,
+                            stateUi.isRefreshing
+                        )
+                    ) {
                         ShimmerEffectList(type = ItemType.EVENT)
                     }
 
@@ -126,7 +151,7 @@ fun EventsScreen(
                             }
                         },
                         emptyList = { ErrorRow(stringResource(R.string.no_events_found)) },
-                        loadMore = { onPaginate() },
+                        loadMore = { onSendEvent(EventsContract.Event.Paginate) },
                         loadingItem = {
                             Box(modifier = Modifier.height(160.dp)) {
                                 Progress()
@@ -149,3 +174,26 @@ fun EventsScreen(
 
 private fun isShimmerVisible(isEmpty: Boolean, isLoaded: Boolean, isRefreshing: Boolean): Boolean =
     isEmpty && !isLoaded || isRefreshing
+
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@Preview
+@Composable
+fun EventsScreenPreviewPopulated(
+    events: List<Event> = eventsFromCacheList
+) {
+    BoxWithConstraints {
+        TicketsTheme {
+            EventsScreen(
+                stateUi = EventsContract.State(
+                    events = events,
+                    isLoading = false,
+                    isRefreshing = false,
+                    isError = false
+                ),
+                effect = flow { },
+                onSendEvent = {},
+                onNavigationRequested = {}
+            )
+        }
+    }
+}

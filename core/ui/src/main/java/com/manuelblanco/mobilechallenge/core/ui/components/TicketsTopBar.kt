@@ -29,6 +29,7 @@ fun TicketsTopBar(
     title: String = "",
     onBack: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
+    searchBar: @Composable (() -> Unit?)? = null,
     containerColor: Color = TicketsTheme.colors.primary,
     isCentered: Boolean,
     isNavigable: Boolean = false
@@ -36,11 +37,15 @@ fun TicketsTopBar(
     if (isCentered) {
         CenterAlignedTopAppBar(
             title = {
-                Text(
-                    text = stringResource(id = R.string.name_app),
-                    color = TicketsTheme.colors.surface,
-                    textAlign = TextAlign.Center
-                )
+                if (searchBar != null){
+                    searchBar()
+                } else {
+                    Text(
+                        text = stringResource(id = R.string.name_app),
+                        color = TicketsTheme.colors.surface,
+                        textAlign = TextAlign.Center
+                    )
+                }
             },
             navigationIcon = {
                 if (isNavigable) {
@@ -71,8 +76,10 @@ fun TicketsTopBar(
 
 @Preview(showBackground = true)
 @Composable
-fun TicketsTopBarPreview() {
-    TicketsTopBar("Events", isCentered = true)
+fun TicketsTopBarComponentPreview() {
+    TicketsTheme {
+        TicketsTopBar("Events", isCentered = true)
+    }
 }
 
 @Composable
