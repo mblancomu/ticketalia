@@ -25,11 +25,7 @@ fun VenuesScreenDestination(
         venues = venues,
         effect = effect,
         stateUi = state.value,
-        onRefresh = {
-            venuesViewModel.refreshStateUi()
-            venues.refresh()
-        },
-        onSendEvent = { event -> venuesViewModel.setEvent(event) }
+        onSendEvent = { event -> venuesViewModel.setEvent(event) },
     ) { navigationEffect ->
         if (navigationEffect is VenuesContract.Effect.Navigation.ToVenue) {
             navigateTo(navigationEffect.venueId, navigationEffect.venueTitle)

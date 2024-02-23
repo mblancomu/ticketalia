@@ -11,7 +11,8 @@ class EventsContract {
 
     sealed class Event : ViewEvent {
         data object Refresh : Event()
-        data object Search : Event()
+        data object Paginate : Event()
+        data class Search(val query: String) : Event()
         data object Filter : Event()
         data class EventSelection(val eventId: String, val eventTitle: String) :
             Event()
@@ -27,7 +28,6 @@ class EventsContract {
 
     sealed class Effect : ViewSideEffect {
         data object DataWasLoaded : Effect()
-        data object RefreshingData : Effect()
 
         sealed class Navigation : Effect() {
             data class ToEvent(val eventId: String, val eventTitle: String) : Navigation()

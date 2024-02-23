@@ -10,7 +10,7 @@ import com.manuelblanco.mobilechallenge.core.ui.mvi.ViewState
 class VenuesContract {
 
     sealed class Event : ViewEvent {
-        data object Search : Event()
+        data class Search(val query: String) : Event()
         data object Filter : Event()
         data object Refresh : Event()
         data class VenueSelection(val venueId: String, val venueTitle: String) :
@@ -25,7 +25,6 @@ class VenuesContract {
 
     sealed class Effect : ViewSideEffect {
         data object DataWasLoaded : Effect()
-        data object RefreshingData : Effect()
 
         sealed class Navigation : Effect() {
             data class ToVenue(val venueId: String, val venueTitle: String) : Navigation()

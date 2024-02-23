@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -25,18 +26,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
+import com.manuelblanco.mobilechallenge.core.testing.data.pagingVenues
 import com.manuelblanco.mobilechallenge.core.ui.components.ItemType
 import com.manuelblanco.mobilechallenge.core.ui.components.ShimmerEffectList
+import com.manuelblanco.mobilechallenge.core.ui.components.TicketsSearchBar
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
 import com.manuelblanco.mobilechallenge.feature.venues.R
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 
 /**
@@ -49,7 +55,6 @@ fun VenuesScreen(
     venues: LazyPagingItems<Venue>,
     stateUi: VenuesContract.State,
     effect: Flow<VenuesContract.Effect>?,
-    onRefresh: () -> Unit,
     onSendEvent: (VenuesContract.Event) -> Unit,
     onNavigationRequested: (navigationEffect: VenuesContract.Effect.Navigation) -> Unit
 ) {
@@ -59,9 +64,13 @@ fun VenuesScreen(
 
     val pullRefreshState = rememberPullRefreshState(
         stateUi.isRefreshing,
-        { onSendEvent(VenuesContract.Event.Refresh) })
+        {
+            venues.refresh()
+            onSendEvent(VenuesContract.Event.Refresh)
+        })
 
     var isDataLoaded by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
 
     LaunchedEffect(SIDE_EFFECTS_KEY) {
         effect?.onEach { effect ->
@@ -71,7 +80,6 @@ fun VenuesScreen(
                 }
 
                 is VenuesContract.Effect.Navigation.ToVenue -> onNavigationRequested(effect)
-                is VenuesContract.Effect.RefreshingData -> onRefresh()
             }
         }?.collect()
     }
@@ -88,7 +96,26 @@ fun VenuesScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            TicketsTopBar(isCentered = true)
+            TicketsTopBar(isCentered = true, searchBar = {
+                TicketsSearchBar(
+                    text = searchQuery,
+                    placeHolder = stringResource(id = R.string.search_venues),
+                    onTextChange = {
+                        searchQuery = it
+                        if (searchQuery.length > 3) {
+                            onSendEvent(VenuesContract.Event.Search(query = it))
+                        }
+                    },
+                    onCloseClicked = { searchQuery = "" },
+                    onSearchClicked = {
+                        if (searchQuery.length > 3) {
+                            onSendEvent(VenuesContract.Event.Search(query = it))
+                        }
+                    }
+                ) {
+
+                }
+            })
         },
     ) {
         Column(
@@ -104,17 +131,21 @@ fun VenuesScreen(
                     .pullRefresh(pullRefreshState)
             ) {
 
-                if (isShimmerVisible(isDataLoaded, stateUi.isRefreshing)) {
+                if (isShimmerVisible(
+                        isEmpty = venues.itemCount == 0,
+                        isRefreshing = venues.loadState.refresh is LoadState.Loading
+                    )
+                ) {
                     ShimmerEffectList(type = ItemType.VENUE)
+                } else {
+                    VenuesLazyList(
+                        venues = venues,
+                        onSendVenue = { onSendEvent(it) })
                 }
-
-                VenuesLazyList(
-                    venues = venues,
-                    onSendVenue = { onSendEvent(it) })
 
                 PullRefreshIndicator(
                     modifier = Modifier.align(Alignment.TopCenter),
-                    refreshing = venues.loadState.refresh is LoadState.Loading,
+                    refreshing = stateUi.isRefreshing,
                     state = pullRefreshState,
                     contentColor = TicketsTheme.colors.primary
                 )
@@ -123,5 +154,28 @@ fun VenuesScreen(
     }
 }
 
-private fun isShimmerVisible(isLoaded: Boolean, isRefreshing: Boolean): Boolean =
-    !isLoaded || isRefreshing
+private fun isShimmerVisible(isEmpty: Boolean, isRefreshing: Boolean): Boolean =
+    isEmpty || isRefreshing
+
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@Preview
+@Composable
+fun VenuesScreenPreviewPopulated(
+    venues: LazyPagingItems<Venue> = flow { emit(pagingVenues) }.collectAsLazyPagingItems()
+) {
+    BoxWithConstraints {
+        TicketsTheme {
+            VenuesScreen(
+                venues = venues,
+                stateUi = VenuesContract.State(
+                    isLoading = false,
+                    isRefreshing = false,
+                    isError = false
+                ),
+                effect = flow { },
+                onSendEvent = {},
+                onNavigationRequested = {}
+            )
+        }
+    }
+}
