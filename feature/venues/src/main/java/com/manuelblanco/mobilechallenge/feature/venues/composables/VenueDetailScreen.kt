@@ -2,14 +2,17 @@ package com.manuelblanco.mobilechallenge.feature.venues.composables
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
@@ -39,7 +42,7 @@ fun VenueDetailScreen(
     onNavigationRequested: (navigationEffect: VenueDetailContract.Effect.Navigation) -> Unit
 ) {
 
-    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val snackBarHostState = remember { SnackbarHostState() }
     val snackBarMessage = stringResource(R.string.global_error)
 
     LaunchedEffect(SIDE_EFFECTS_KEY) {
@@ -55,15 +58,21 @@ fun VenueDetailScreen(
     LaunchedEffect(SIDE_STATES_KEY) {
         when {
             stateUi.isError -> {
-                scaffoldState.snackbarHostState.showSnackbar(
+                snackBarHostState.showSnackbar(
                     message = snackBarMessage,
-                    duration = SnackbarDuration.Short
+                    duration = androidx.compose.material3.SnackbarDuration.Short
                 )
             }
         }
     }
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(
+                modifier = Modifier.semantics { contentDescription = "SnackBar" },
+                hostState = snackBarHostState
+            )
+        },
         topBar = {
             TicketsTopBar(
                 isCentered = false,

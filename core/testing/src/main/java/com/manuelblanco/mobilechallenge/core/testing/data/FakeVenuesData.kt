@@ -79,6 +79,36 @@ val venueDetail = Result.Success(
     )
 )
 
+val venueDetailWithoutLocation = Result.Success(
+    data = Venue(
+        id = "1",
+        name = "Stadium Olympic",
+        description = "",
+        url = "https://www.google.com/",
+        city = "Madrid",
+        country = "Spain",
+        location = Location(latitude = 0.0, longitude = 0.0),
+        imageUrl = "https://www.canalextremadura.es/sites/default/files/Media/Images/2021-02/A_TEATRO_ROMANO_MERIDA_01.jpg",
+        address = "",
+        distance = ""
+    )
+)
+
+val venueDetailWithoutInfo = Result.Success(
+    data = Venue(
+        id = "1",
+        name = "Stadium Olympic",
+        description = "",
+        url = "",
+        city = "Madrid",
+        country = "Spain",
+        location = Location(latitude = 30.1, longitude = 4.0),
+        imageUrl = "https://www.canalextremadura.es/sites/default/files/Media/Images/2021-02/A_TEATRO_ROMANO_MERIDA_01.jpg",
+        address = "",
+        distance = ""
+    )
+)
+
 val firstVenue = Venue(
     id = "1",
     name = "Teatro Romano",

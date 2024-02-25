@@ -9,6 +9,7 @@ import com.manuelblanco.mobilechallenge.core.testing.data.pagingVenues
 import com.manuelblanco.mobilechallenge.core.testing.data.pagingVenuesEmpty
 import com.manuelblanco.mobilechallenge.feature.venues.composables.VenuesScreen
 import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContract
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
@@ -33,7 +34,13 @@ class VenuesScreenPaparazziTests {
             TicketsTheme {
                 VenuesScreen(
                     venues = flowOf(pagingVenues).collectAsLazyPagingItems(),
-                    stateUi = VenuesContract.State(isLoading = false, isError = false)
+                    stateUi = VenuesContract.State(
+                        isLoading = false,
+                        isError = false,
+                        isRefreshing = false
+                    ),
+                    effect = flow {},
+                    onSendEvent = {}
                 ) {}
             }
         }
@@ -45,7 +52,13 @@ class VenuesScreenPaparazziTests {
             TicketsTheme {
                 VenuesScreen(
                     venues = flowOf(pagingVenuesEmpty).collectAsLazyPagingItems(),
-                    stateUi = VenuesContract.State(isLoading = false, isError = false)
+                    stateUi = VenuesContract.State(
+                        isLoading = false,
+                        isError = false,
+                        isRefreshing = false
+                    ),
+                    effect = flow {},
+                    onSendEvent = {}
                 ) {}
             }
         }
@@ -57,7 +70,13 @@ class VenuesScreenPaparazziTests {
             TicketsTheme {
                 VenuesScreen(
                     venues = flowOf(pagingVenuesEmpty).collectAsLazyPagingItems(),
-                    stateUi = VenuesContract.State(isLoading = false, isError = true)
+                    stateUi = VenuesContract.State(
+                        isLoading = false,
+                        isError = true,
+                        isRefreshing = false
+                    ),
+                    effect = flow {},
+                    onSendEvent = {}
                 ) {}
             }
         }
@@ -69,7 +88,13 @@ class VenuesScreenPaparazziTests {
             TicketsTheme {
                 VenuesScreen(
                     venues = flowOf(pagingVenuesEmpty).collectAsLazyPagingItems(),
-                    stateUi = VenuesContract.State(isLoading = true, isError = false)
+                    stateUi = VenuesContract.State(
+                        isLoading = true,
+                        isError = false,
+                        isRefreshing = false
+                    ),
+                    effect = flow {},
+                    onSendEvent = {}
                 ) {}
             }
         }

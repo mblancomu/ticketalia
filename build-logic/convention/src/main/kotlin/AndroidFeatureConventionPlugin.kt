@@ -21,7 +21,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             extensions.configure<LibraryExtension> {
                 defaultConfig {
                     testInstrumentationRunner =
-                        "androidx.test.runner.AndroidJUnitRunner"
+                        "com.manuelblanco.mobilechallenge.core.testing.TicketsTestRunner"
                 }
                 configureGradleManagedDevices(this)
             }

@@ -1,5 +1,5 @@
 plugins {
-    id("mobilechallenge.android.library")
+    alias(libs.plugins.mobilechallenge.android.library)
     kotlin("kapt")
 }
 
@@ -8,9 +8,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:model"))
-    implementation(project(":core:common"))
+    implementation(projects.core.model)
+    implementation(projects.core.common)
+
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.paging.runtime)
+
     api(libs.junit4)
 }

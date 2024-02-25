@@ -31,6 +31,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -49,6 +51,7 @@ enum class ItemType {
 fun ShimmerEffectList(type: ItemType) {
     LazyColumn(
         modifier = Modifier
+            .semantics { contentDescription = "Shimmer effect" }
             .fillMaxSize(),
         contentPadding = PaddingValues(
             start = TicketsTheme.dimensions.paddingMedium,

@@ -1,21 +1,32 @@
 plugins {
-    id("mobilechallenge.android.library")
-    id("mobilechallenge.android.library.compose")
+    alias(libs.plugins.mobilechallenge.android.library)
+    alias(libs.plugins.mobilechallenge.android.library.compose)
 }
 
 android {
     namespace = "com.manuelblanco.mobilechallenge.core.ui"
 
     defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.manuelblanco.mobilechallenge.core.testing.TicketsTestRunner"
     }
 }
 
 dependencies {
 
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:common"))
+    implementation(projects.core.designsystem)
+    implementation(projects.core.common)
+
     implementation(libs.lottie.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.compose)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.androidx.compose.material)
 
     api(libs.androidx.compose.foundation)
     api(libs.androidx.compose.foundation.layout)
@@ -24,18 +35,8 @@ dependencies {
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.ui.tooling.preview)
     api(libs.androidx.compose.ui.util)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.navigation.compose)
 
     debugApi(libs.androidx.compose.ui.tooling)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.androidx.lifecycle.viewModelCompose)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.coil.kt)
-    implementation(libs.coil.kt.compose)
-    implementation(libs.kotlinx.datetime)
-
-    androidTestImplementation(project(":core:testing"))
+    androidTestImplementation(projects.core.testing)
 }

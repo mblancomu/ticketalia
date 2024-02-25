@@ -3,29 +3,65 @@ package com.manuelblanco.mobilechallenge.core.testing.data
 import com.manuelblanco.mobilechallenge.core.common.result.Result
 import com.manuelblanco.mobilechallenge.core.model.data.Event
 import com.manuelblanco.mobilechallenge.core.model.data.Location
-import com.manuelblanco.mobilechallenge.core.model.data.Page
 
 /**
  * Created by Manuel Blanco Murillo on 13/2/24.
  */
 
-val eventDetail = Result.Success(data = Event(
-    id = "1",
-    name = "Alanis Stream",
-    description = "",
-    url = "https://www.google.com/",
-    city = "Madrid",
-    country = "Spain",
-    location = Location(latitude = 30.1, longitude = 4.0),
-    dateTime = "2024-02-14T17:00:00Z",
-    genres = "Pop",
-    segment = "Music",
-    imageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/8b/24/a1/vista-del-teatro-la-latina.jpg?w=1200&h=1200&s=1",
-    place = "Stadium",
-    prices = "30 EUR"
+val eventDetail = Result.Success(
+    data = Event(
+        id = "1",
+        name = "Alanis Stream",
+        description = "",
+        url = "https://www.google.com/",
+        city = "Madrid",
+        country = "Spain",
+        location = Location(latitude = 30.1, longitude = 4.0),
+        dateTime = "2024-02-14T17:00:00Z",
+        genres = "Pop",
+        segment = "Music",
+        imageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/8b/24/a1/vista-del-teatro-la-latina.jpg?w=1200&h=1200&s=1",
+        place = "Stadium",
+        prices = "30 EUR"
+    )
 )
+
+val eventDetailWithoutLocation = Result.Success(
+    data = Event(
+        id = "1",
+        name = "Alanis Stream",
+        description = "",
+        url = "https://www.google.com/",
+        city = "Madrid",
+        country = "Spain",
+        location = Location(latitude = 0.0, longitude = 0.0),
+        dateTime = "2024-02-14T17:00:00Z",
+        genres = "Pop",
+        segment = "Music",
+        imageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/8b/24/a1/vista-del-teatro-la-latina.jpg?w=1200&h=1200&s=1",
+        place = "Stadium",
+        prices = "30 EUR"
+    )
 )
-var eventPageFromRemote = Result.Success(data = Page(totalElements = 20, totalPages = 3, currentPage = 1))
+
+val eventDetailWithoutUrl = Result.Success(
+    data = Event(
+        id = "1",
+        name = "Alanis Stream",
+        description = "",
+        url = "",
+        city = "Madrid",
+        country = "Spain",
+        location = Location(latitude = 0.0, longitude = 0.0),
+        dateTime = "2024-02-14T17:00:00Z",
+        genres = "Pop",
+        segment = "Music",
+        imageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/8b/24/a1/vista-del-teatro-la-latina.jpg?w=1200&h=1200&s=1",
+        place = "Stadium",
+        prices = "30 EUR"
+    )
+)
+
 val eventsFromCacheList = listOf<Event>(
     Event(
         id = "1",

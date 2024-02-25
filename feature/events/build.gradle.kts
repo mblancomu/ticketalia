@@ -1,8 +1,7 @@
 plugins {
-    id("mobilechallenge.android.feature")
-    id("mobilechallenge.android.library.compose")
+    alias(libs.plugins.mobilechallenge.android.feature)
+    alias(libs.plugins.mobilechallenge.android.library.compose)
     alias(libs.plugins.paparazzi)
-    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -10,13 +9,20 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:model"))
-    implementation(project(":core:testing"))
-    implementation(project(":core:domain"))
+    implementation(projects.core.model)
+    implementation(projects.core.testing)
+    implementation(projects.core.domain)
+
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.compose.bom)
     implementation(libs.androidx.compose.material)
     implementation(libs.kotlinx.serialization.json)
+
+    debugImplementation(libs.androidx.compose.ui.testManifest)
+
     testImplementation(libs.mockk)
     testImplementation(libs.turbine)
+    testImplementation(projects.core.testing)
+
+    androidTestImplementation(projects.core.testing)
 }

@@ -40,6 +40,14 @@ gradlePlugin {
             id = "mobilechallenge.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
+        register("androidApplicationJacoco") {
+            id = "mobilechallenge.android.application.jacoco"
+            implementationClass = "AndroidApplicationJacocoConventionPlugin"
+        }
+        register("androidLibraryJacoco") {
+            id = "mobilechallenge.android.library.jacoco"
+            implementationClass = "AndroidLibraryJacocoConventionPlugin"
+        }
         register("androidLibrary") {
             id = "mobilechallenge.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"

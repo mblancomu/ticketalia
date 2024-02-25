@@ -12,8 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
@@ -36,8 +39,9 @@ fun TicketsTopBar(
 ) {
     if (isCentered) {
         CenterAlignedTopAppBar(
+            modifier = Modifier.semantics { contentDescription = "Top bar" },
             title = {
-                if (searchBar != null){
+                if (searchBar != null) {
                     searchBar()
                 } else {
                     Text(
@@ -85,6 +89,7 @@ fun TicketsTopBarComponentPreview() {
 @Composable
 private fun BackArrow(onBack: () -> Unit = {}) {
     FilledIconButton(
+        modifier = Modifier.semantics { contentDescription = "Back Button" },
         onClick = { onBack() },
         colors = IconButtonDefaults.iconButtonColors(containerColor = TicketsTheme.colors.primary)
     ) {
