@@ -38,8 +38,6 @@ class EventsScreenPaparazziTests {
                         page = 1
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
-                    onRefresh = {},
-                    onPaginate = {},
                     onSendEvent = {},
                     onNavigationRequested = {}
                 )
@@ -59,8 +57,6 @@ class EventsScreenPaparazziTests {
                         isError = false
                     ),
                     effect = flowOf(EventsContract.Effect.DataWasLoaded),
-                    onRefresh = {},
-                    onPaginate = {},
                     onSendEvent = {},
                     onNavigationRequested = {}
                 )
@@ -80,8 +76,6 @@ class EventsScreenPaparazziTests {
                         isError = false
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
-                    onRefresh = {},
-                    onPaginate = {},
                     onSendEvent = {},
                     onNavigationRequested = {}
                 )
@@ -101,8 +95,6 @@ class EventsScreenPaparazziTests {
                         isError = true
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
-                    onRefresh = {},
-                    onPaginate = {},
                     onSendEvent = {},
                     onNavigationRequested = {}
                 )
@@ -122,8 +114,6 @@ class EventsScreenPaparazziTests {
                         isError = false
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
-                    onRefresh = {},
-                    onPaginate = {},
                     onSendEvent = {},
                     onNavigationRequested = {}
                 )

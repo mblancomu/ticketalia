@@ -1,6 +1,7 @@
 plugins {
-    id("mobilechallenge.android.feature")
-    id("mobilechallenge.android.library.compose")
+    alias(libs.plugins.mobilechallenge.android.feature)
+    alias(libs.plugins.mobilechallenge.android.library.compose)
+    alias(libs.plugins.paparazzi)
 }
 
 android {
@@ -8,9 +9,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:model"))
-    implementation(project(":core:ui"))
-    implementation(project(":core:common"))
+    implementation(projects.core.model)
+    implementation(projects.core.ui)
+    implementation(projects.core.common)
+
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.compose.bom)
 }

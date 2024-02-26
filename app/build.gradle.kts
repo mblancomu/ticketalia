@@ -1,9 +1,10 @@
 plugins {
-    id("mobilechallenge.android.application")
-    id("mobilechallenge.android.application.compose")
-    id("mobilechallenge.android.hilt")
     id("jacoco")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.mobilechallenge.android.application)
+    alias(libs.plugins.mobilechallenge.android.application.compose)
+    alias(libs.plugins.mobilechallenge.android.hilt)
+    alias(libs.plugins.mobilechallenge.android.application.jacoco)
+    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
@@ -56,14 +57,15 @@ android {
 
 dependencies {
 
-    implementation(project(":feature:events"))
-    implementation(project(":feature:venues"))
-    implementation(project(":feature:favorites"))
+    implementation(projects.feature.events)
+    implementation(projects.feature.venues)
+    implementation(projects.feature.favorites)
 
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:data"))
-    implementation(project(":core:ui"))
-    implementation(project(":core:common"))
+    implementation(projects.core.designsystem)
+    implementation(projects.core.data)
+    implementation(projects.core.ui)
+    implementation(projects.core.common)
+    implementation(projects.core.testing)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
@@ -77,10 +79,18 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.kt)
     implementation(libs.lottie.compose)
+    implementation(libs.kotlinx.coroutines.test)
+
+    kaptAndroidTest(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 
     androidTestImplementation(libs.androidx.navigation.testing)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.ext)
     androidTestImplementation(libs.accompanist.testharness)
+    androidTestImplementation(libs.androidx.compose.ui.test)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(projects.core.testing)
+
     debugImplementation(libs.androidx.compose.ui.testManifest)
 }

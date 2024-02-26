@@ -1,5 +1,5 @@
 plugins {
-    id("mobilechallenge.jvm.library")
+    alias(libs.plugins.mobilechallenge.jvm.library)
 }
 
 dependencies {

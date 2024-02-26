@@ -55,6 +55,15 @@ interface RetrofitNetworkApi {
         @Query("apikey") apikey: String
     ): NetworkPageEventsResponse
 
+    @GET("discovery/v2/events")
+    suspend fun getEventsByQuery(
+        @Query("page") page: String?,
+        @Query("size") size: String?,
+        @Query("sort") sort: String?,
+        @Query("keyword") keyword: String?,
+        @Query("apikey") apikey: String
+    ): NetworkPageEventsResponse
+
     @GET("discovery/v2/events/{id}")
     suspend fun getEventDetail(
         @Path("id") id: String?,

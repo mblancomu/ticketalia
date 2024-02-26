@@ -1,6 +1,6 @@
 plugins {
-    id("mobilechallenge.android.library")
-    id("mobilechallenge.android.hilt")
+    alias(libs.plugins.mobilechallenge.android.library)
+    alias(libs.plugins.mobilechallenge.android.hilt)
 }
 
 android {
@@ -8,13 +8,15 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.model)
+
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.paging.common)
     implementation(libs.androidx.paging.compose)
-    api(libs.kotlinx.coroutines.test)
 
-    implementation(project(":core:model"))
-    testImplementation(project(":core:testing"))
+    api(libs.kotlinx.coroutines.test)
     api(libs.junit4)
+
+    testImplementation(projects.core.testing)
 }
