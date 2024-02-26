@@ -1,6 +1,5 @@
 package com.manuelblanco.mobilechallenge.core.ui.components
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.PullRefreshState
@@ -21,16 +20,13 @@ fun TicketsPullRefresh(
     isRefreshing: Boolean,
     state: PullRefreshState
 ) {
-    Box {
-        PullRefreshIndicator(
-            modifier = modifier
-                .semantics { contentDescription = "Pull Refresh" },
-            refreshing = isRefreshing,
-            state = state,
-            contentColor = TicketsTheme.colors.primary
-        )
-    }
-
+    PullRefreshIndicator(
+        modifier = modifier
+            .semantics { contentDescription = "Pull Refresh" },
+        refreshing = isRefreshing,
+        state = state,
+        contentColor = TicketsTheme.colors.primary
+    )
 }
 
 
