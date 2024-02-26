@@ -1,11 +1,11 @@
 plugins {
-    id("mobilechallenge.android.library")
-    id("mobilechallenge.android.library.compose")
+    alias(libs.plugins.mobilechallenge.android.library)
+    alias(libs.plugins.mobilechallenge.android.library.compose)
 }
 
 android {
     defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.manuelblanco.mobilechallenge.core.testing.TicketsTestRunner"
     }
     namespace = "com.manuelblanco.mobilechallenge.core.designsystem"
 }
@@ -26,5 +26,5 @@ dependencies {
     implementation(libs.coil.kt.compose)
     implementation(libs.androidx.palette)
 
-    androidTestImplementation(project(":core:testing"))
+    androidTestImplementation(projects.core.testing)
 }

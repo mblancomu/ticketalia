@@ -23,6 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.manuelblanco.mobilechallenge.core.designsystem.component.TicketsOutlinedButton
@@ -122,23 +124,27 @@ private fun VenueDetailButtonsRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        info?.isNotBlank()?.let { isEnable ->
-            TicketsOutlinedButton(
-                modifier = Modifier
-                    .padding(end = TicketsTheme.dimensions.paddingMedium)
-                    .width(TicketsTheme.dimensions.buttonDetailWidth),
-                onClick = {
-                    onClickInfo()
-                },
-                label = stringResource(id = R.string.button_info),
-                enabled = isEnable,
-            )
+        info?.let { uri ->
+            if (uri.isNotEmpty()) {
+                TicketsOutlinedButton(
+                    modifier = Modifier
+                        .padding(end = TicketsTheme.dimensions.paddingMedium)
+                        .semantics { contentDescription = "Button Info" }
+                        .width(TicketsTheme.dimensions.buttonDetailWidth),
+                    onClick = {
+                        onClickInfo()
+                    },
+                    label = stringResource(id = R.string.button_info),
+                    enabled = true,
+                )
+            }
         }
-        uriLocation?.let { isEnable ->
-            if (isEnable.isNotBlank()) {
+        uriLocation?.let { uri ->
+            if (uri.isNotEmpty()) {
                 TicketsOutlinedButton(
                     modifier = Modifier
                         .padding(start = TicketsTheme.dimensions.paddingMedium)
+                        .semantics { contentDescription = "Button Location" }
                         .width(TicketsTheme.dimensions.buttonDetailWidth),
                     onClick = {
                         onClickLocation()

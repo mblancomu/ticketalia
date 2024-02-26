@@ -1,6 +1,6 @@
 plugins {
-    id("mobilechallenge.android.library")
-    id("mobilechallenge.android.hilt")
+    alias(libs.plugins.mobilechallenge.android.library)
+    alias(libs.plugins.mobilechallenge.android.hilt)
     id("kotlinx-serialization")
 }
 
@@ -21,11 +21,12 @@ android {
 
 dependencies {
 
-    implementation(project(":core:common"))
-    implementation(project(":core:database"))
-    implementation(project(":core:datastore"))
-    implementation(project(":core:model"))
-    implementation(project(":core:network"))
+    implementation(projects.core.common)
+    implementation(projects.core.database)
+    implementation(projects.core.datastore)
+    implementation(projects.core.model)
+    implementation(projects.core.network)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)
@@ -33,5 +34,5 @@ dependencies {
     implementation(libs.androidx.paging.runtime)
     implementation(libs.retrofit.core)
 
-    testImplementation(project(":core:testing"))
+    testImplementation(projects.core.testing)
 }

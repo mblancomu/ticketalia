@@ -1,6 +1,6 @@
 plugins {
-    id("mobilechallenge.android.library")
-    id("mobilechallenge.android.hilt")
+    alias(libs.plugins.mobilechallenge.android.library)
+    alias(libs.plugins.mobilechallenge.android.hilt)
 }
 
 android {
@@ -13,10 +13,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":core:model"))
+    implementation(projects.core.common)
+    implementation(projects.core.model)
+
     implementation(libs.androidx.dataStore.preferences)
     implementation(libs.kotlinx.coroutines.android)
 
-    testImplementation(project(":core:testing"))
+    testImplementation(projects.core.testing)
 }

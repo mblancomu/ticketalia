@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Scaffold
@@ -25,7 +24,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -35,6 +37,7 @@ import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import com.manuelblanco.mobilechallenge.core.testing.data.pagingVenues
 import com.manuelblanco.mobilechallenge.core.ui.components.ItemType
 import com.manuelblanco.mobilechallenge.core.ui.components.ShimmerEffectList
+import com.manuelblanco.mobilechallenge.core.ui.components.TicketsPullRefresh
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsSearchBar
 import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
@@ -61,6 +64,7 @@ fun VenuesScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
     val snackBarMessage = stringResource(R.string.global_error)
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     val pullRefreshState = rememberPullRefreshState(
         stateUi.isRefreshing,
@@ -94,7 +98,12 @@ fun VenuesScreen(
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = {
+            SnackbarHost(
+                modifier = Modifier.semantics { contentDescription = "SnackBar" },
+                hostState = snackbarHostState
+            )
+        },
         topBar = {
             TicketsTopBar(isCentered = true, searchBar = {
                 TicketsSearchBar(
@@ -106,11 +115,13 @@ fun VenuesScreen(
                             onSendEvent(VenuesContract.Event.Search(query = it))
                         }
                     },
-                    onCloseClicked = { searchQuery = "" },
+                    onCloseClicked = {
+                        searchQuery = ""
+                        keyboardController?.hide()
+                    },
                     onSearchClicked = {
-                        if (searchQuery.length > 3) {
-                            onSendEvent(VenuesContract.Event.Search(query = it))
-                        }
+                        onSendEvent(VenuesContract.Event.Search(query = it))
+                        keyboardController?.hide()
                     }
                 ) {
 
@@ -143,11 +154,10 @@ fun VenuesScreen(
                         onSendVenue = { onSendEvent(it) })
                 }
 
-                PullRefreshIndicator(
+                TicketsPullRefresh(
                     modifier = Modifier.align(Alignment.TopCenter),
-                    refreshing = stateUi.isRefreshing,
-                    state = pullRefreshState,
-                    contentColor = TicketsTheme.colors.primary
+                    isRefreshing = stateUi.isRefreshing,
+                    state = pullRefreshState
                 )
             }
         }
