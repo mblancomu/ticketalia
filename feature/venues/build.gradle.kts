@@ -20,7 +20,6 @@ dependencies {
     implementation(libs.accompanist.drawablepainter)
 
     testImplementation(projects.core.testing)
-    testImplementation(libs.hilt.android.testing)
 
     androidTestImplementation(libs.androidx.compose.ui.test)
     androidTestImplementation(projects.core.testing)

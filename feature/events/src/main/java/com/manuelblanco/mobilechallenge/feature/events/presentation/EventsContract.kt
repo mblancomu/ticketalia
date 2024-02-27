@@ -20,6 +20,7 @@ class EventsContract {
 
     data class State(
         val events: List<com.manuelblanco.mobilechallenge.core.model.data.Event>,
+        val keyword: String,
         val isLoading: Boolean,
         val isRefreshing: Boolean,
         val isError: Boolean,

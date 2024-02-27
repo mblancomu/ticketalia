@@ -15,9 +15,10 @@ class TicketsRemote @Inject constructor(
         page: String?,
         size: String?,
         sort: String?,
-        countryCode: String?
+        countryCode: String?,
+        keyword: String?,
     ): NetworkPageEventsResponse =
-        ticketsApi.getEvents(page, size, sort, countryCode, BuildConfig.CONSUMER_KEY)
+        ticketsApi.getEvents(page, size, sort, countryCode, keyword, BuildConfig.CONSUMER_KEY)
 
     override suspend fun getEventsByRadius(
         page: String?,

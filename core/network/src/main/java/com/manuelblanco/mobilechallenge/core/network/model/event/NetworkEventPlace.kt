@@ -8,11 +8,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NetworkEventPlace(
-    val name: String,
-    val city: NetworkCity,
-    val address: NetworkAddress,
-    val country: NetworkCountry,
-    val location: NetworkLocation
+    val name: String? = "",
+    val city: NetworkCity? = null,
+    val address: NetworkAddress? = null,
+    val country: NetworkCountry? = null,
+    val location: NetworkLocation? = null
 )
 
 fun NetworkEventPlace.toExternalPlace(): String {

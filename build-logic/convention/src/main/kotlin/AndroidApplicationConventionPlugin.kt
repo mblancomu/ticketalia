@@ -1,9 +1,6 @@
-
 import com.android.build.api.dsl.ApplicationExtension
 import com.manuelblanco.mobilechallenge.configureGradleManagedDevices
-import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.manuelblanco.mobilechallenge.configureKotlinAndroid
-import com.manuelblanco.mobilechallenge.configurePrintApksTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -23,9 +20,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 34
                 configureGradleManagedDevices(this)
-            }
-            extensions.configure<ApplicationAndroidComponentsExtension> {
-                configurePrintApksTask(this)
             }
         }
     }

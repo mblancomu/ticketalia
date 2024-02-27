@@ -39,6 +39,7 @@ class EventsViewModel @Inject constructor(
 
     override fun setInitialState() = EventsContract.State(
         events = emptyList(),
+        keyword = "",
         isLoading = false,
         isRefreshing = false,
         isError = false,
@@ -59,7 +60,7 @@ class EventsViewModel @Inject constructor(
             }
 
             is EventsContract.Event.Search -> {
-                searchByQuery(event.query)
+                refresh(event.query)
             }
 
             is EventsContract.Event.Paginate -> {
@@ -68,12 +69,12 @@ class EventsViewModel @Inject constructor(
         }
     }
 
-    private fun refresh() {
+    private fun refresh(keyword: String = "") {
         eventsJob?.cancel()
         canPaginate = false
-        setState { copy(page = 1, isRefreshing = true, events = emptyList()) }
+        setState { copy(page = 1, isRefreshing = true, events = emptyList(), keyword = keyword) }
         viewModelScope.launch {
-            val eventsRefreshDeferred = async { getEventsRemoteFirstUseCase(page = "1", true) }
+            val eventsRefreshDeferred = async { getEventsRemoteFirstUseCase(page = "1", keyword = keyword, true) }
             try {
                 awaitAll(eventsRefreshDeferred)
             } finally {
@@ -95,7 +96,8 @@ class EventsViewModel @Inject constructor(
                 getEventsOfflineFirstUseCase(
                     page = viewState.value.page.toString(),
                     limit = PAGE_SIZE,
-                    offset = (PAGE_SIZE * (viewState.value.page - 1))
+                    offset = (PAGE_SIZE * (viewState.value.page - 1)),
+                    keyword = viewState.value.keyword
                 ).asResult().collect { result ->
                     when (result) {
                         is Result.Error -> {
@@ -126,10 +128,6 @@ class EventsViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    private fun searchByQuery(query: String) {
-        //Needs to be implement
     }
 
     private fun addNewEvents(newEvents: List<Event>, oldEvents: List<Event>) {

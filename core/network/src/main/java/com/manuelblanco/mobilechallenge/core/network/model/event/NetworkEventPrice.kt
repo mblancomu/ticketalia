@@ -4,9 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NetworkEventPrice(
-    val currency: String,
-    val min: Double,
-    val max: Double
+    val currency: String? = "",
+    val min: Double? = 0.0,
+    val max: Double? = 0.0
 )
 
 fun NetworkEventPrice.toPriceRange(): String {

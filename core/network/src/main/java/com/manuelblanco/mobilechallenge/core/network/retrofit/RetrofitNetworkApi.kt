@@ -24,6 +24,7 @@ interface RetrofitNetworkApi {
         @Query("size") size: String?,
         @Query("sort") sort: String?,
         @Query("countryCode") countryCode: String?,
+        @Query("keyword") keyword: String?,
         @Query("apikey") apikey: String
     ): NetworkPageEventsResponse
 
@@ -52,15 +53,6 @@ interface RetrofitNetworkApi {
         @Query("size") size: String?,
         @Query("sort") sort: String?,
         @Query("city") city: String?,
-        @Query("apikey") apikey: String
-    ): NetworkPageEventsResponse
-
-    @GET("discovery/v2/events")
-    suspend fun getEventsByQuery(
-        @Query("page") page: String?,
-        @Query("size") size: String?,
-        @Query("sort") sort: String?,
-        @Query("keyword") keyword: String?,
         @Query("apikey") apikey: String
     ): NetworkPageEventsResponse
 
@@ -96,14 +88,14 @@ data class NetworkDetailResponse<T>(
 @Serializable
 data class NetworkPageEventsResponse(
     @SerialName("_embedded")
-    val items: NetworkEventList,
-    val page: NetworkPage
+    val items: NetworkEventList? = null,
+    val page: NetworkPage? = null
 )
 
 @Serializable
 data class NetworkPageVenuesResponse(
     @SerialName("_embedded")
-    val items: NetworkVenueList,
-    val page: NetworkPage
+    val items: NetworkVenueList? = null,
+    val page: NetworkPage? = null
 )
 

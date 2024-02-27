@@ -12,7 +12,8 @@ interface Remote {
         page: String?,
         size: String?,
         sort: String?,
-        countryCode: String?
+        countryCode: String?,
+        keyword: String?,
     ): NetworkPageEventsResponse
 
     suspend fun getEventsByRadius(

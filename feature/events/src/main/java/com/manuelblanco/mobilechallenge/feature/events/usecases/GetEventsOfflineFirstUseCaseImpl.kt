@@ -15,8 +15,9 @@ class GetEventsOfflineFirstUseCaseImpl @Inject constructor(
     override fun invoke(
         page: String,
         limit: Int,
-        offset: Int
+        offset: Int,
+        keyword: String
     ): Flow<List<Event>> =
-        eventsRepository.getEventsFromCache(page, limit, offset)
+        eventsRepository.getEventsFromCache(page, limit, offset, keyword)
 
 }

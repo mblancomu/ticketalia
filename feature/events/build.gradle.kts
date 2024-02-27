@@ -10,18 +10,15 @@ android {
 
 dependencies {
     implementation(projects.core.model)
-    implementation(projects.core.testing)
     implementation(projects.core.domain)
+    implementation(projects.core.testing)
 
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.compose.bom)
     implementation(libs.androidx.compose.material)
-    implementation(libs.kotlinx.serialization.json)
 
     debugImplementation(libs.androidx.compose.ui.testManifest)
 
-    testImplementation(libs.mockk)
-    testImplementation(libs.turbine)
     testImplementation(projects.core.testing)
 
     androidTestImplementation(projects.core.testing)

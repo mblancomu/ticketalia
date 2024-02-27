@@ -201,6 +201,7 @@ fun EventsScreenPreviewPopulated(
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = events,
+                    keyword = "",
                     isLoading = false,
                     isRefreshing = false,
                     isError = false

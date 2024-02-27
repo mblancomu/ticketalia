@@ -9,9 +9,9 @@ import com.manuelblanco.mobilechallenge.core.network.retrofit.NetworkPageVenuesR
 import com.manuelblanco.mobilechallenge.core.data.util.getImageUrlByRatio
 
 fun NetworkPageVenuesResponse.asVenueEntities(): List<VenueEntity> {
-    val page = this.page.number
+    val page = this.page?.number
 
-    return this.items.venues.map {
+    return this.items?.venues?.map {
         VenueEntity(
             id = it.id,
             name = it.name ?: "",
@@ -30,5 +30,5 @@ fun NetworkPageVenuesResponse.asVenueEntities(): List<VenueEntity> {
             page = page ?: 0,
             url = it.url ?: ""
         )
-    }
+    } ?: emptyList()
 }

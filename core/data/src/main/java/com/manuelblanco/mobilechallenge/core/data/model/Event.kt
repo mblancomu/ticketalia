@@ -11,9 +11,9 @@ import com.manuelblanco.mobilechallenge.core.network.retrofit.NetworkPageEventsR
 import com.manuelblanco.mobilechallenge.core.data.util.getImageUrlByRatio
 
 fun NetworkPageEventsResponse.asEventEntities(): List<EventEntity> {
-    val page = this.page.number
+    val page = this.page?.number
 
-    return this.items.events.map {
+    return this.items?.events?.map {
         EventEntity(
             id = it.id,
             name = it.name ?: "",
@@ -40,5 +40,5 @@ fun NetworkPageEventsResponse.asEventEntities(): List<EventEntity> {
             prices = it.priceRanges?.firstOrNull()?.toPriceRange() ?: "",
             page = page ?: 0
         )
-    }
+    } ?: emptyList()
 }

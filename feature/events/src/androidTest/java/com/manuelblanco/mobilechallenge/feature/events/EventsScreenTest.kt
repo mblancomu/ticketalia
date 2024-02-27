@@ -1,7 +1,6 @@
 package com.manuelblanco.mobilechallenge.feature.events
 
 import androidx.activity.ComponentActivity
-import androidx.compose.material3.Text
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.hasScrollToNodeAction
 import androidx.compose.ui.test.hasText
@@ -11,11 +10,9 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToNode
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
-import com.manuelblanco.mobilechallenge.core.testing.data.pagingVenues
 import com.manuelblanco.mobilechallenge.feature.events.composables.EventsScreen
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
 
@@ -34,6 +31,7 @@ class EventsScreenTest {
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = emptyList(),
+                    keyword = "",
                     isError = false,
                     isRefreshing = false,
                     isLoading = true
@@ -57,6 +55,7 @@ class EventsScreenTest {
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = emptyList(),
+                    keyword = "",
                     isError = false,
                     isRefreshing = true,
                     isLoading = true
@@ -80,6 +79,7 @@ class EventsScreenTest {
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = emptyList(),
+                    keyword = "",
                     isError = true,
                     isRefreshing = false,
                     isLoading = false
@@ -102,49 +102,50 @@ class EventsScreenTest {
             .assertExists()
     }
 
-        @Test
-        fun showListOfVenues_whenFinishTheDownload() {
-            composeTestRule.setContent {
-                EventsScreen(
-                    stateUi = EventsContract.State(
-                        events = eventsFromCacheList,
-                        isError = false,
-                        isRefreshing = false,
-                        isLoading = false
-                    ),
-                    effect = flow {},
-                    onSendEvent = {},
-                    onNavigationRequested = {}
-                )
-            }
+    @Test
+    fun showListOfVenues_whenFinishTheDownload() {
+        composeTestRule.setContent {
+            EventsScreen(
+                stateUi = EventsContract.State(
+                    events = eventsFromCacheList,
+                    keyword = "",
+                    isError = false,
+                    isRefreshing = false,
+                    isLoading = false
+                ),
+                effect = flow {},
+                onSendEvent = {},
+                onNavigationRequested = {}
+            )
+        }
 
-            composeTestRule
-                .onAllNodes(hasScrollToNodeAction())
-                .onFirst()
+        composeTestRule
+            .onAllNodes(hasScrollToNodeAction())
+            .onFirst()
 
-            composeTestRule
-                .onNodeWithText(
-                    eventsFromCacheList[2].name,
-                    substring = true,
-                )
-                .assertExists()
-                .assertHasClickAction()
+        composeTestRule
+            .onNodeWithText(
+                eventsFromCacheList[2].name,
+                substring = true,
+            )
+            .assertExists()
+            .assertHasClickAction()
 
-            composeTestRule.onNode(hasScrollToNodeAction())
-                .performScrollToNode(
-                    hasText(
-                        eventsFromCacheList[3].name,
-                        substring = true,
-                    ),
-                )
-
-            composeTestRule
-                .onNodeWithText(
+        composeTestRule.onNode(hasScrollToNodeAction())
+            .performScrollToNode(
+                hasText(
                     eventsFromCacheList[3].name,
                     substring = true,
-                )
-                .assertExists()
-                .assertHasClickAction()
-        }
+                ),
+            )
+
+        composeTestRule
+            .onNodeWithText(
+                eventsFromCacheList[3].name,
+                substring = true,
+            )
+            .assertExists()
+            .assertHasClickAction()
+    }
 
 }

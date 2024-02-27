@@ -23,13 +23,15 @@ class EventsRepositoryImpl @Inject constructor(
 
     override suspend fun getEventsFromRemote(
         page: String,
+        keyword: String,
         isRefreshing: Boolean
     ) {
         api.getEvents(
             page = page,
             size = PAGE_SIZE,
             sort = SORT_BY,
-            countryCode = COUNTRY_CODE
+            countryCode = COUNTRY_CODE,
+            keyword = keyword
         ).also {
             if (isRefreshing) {
                 cache.invalidateCache()
@@ -41,13 +43,15 @@ class EventsRepositoryImpl @Inject constructor(
     override fun getEventsFromCache(
         page: String,
         limit: Int,
-        offset: Int
+        offset: Int,
+        keyword: String
     ): Flow<List<Event>> =
         cache.getEventsFromCache(limit, offset)
             .map { event -> event.map { it::asExternalModel.invoke() } }.onEach {
                 if (it.isEmpty()) {
                     getEventsFromRemote(
-                        page = page, isRefreshing = false
+                        page = page, isRefreshing = false,
+                        keyword = keyword
                     )
                 }
             }
