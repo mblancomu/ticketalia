@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import com.manuelblanco.mobilechallenge.core.model.data.Cities
 import com.manuelblanco.mobilechallenge.core.model.data.EventsFilter
 import com.manuelblanco.mobilechallenge.core.model.data.SortType
@@ -216,6 +217,57 @@ class EventsScreenTest {
                 "Modal Bottom Filters"
             )
             .assertDoesNotExist()
+    }
+
+    @Test
+    fun clearSearch_whenSearchViewHasTextAndClickCloseIcon_clearSearchView() {
+        composeTestRule.setContent {
+            EventsScreen(
+                stateUi = EventsContract.State(
+                    events = emptyList(),
+                    filters = EventsFilter(
+                        sortType = SortType.NONE,
+                        city = Cities.ALL.city
+                    ),
+                    keyword = "",
+                    isError = false,
+                    isRefreshing = false,
+                    isSearching = false,
+                    isLoading = false
+                ),
+                effect = flow {},
+                onSendEvent = {},
+                onNavigationRequested = {}
+            )
+        }
+
+        composeTestRule
+            .onNodeWithContentDescription(
+                "Search View",
+            )
+            .assertExists()
+            .performTextInput("Some")
+
+        composeTestRule
+            .onNodeWithContentDescription(
+                "Icon Button Search Bar",
+            )
+            .assertExists()
+
+
+        composeTestRule
+            .onNodeWithContentDescription(
+                "Icon Clear"
+            )
+            .assertExists()
+            .performClick()
+
+        composeTestRule
+            .onNodeWithContentDescription(
+                "Icon Filter"
+            )
+            .assertExists()
+            .performClick()
     }
 
 }

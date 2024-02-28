@@ -177,6 +177,7 @@ fun EventsScreen(
                 ) {
 
                     if (isShimmerVisible(
+                            isEmpty = stateUi.events.isEmpty(),
                             isLoaded = isDataLoaded,
                             isRefreshing = stateUi.isRefreshing,
                             isSearching = stateUi.isSearching
@@ -229,11 +230,12 @@ fun EventsScreen(
 }
 
 private fun isShimmerVisible(
+    isEmpty: Boolean,
     isLoaded: Boolean,
     isRefreshing: Boolean,
     isSearching: Boolean
 ): Boolean =
-    !isLoaded || isRefreshing || isSearching
+    isEmpty && !isLoaded || isRefreshing || isSearching
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview
