@@ -14,6 +14,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 
 /**
@@ -41,7 +43,7 @@ fun <T> EndlessLazyColumn(
     }
 
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.semantics { contentDescription = "Lazy List" },
         state = listState,
         contentPadding = PaddingValues(
             start = TicketsTheme.dimensions.paddingMedium,

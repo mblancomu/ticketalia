@@ -1,9 +1,7 @@
-
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.LibraryExtension
 import com.manuelblanco.mobilechallenge.configureGradleManagedDevices
 import com.manuelblanco.mobilechallenge.configureKotlinAndroid
-import com.manuelblanco.mobilechallenge.configurePrintApksTask
 import com.manuelblanco.mobilechallenge.disableUnnecessaryAndroidTests
 import com.manuelblanco.mobilechallenge.libs
 import org.gradle.api.Plugin
@@ -29,7 +27,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 configureGradleManagedDevices(this)
             }
             extensions.configure<LibraryAndroidComponentsExtension> {
-                configurePrintApksTask(this)
                 disableUnnecessaryAndroidTests(target)
             }
             configurations.configureEach {

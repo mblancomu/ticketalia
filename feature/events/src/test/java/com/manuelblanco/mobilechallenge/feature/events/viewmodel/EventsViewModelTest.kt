@@ -2,6 +2,9 @@ package com.manuelblanco.mobilechallenge.feature.events.viewmodel
 
 import com.manuelblanco.mobilechallenge.core.common.result.Result
 import com.manuelblanco.mobilechallenge.core.common.result.asResult
+import com.manuelblanco.mobilechallenge.core.model.data.Cities
+import com.manuelblanco.mobilechallenge.core.model.data.EventsFilter
+import com.manuelblanco.mobilechallenge.core.model.data.SortType
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
 import com.manuelblanco.mobilechallenge.core.testing.repository.viewmodel.TestEventsRepository
 import com.manuelblanco.mobilechallenge.core.testing.utils.MainCoroutineRule
@@ -65,8 +68,14 @@ class EventsViewModelTest {
             assertEquals(
                 EventsContract.State(
                     events = emptyList(),
+                    keyword = "",
+                    filters = EventsFilter(
+                        sortType = SortType.NONE,
+                        city = Cities.ALL.city
+                    ),
                     isLoading = false,
                     isRefreshing = false,
+                    isSearching = false,
                     isError = false,
                     page = 1
                 ),
@@ -83,7 +92,7 @@ class EventsViewModelTest {
             eventsRepository.sendCacheEvents(eventsFromCacheList)
 
             val eventResult =
-                eventsRepository.getEventsFromCache(page = "1", limit = 0, offset = 4)
+                eventsRepository.getEventsFromCache(page = "1", limit = 0, offset = 4, keyword = "")
                     .asResult()
                     .filter { it is Result.Success }.first()
 

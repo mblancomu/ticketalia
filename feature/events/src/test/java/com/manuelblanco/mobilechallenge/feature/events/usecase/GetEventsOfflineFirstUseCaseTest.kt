@@ -25,7 +25,7 @@ class GetEventsOfflineFirstUseCaseTest {
 
     @Test
     fun `Get events from cache, not empty list of events return`(): Unit = runBlocking {
-        val events = getEventsOfflineFirstUseCase(page = "1", limit = 0, offset = 4)
+        val events = getEventsOfflineFirstUseCase(page = "1", limit = 0, offset = 4, keyword = "")
         events.collect { result ->
             assertTrue(result.isNotEmpty())
         }
@@ -34,7 +34,8 @@ class GetEventsOfflineFirstUseCaseTest {
     @Test
     fun `Get events from cache, first event in the list is correct as expected`(): Unit =
         runBlocking {
-            val events = getEventsOfflineFirstUseCase(page = "1", limit = 0, offset = 4)
+            val events =
+                getEventsOfflineFirstUseCase(page = "1", limit = 0, offset = 4, keyword = "")
             events.collect { result ->
                 assertTrue(result.first().id == "1")
             }
@@ -43,7 +44,8 @@ class GetEventsOfflineFirstUseCaseTest {
     @Test
     fun `Get events from cache, last event in the list is correct as expected`(): Unit =
         runBlocking {
-            val events = getEventsOfflineFirstUseCase(page = "1", limit = 0, offset = 4)
+            val events =
+                getEventsOfflineFirstUseCase(page = "1", limit = 0, offset = 4, keyword = "")
             events.collect { result ->
                 assertTrue(result.last().id == "4")
             }
@@ -52,7 +54,8 @@ class GetEventsOfflineFirstUseCaseTest {
     @Test
     fun `Get events from cache, offset should be minor than list size, return an empty list`(): Unit =
         runBlocking {
-            val events = getEventsOfflineFirstUseCase(page = "1", limit = 0, offset = 6)
+            val events =
+                getEventsOfflineFirstUseCase(page = "1", limit = 0, offset = 6, keyword = "")
             events.collect { result ->
                 assertTrue(result.isEmpty())
             }

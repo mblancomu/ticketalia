@@ -13,6 +13,7 @@ data class Event(
     val country: String,
     val segment: String,
     val genres: String,
-    val prices: String
+    val price: Double,
+    val currency: String
 )
 

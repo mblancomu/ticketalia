@@ -28,6 +28,7 @@ include(":core:ui")
 include(":core:model")
 include(":core:testing")
 include(":core:common")
+
 include(":feature:events")
 include(":feature:venues")
 include(":feature:favorites")

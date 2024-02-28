@@ -10,7 +10,7 @@ import javax.inject.Inject
 class GetEventsRemoteFirstUseCaseImpl @Inject constructor(
     private val eventsRepository: EventsRepository
 ) : GetEventsRemoteFirstUseCase {
-    override suspend fun invoke(page: String, isRefreshing: Boolean) =
-        eventsRepository.getEventsFromRemote(page, isRefreshing)
+    override suspend fun invoke(page: String, keyword: String, isRefreshing: Boolean) =
+        eventsRepository.getEventsFromRemote(page, keyword, isRefreshing)
 
 }

@@ -16,6 +16,8 @@ data class TicketsDimensions(
     val paddingMediumLarge: Dp = 10.dp,
     val paddingMediumDouble: Dp = 16.dp,
     val paddingLarge: Dp = 24.dp,
+    val paddingXLarge: Dp = 32.dp,
+    val paddingSuperLarge: Dp = 64.dp,
     val bottomBarHeight: Dp = 64.dp,
     val bottomBarItemHeight: Dp = 40.dp,
     val topAppBarHeight: Dp = 64.dp,
@@ -31,7 +33,10 @@ data class TicketsDimensions(
     val progressBoxWidth: Dp = 200.dp,
     val progressBoxCorners: Dp = 40.dp,
     val iconSizeSearchBar: Dp = 24.dp,
-    val searchBarHeight: Dp = 48.dp
+    val searchBarHeight: Dp = 48.dp,
+    val buttonDefaultHeight: Dp = 48.dp,
+    val splashAnimSize: Dp = 400.dp,
+    val buttonSpaceHorizontal: Dp = 40.dp
 )
 
 internal val LocalDimensions = staticCompositionLocalOf { TicketsDimensions() }

@@ -24,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,8 +35,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
+import com.manuelblanco.mobilechallenge.core.model.data.Cities
 import com.manuelblanco.mobilechallenge.core.model.data.Event
+import com.manuelblanco.mobilechallenge.core.model.data.EventsFilter
+import com.manuelblanco.mobilechallenge.core.model.data.SortType
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
+import com.manuelblanco.mobilechallenge.core.ui.components.EmptyListScreen
 import com.manuelblanco.mobilechallenge.core.ui.components.EndlessLazyColumn
 import com.manuelblanco.mobilechallenge.core.ui.components.ErrorRow
 import com.manuelblanco.mobilechallenge.core.ui.components.ItemType
@@ -47,10 +52,14 @@ import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
 import com.manuelblanco.mobilechallenge.feature.events.R
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 /**
  * Created by Manuel Blanco Murillo on 27/6/23.
@@ -70,13 +79,19 @@ fun EventsScreen(
     val snackBarMessage = stringResource(R.string.global_error)
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    var showFilters by remember { mutableStateOf(false) }
+
+    val coroutineScope = CoroutineScope(Dispatchers.Main)
+
+    var searchJob: Job? = null
+
     val listState = rememberLazyListState()
     val pullRefreshState =
         rememberPullRefreshState(
             stateUi.isRefreshing,
             { onSendEvent(EventsContract.Event.Refresh) })
     var isDataLoaded by remember { mutableStateOf(false) }
-    var searchQuery by remember { mutableStateOf("") }
+    var searchQuery by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(SIDE_EFFECTS_KEY) {
         effect?.onEach { effect ->
@@ -99,6 +114,16 @@ fun EventsScreen(
         }
     }
 
+    if (showFilters) {
+        EventsFilterModal(
+            onApply = {
+                onSendEvent(EventsContract.Event.Filter(it))
+                showFilters = false
+            },
+            onDismiss = { showFilters = false }
+        )
+    }
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(
@@ -113,20 +138,27 @@ fun EventsScreen(
                     placeHolder = stringResource(id = R.string.search_events),
                     onTextChange = {
                         searchQuery = it
-                        onSendEvent(EventsContract.Event.Search(query = it))
-
+                        searchJob?.cancel()
+                        searchJob = coroutineScope.launch {
+                            searchQuery.let { query ->
+                                kotlinx.coroutines.delay(1000L)
+                                onSendEvent(EventsContract.Event.Search(query = query))
+                            }
+                        }
                     },
                     onCloseClicked = {
+                        if (searchQuery.isNotEmpty()) {
+                            onSendEvent(EventsContract.Event.Search(query = ""))
+                        }
                         searchQuery = ""
                         keyboardController?.hide()
                     },
                     onSearchClicked = {
                         onSendEvent(EventsContract.Event.Search(query = it))
                         keyboardController?.hide()
-                    }
-                ) {
-
-                }
+                    },
+                    onFilterClicked = { showFilters = true }
+                )
             })
         },
         content = {
@@ -145,12 +177,21 @@ fun EventsScreen(
                 ) {
 
                     if (isShimmerVisible(
-                            stateUi.events.isEmpty(),
-                            isDataLoaded,
-                            stateUi.isRefreshing
+                            isLoaded = isDataLoaded,
+                            isRefreshing = stateUi.isRefreshing,
+                            isSearching = stateUi.isSearching
                         )
                     ) {
                         ShimmerEffectList(type = ItemType.EVENT)
+                    } else {
+                        if (stateUi.events.isEmpty()) {
+                            EmptyListScreen(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(TicketsTheme.colors.background),
+                                title = stringResource(id = R.string.no_events_found)
+                            )
+                        }
                     }
 
                     EndlessLazyColumn(
@@ -187,8 +228,12 @@ fun EventsScreen(
     )
 }
 
-private fun isShimmerVisible(isEmpty: Boolean, isLoaded: Boolean, isRefreshing: Boolean): Boolean =
-    isEmpty && !isLoaded || isRefreshing
+private fun isShimmerVisible(
+    isLoaded: Boolean,
+    isRefreshing: Boolean,
+    isSearching: Boolean
+): Boolean =
+    !isLoaded || isRefreshing || isSearching
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview
@@ -201,7 +246,10 @@ fun EventsScreenPreviewPopulated(
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = events,
+                    filters = EventsFilter(sortType = SortType.NONE, city = Cities.ALL.city),
+                    keyword = "",
                     isLoading = false,
+                    isSearching = false,
                     isRefreshing = false,
                     isError = false
                 ),

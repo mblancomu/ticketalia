@@ -25,7 +25,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
-    implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.compose.material)
 
     api(libs.androidx.compose.foundation)

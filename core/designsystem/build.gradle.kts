@@ -12,6 +12,10 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.coil.kt.compose)
+    implementation(libs.androidx.palette)
+
     api(libs.androidx.compose.foundation)
     api(libs.androidx.compose.foundation.layout)
     api(libs.androidx.compose.material.iconsExtended)
@@ -21,10 +25,6 @@ dependencies {
     api(libs.androidx.compose.ui.util)
 
     debugApi(libs.androidx.compose.ui.tooling)
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.coil.kt.compose)
-    implementation(libs.androidx.palette)
 
     androidTestImplementation(projects.core.testing)
 }

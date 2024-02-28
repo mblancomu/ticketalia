@@ -3,6 +3,7 @@ package com.manuelblanco.mobilechallenge.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.manuelblanco.mobilechallenge.core.common.utils.convertToDouble
 import com.manuelblanco.mobilechallenge.core.common.utils.stringToLocation
 import com.manuelblanco.mobilechallenge.core.model.data.Event
 
@@ -28,7 +29,9 @@ data class EventEntity(
     @ColumnInfo(defaultValue = "")
     val genres: String,
     @ColumnInfo(defaultValue = "")
-    val prices: String,
+    val price: String,
+    @ColumnInfo(defaultValue = "")
+    val currency: String,
     @ColumnInfo(name = "page")
     var page: Int,
 )
@@ -46,6 +49,7 @@ fun EventEntity.asExternalModel() = Event(
     country = country,
     segment = segment,
     genres = genres,
-    prices = prices
+    price = price.convertToDouble(),
+    currency = currency
 )
 

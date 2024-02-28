@@ -12,7 +12,6 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.model)
     implementation(projects.core.common)
-    implementation(projects.core.designsystem)
 
     implementation(libs.androidx.paging.common)
     implementation(libs.androidx.paging.compose)
@@ -30,6 +29,8 @@ dependencies {
     api(libs.hilt.android.testing)
     api(libs.junit4)
     api(libs.kotlinx.coroutines.test)
+    api(libs.androidx.navigation.testing)
+    api(libs.androidx.test.ext)
 
     debugApi(libs.androidx.compose.ui.testManifest)
 }

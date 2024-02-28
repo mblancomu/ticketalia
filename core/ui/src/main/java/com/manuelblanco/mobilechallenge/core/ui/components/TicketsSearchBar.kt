@@ -25,6 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,6 +56,7 @@ fun TicketsSearchBar(
         OutlinedTextField(
             modifier = Modifier
                 .background(color = TicketsTheme.colors.secondary)
+                .semantics { contentDescription = "Search View" }
                 .fillMaxWidth()
                 .height(TicketsTheme.dimensions.searchBarHeight),
             value = text,
@@ -78,7 +81,9 @@ fun TicketsSearchBar(
                 }
             },
             trailingIcon = {
-                IconButton(onClick = {
+                IconButton(
+                    modifier = Modifier.semantics { contentDescription = "Icon Button Search Bar" },
+                    onClick = {
                     if (text.isNotBlank()) {
                         onCloseClicked()
                     } else {
@@ -88,14 +93,14 @@ fun TicketsSearchBar(
                     if (text.isNotBlank()) {
                         Icon(
                             imageVector = Icons.Default.Clear,
-                            contentDescription = null,
+                            contentDescription = "Icon Clear",
                             tint = TicketsTheme.colors.onSecondary,
                             modifier = Modifier.size(TicketsTheme.dimensions.iconSizeSearchBar)
                         )
                     } else {
                         Icon(
                             imageVector = Icons.Default.FilterList,
-                            contentDescription = null,
+                            contentDescription = "Icon Filter",
                             tint = TicketsTheme.colors.onSecondary,
                             modifier = Modifier.size(TicketsTheme.dimensions.iconSizeSearchBar)
                         )

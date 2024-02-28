@@ -17,6 +17,8 @@ HOST_URL="https://app.ticketmaster.com/"
 CONSUMER_KEY=""
 CONSUMER_SECRET=""
 
+***Attention: You need an API Key to run the project. Head to https://developer-acct.ticketmaster.com/user/login to get one.***
+
 ## References
 
 For the creation of this project I have based myself on a mixed solution of modularization by layers and features, as recommended by Android in its latest articles(https://www.youtube.com/watch?v=16SwTvzDO0A).
@@ -39,7 +41,7 @@ The following image shows the basic structure of the app:
 - Compose for the views
 - Flow/Coroutines
 - Kotlin DSL
-- Testing with: Robolectric, Turbine, Roborazzi, Paparazzi & JUnit4
+- Testing with: Paparazzi, Compose UI Test, Coroutine Test & JUnit4
 
 ## Technical decisions
 
@@ -58,7 +60,7 @@ Below is an informative table about the content of the different modules:
 | common       | Utilities for the rest of the modules (extensions, converters, etc.)                                                                                   | core          |
 | data         | Repositories, mediator for Pagign3, data models and utils                                                                                              | core          |
 | database     | All the information regarding the ddbb (Daos, models, useful)                                                                                          | core          |
-| datastore    | Contains the share preferences used in the app                                                                                                         | core          |
+| datastore    | Contains the share preferences used in the app for filter                                                                                              | core          |
 | designsystem | Everything related to the app's design system (theme, colors, typography, etc.), with custom components (buttons, background, etc.).                   | core          |
 | domain       | Interface of the app use cases (business logic)                                                                                                        | core          |
 | model        | Business logic models that will be used in the presentation layer of the app                                                                           | core          |
@@ -103,21 +105,29 @@ Given the importance of design systems in an app with Compose, I have generated 
 
 ##### Datastore:
 
-I had generated the datastore module with the idea of putting a button to change the Theme (dark/light) on hot and store its variable there, but again I couldn't finish it due to lack of time. It only remains to put the button and call the method to save that boolean on the dark theme.
+I had generated the datastore module with the idea of putting here the filter options in the future, but again I couldn't finish it due to lack of time. It only remains create the flow for call the variables.
+
+##### Search & Filter Options:
+
+I have created some filtering options and a Search to give more functionality to the app. Some of these implementations could be better implemented later.
 
 ## Improvements to be made in this project
 
 Among the improvements that can be made to this (unfinished) project are:
 
-- Creation of the favorites feature, following the flow of the other features..
-- Improve the logic of pagination and saving information locally in the events section.
+- Creation of the favorites feature, following the flow of the other features.
+- Move an recreate modules with the different info (some modules could be kotlin/java, not Android).
 - Improve animations.
-- New features like Search, Filter...on the lists.
+- Search & Filter in Venues section, now is only available in Events.
+- More tests for Search & Filter Options.
+- Error Handling (now only exist an error by default).
 
 ## Reflections
 
 Although the architecture followed in the project is based on the recommendations by Android, and especially in its example project `Now in Android`, there are still certain things that can be improved, because even in its project we see some deficiencies, such as the dependency between their features, or having the implementation of the use cases in the domain module, when in reality they contain information regarding the presentation layer. In this project I have tried to solve these deficiencies, first with the global navigation of the app (to avoid dependencies between features) and then by abstracting the use cases with their interfaces in the domain module, with their implementations in the domain module. corresponding feature.
 
 Perhaps this architecture can be improved even further to make it more scalable, and perhaps one option would be to move everything that is needed per feature to those modules, in order to be able to work as independently as possible by each team in a specific feature, without the need to modify other modules.
+
+Paparazzi has a lot of potential, but testing a screen with animations can be quite hard. I can say the same about Paging, it is quite difficult to test the listings of this library, they are too rigid.
 
 Finally, in this app I have mixed a slightly different MVI in some features, because with the use of Paging3, it is the library itself that manages the states of that list, so it did not make much sense to apply a State for the list. screen, since it all boils down to Paging's management of it.
