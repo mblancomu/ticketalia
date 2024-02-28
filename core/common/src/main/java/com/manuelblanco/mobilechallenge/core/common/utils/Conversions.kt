@@ -31,11 +31,25 @@ fun formattedTime(dateTime: String?): String {
     dateTime?.let {
         try {
             val time = ZonedDateTime.parse(it)
-            formatted = "${time.hour}:${time.minute}"
+            val minutes = if (time.minute == 0) "00" else time.minute
+            formatted = "${time.hour}:${minutes}"
         } catch (_: Exception) {
         }
 
         return formatted
     }
     return ""
+}
+
+fun String.convertToDouble(): Double {
+    return if (isNullOrBlank() || isEmpty() || isNullOrEmpty()
+    ) {
+        0.0
+    } else {
+        try {
+            toDouble()
+        } catch (e: Exception) {
+            0.0
+        }
+    }
 }

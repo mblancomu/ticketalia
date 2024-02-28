@@ -12,7 +12,6 @@ import com.manuelblanco.mobilechallenge.core.database.dao.VenueDao
 import com.manuelblanco.mobilechallenge.core.database.model.asExternalModel
 import com.manuelblanco.mobilechallenge.core.model.data.Venue
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

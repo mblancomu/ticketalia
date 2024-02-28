@@ -4,11 +4,12 @@ import com.manuelblanco.mobilechallenge.core.common.utils.locationToString
 import com.manuelblanco.mobilechallenge.core.database.model.EventEntity
 import com.manuelblanco.mobilechallenge.core.model.data.Location
 import com.manuelblanco.mobilechallenge.core.network.model.event.toExternalPlace
-import com.manuelblanco.mobilechallenge.core.network.model.event.toPriceRange
+import com.manuelblanco.mobilechallenge.core.network.model.event.toPrice
 import com.manuelblanco.mobilechallenge.core.network.model.global.toExternalModel
 import com.manuelblanco.mobilechallenge.core.network.model.venue.toPlace
 import com.manuelblanco.mobilechallenge.core.network.retrofit.NetworkPageEventsResponse
 import com.manuelblanco.mobilechallenge.core.data.util.getImageUrlByRatio
+import com.manuelblanco.mobilechallenge.core.network.model.event.toCurrency
 
 fun NetworkPageEventsResponse.asEventEntities(): List<EventEntity> {
     val page = this.page?.number
@@ -37,7 +38,8 @@ fun NetworkPageEventsResponse.asEventEntities(): List<EventEntity> {
                 ?: "" else it.place?.country?.name ?: "",
             segment = it.genre?.firstOrNull()?.segment?.name ?: "",
             genres = it.genre?.firstOrNull()?.genre?.name ?: "",
-            prices = it.priceRanges?.firstOrNull()?.toPriceRange() ?: "",
+            price = it.priceRanges?.firstOrNull()?.toPrice() ?: "",
+            currency = it.priceRanges?.firstOrNull()?.toCurrency() ?: "",
             page = page ?: 0
         )
     } ?: emptyList()

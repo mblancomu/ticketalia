@@ -62,7 +62,7 @@ fun EventDetailContent(
         ) {
             HeaderTitleDetail(title = eventTitle)
             EventDetailAnimatedRow(
-                event?.prices.toString(),
+                "${event?.price} ${event?.currency}",
                 event?.segment.toString(),
                 event?.genres.toString()
             )

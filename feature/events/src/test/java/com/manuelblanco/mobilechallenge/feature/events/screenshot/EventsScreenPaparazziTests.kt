@@ -4,6 +4,9 @@ import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
+import com.manuelblanco.mobilechallenge.core.model.data.Cities
+import com.manuelblanco.mobilechallenge.core.model.data.EventsFilter
+import com.manuelblanco.mobilechallenge.core.model.data.SortType
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
 import com.manuelblanco.mobilechallenge.feature.events.composables.EventsScreen
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
@@ -32,8 +35,14 @@ class EventsScreenPaparazziTests {
                 EventsScreen(
                     stateUi = EventsContract.State(
                         events = eventsFromCacheList,
+                        keyword = "",
+                        filters = EventsFilter(
+                            sortType = SortType.NONE,
+                            city = Cities.ALL.city
+                        ),
                         isLoading = false,
                         isRefreshing = false,
+                        isSearching = false,
                         isError = false,
                         page = 1
                     ),
@@ -52,8 +61,14 @@ class EventsScreenPaparazziTests {
                 EventsScreen(
                     stateUi = EventsContract.State(
                         events = emptyList(),
+                        keyword = "",
+                        filters = EventsFilter(
+                            sortType = SortType.NONE,
+                            city = Cities.ALL.city
+                        ),
                         isLoading = false,
                         isRefreshing = false,
+                        isSearching = false,
                         isError = false
                     ),
                     effect = flowOf(EventsContract.Effect.DataWasLoaded),
@@ -71,8 +86,14 @@ class EventsScreenPaparazziTests {
                 EventsScreen(
                     stateUi = EventsContract.State(
                         events = emptyList(),
+                        keyword = "",
+                        filters = EventsFilter(
+                            sortType = SortType.NONE,
+                            city = Cities.ALL.city
+                        ),
                         isLoading = true,
                         isRefreshing = false,
+                        isSearching = false,
                         isError = false
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
@@ -90,8 +111,14 @@ class EventsScreenPaparazziTests {
                 EventsScreen(
                     stateUi = EventsContract.State(
                         events = emptyList(),
+                        keyword = "",
+                        filters = EventsFilter(
+                            sortType = SortType.NONE,
+                            city = Cities.ALL.city
+                        ),
                         isLoading = false,
                         isRefreshing = false,
+                        isSearching = false,
                         isError = true
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
@@ -109,8 +136,14 @@ class EventsScreenPaparazziTests {
                 EventsScreen(
                     stateUi = EventsContract.State(
                         events = eventsFromCacheList,
+                        keyword = "",
+                        filters = EventsFilter(
+                            sortType = SortType.NONE,
+                            city = Cities.ALL.city
+                        ),
                         isLoading = false,
                         isRefreshing = true,
+                        isSearching = false,
                         isError = false
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),

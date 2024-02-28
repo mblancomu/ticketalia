@@ -3,12 +3,14 @@ package com.manuelblanco.mobilechallenge.feature.events
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.hasScrollToNodeAction
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performClick
+import com.manuelblanco.mobilechallenge.core.model.data.Cities
+import com.manuelblanco.mobilechallenge.core.model.data.EventsFilter
+import com.manuelblanco.mobilechallenge.core.model.data.SortType
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
 import com.manuelblanco.mobilechallenge.feature.events.composables.EventsScreen
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
@@ -31,9 +33,14 @@ class EventsScreenTest {
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = emptyList(),
+                    filters = EventsFilter(
+                        sortType = SortType.NONE,
+                        city = Cities.ALL.city
+                    ),
                     keyword = "",
                     isError = false,
                     isRefreshing = false,
+                    isSearching = false,
                     isLoading = true
                 ),
                 effect = flow {},
@@ -55,9 +62,14 @@ class EventsScreenTest {
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = emptyList(),
+                    filters = EventsFilter(
+                        sortType = SortType.NONE,
+                        city = Cities.ALL.city
+                    ),
                     keyword = "",
                     isError = false,
                     isRefreshing = true,
+                    isSearching = false,
                     isLoading = true
                 ),
                 effect = flow {},
@@ -79,9 +91,14 @@ class EventsScreenTest {
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = emptyList(),
+                    filters = EventsFilter(
+                        sortType = SortType.NONE,
+                        city = Cities.ALL.city
+                    ),
                     keyword = "",
                     isError = true,
                     isRefreshing = false,
+                    isSearching = false,
                     isLoading = false
                 ),
                 effect = flow {},
@@ -103,14 +120,19 @@ class EventsScreenTest {
     }
 
     @Test
-    fun showListOfVenues_whenFinishTheDownload() {
+    fun showListOfEvents_whenFinishTheDownload() {
         composeTestRule.setContent {
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = eventsFromCacheList,
+                    filters = EventsFilter(
+                        sortType = SortType.NONE,
+                        city = Cities.ALL.city
+                    ),
                     keyword = "",
                     isError = false,
                     isRefreshing = false,
+                    isSearching = false,
                     isLoading = false
                 ),
                 effect = flow {},
@@ -125,27 +147,75 @@ class EventsScreenTest {
 
         composeTestRule
             .onNodeWithText(
+                eventsFromCacheList[1].name,
+                substring = true,
+            )
+            .assertExists()
+            .assertHasClickAction()
+
+        composeTestRule
+            .onNodeWithText(
                 eventsFromCacheList[2].name,
                 substring = true,
             )
             .assertExists()
             .assertHasClickAction()
+    }
 
-        composeTestRule.onNode(hasScrollToNodeAction())
-            .performScrollToNode(
-                hasText(
-                    eventsFromCacheList[3].name,
-                    substring = true,
+    @Test
+    fun filterOptions_whenClickInFilterIcon_showFilterOptions() {
+        composeTestRule.setContent {
+            EventsScreen(
+                stateUi = EventsContract.State(
+                    events = emptyList(),
+                    filters = EventsFilter(
+                        sortType = SortType.NONE,
+                        city = Cities.ALL.city
+                    ),
+                    keyword = "",
+                    isError = false,
+                    isRefreshing = false,
+                    isSearching = false,
+                    isLoading = false
                 ),
+                effect = flow {},
+                onSendEvent = {},
+                onNavigationRequested = {}
             )
+        }
 
         composeTestRule
-            .onNodeWithText(
-                eventsFromCacheList[3].name,
-                substring = true,
+            .onNodeWithContentDescription(
+                "Icon Button Search Bar",
             )
             .assertExists()
-            .assertHasClickAction()
+
+
+        composeTestRule
+            .onNodeWithContentDescription(
+                "Icon Filter"
+            )
+            .assertExists()
+            .performClick()
+
+        composeTestRule
+            .onNodeWithContentDescription(
+                "Modal Bottom Filters"
+            )
+            .assertExists()
+
+        composeTestRule
+            .onNodeWithContentDescription(
+                "Apply Button"
+            )
+            .assertExists()
+            .performClick()
+
+        composeTestRule
+            .onNodeWithContentDescription(
+                "Modal Bottom Filters"
+            )
+            .assertDoesNotExist()
     }
 
 }

@@ -9,10 +9,14 @@ data class NetworkEventPrice(
     val max: Double? = 0.0
 )
 
-fun NetworkEventPrice.toPriceRange(): String {
-    return "$min $currency"
+fun NetworkEventPrice.toPrice(): String {
+    return min.toString()
 }
 
-fun List<NetworkEventPrice?>.toPriceRange(): String {
+fun NetworkEventPrice.toCurrency(): String {
+    return currency ?: ""
+}
+
+fun List<NetworkEventPrice?>.toPrice(): String {
     return this.mapNotNull { "${it?.max}-${it?.min} ${it?.currency}" }.joinToString(separator = ",")
 }

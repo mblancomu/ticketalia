@@ -22,7 +22,8 @@ val eventDetail = Result.Success(
         segment = "Music",
         imageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/8b/24/a1/vista-del-teatro-la-latina.jpg?w=1200&h=1200&s=1",
         place = "Stadium",
-        prices = "30 EUR"
+        price = 30.0,
+        currency = "EUR"
     )
 )
 
@@ -40,7 +41,8 @@ val eventDetailWithoutLocation = Result.Success(
         segment = "Music",
         imageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/8b/24/a1/vista-del-teatro-la-latina.jpg?w=1200&h=1200&s=1",
         place = "Stadium",
-        prices = "30 EUR"
+        price = 30.0,
+        currency = "EUR"
     )
 )
 
@@ -58,7 +60,8 @@ val eventDetailWithoutUrl = Result.Success(
         segment = "Music",
         imageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/8b/24/a1/vista-del-teatro-la-latina.jpg?w=1200&h=1200&s=1",
         place = "Stadium",
-        prices = "30 EUR"
+        price = 30.0,
+        currency = "EUR"
     )
 )
 
@@ -76,7 +79,8 @@ val eventsFromCacheList = listOf<Event>(
         segment = "Music",
         imageUrl = "https://media.revistavanityfair.es/photos/6363f1eb868621dd08736d5a/16:9/w_1280,c_limit/Camela39314.jpg",
         place = "Stadium",
-        prices = "30 EUR"
+        price = 30.0,
+        currency = "EUR"
     ),
     Event(
         id = "2",
@@ -91,7 +95,8 @@ val eventsFromCacheList = listOf<Event>(
         segment = "Music",
         imageUrl = "https://cdn.elobservador.com.uy/adjuntos/181/imagenes/008/542/0008542463.jpg",
         place = "Stadium",
-        prices = "30 EUR"
+        price = 30.0,
+        currency = "EUR"
     ),
     Event(
         id = "3",
@@ -106,7 +111,8 @@ val eventsFromCacheList = listOf<Event>(
         segment = "music",
         imageUrl = "https://s3.abcstatics.com/abc/www/multimedia/cultura/2023/04/13/Metallica-R-ReoHPlfXn08hieR7JXNNOLK-1200x840@abc.jpeg",
         place = "Stadium",
-        prices = "30 EUR"
+        price = 30.0,
+        currency = "EUR"
     ),
     Event(
         id = "4",
@@ -121,6 +127,7 @@ val eventsFromCacheList = listOf<Event>(
         segment = "music",
         imageUrl = "https://media.timeout.com/images/106067549/image.jpg",
         place = "Stadium",
-        prices = "30 EUR"
+        price = 30.0,
+        currency = "EUR"
     )
 )
