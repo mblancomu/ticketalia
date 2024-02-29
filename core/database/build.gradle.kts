@@ -12,7 +12,6 @@ dependencies {
     api(projects.core.model)
     implementation(projects.core.common)
 
-    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.paging.common)
     implementation(libs.room.paging)
 }

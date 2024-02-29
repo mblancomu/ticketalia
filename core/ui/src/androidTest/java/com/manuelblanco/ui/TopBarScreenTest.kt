@@ -26,6 +26,5 @@ class TopBarScreenTest {
         composeTestRule.activity.setContent {
             TicketsTopBar(isCentered = true)
         }
-
     }
 }

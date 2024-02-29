@@ -8,19 +8,3 @@ android {
     namespace = "com.manuelblanco.mobilechallenge.feature.venues"
 
 }
-
-dependencies {
-    implementation(projects.core.common)
-    implementation(projects.core.testing)
-
-    implementation(libs.accompanist.permissions)
-    implementation(libs.androidx.paging.common)
-    implementation(libs.androidx.paging.compose)
-    implementation(libs.androidx.compose.material)
-    implementation(libs.accompanist.drawablepainter)
-
-    testImplementation(projects.core.testing)
-
-    androidTestImplementation(libs.androidx.compose.ui.test)
-    androidTestImplementation(projects.core.testing)
-}

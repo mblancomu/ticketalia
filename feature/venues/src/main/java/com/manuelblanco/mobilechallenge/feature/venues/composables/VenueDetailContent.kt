@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationCity
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,7 +74,7 @@ fun VenueDetailContent(
                 venue?.city.toString(),
                 venue?.country.toString()
             )
-            Divider(thickness = 1.dp, color = TicketsTheme.colors.secondary)
+            HorizontalDivider(thickness = 1.dp, color = TicketsTheme.colors.secondary)
             VenueDetailButtonsRow(
                 info = venue?.url,
                 uriLocation = venue?.location?.toGoogleUri(),

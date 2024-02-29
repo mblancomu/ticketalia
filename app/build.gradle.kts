@@ -66,21 +66,8 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.core.common)
 
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtimeCompose)
-    implementation(libs.androidx.compose.runtime.tracing)
     implementation(libs.androidx.compose.material3.windowSizeClass)
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.kt)
     implementation(libs.lottie.compose)
-    implementation(libs.kotlinx.coroutines.test)
-
-    kaptAndroidTest(libs.hilt.compiler)
-    kapt(libs.hilt.compiler)
-
-    androidTestImplementation(projects.core.testing)
-
 }

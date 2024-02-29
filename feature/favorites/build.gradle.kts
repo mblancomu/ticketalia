@@ -7,12 +7,3 @@ plugins {
 android {
     namespace = "com.manuelblanco.mobilechallenge.feature.favorites"
 }
-
-dependencies {
-    implementation(projects.core.model)
-    implementation(projects.core.ui)
-    implementation(projects.core.common)
-
-    implementation(libs.androidx.lifecycle.viewModelCompose)
-    implementation(libs.androidx.compose.bom)
-}

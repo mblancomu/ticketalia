@@ -6,17 +6,6 @@ plugins {
 
 android {
     namespace = "com.manuelblanco.mobilechallenge.core.data"
-
-    buildFeatures {
-        buildConfig = true
-    }
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-            isReturnDefaultValues = true
-        }
-    }
 }
 
 dependencies {
@@ -25,8 +14,9 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.network)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.androidx.paging.runtime)
+    api(libs.androidx.paging.runtime)
+    api(libs.androidx.paging.common)
+    api(libs.androidx.paging.compose)
+
     implementation(libs.retrofit.core)
 }

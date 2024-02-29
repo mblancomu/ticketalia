@@ -24,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -81,7 +82,7 @@ fun EventsScreen(
 
     var showFilters by remember { mutableStateOf(false) }
 
-    val coroutineScope = CoroutineScope(Dispatchers.Main)
+    val coroutineScope = rememberCoroutineScope()
 
     var searchJob: Job? = null
 
@@ -141,7 +142,7 @@ fun EventsScreen(
                         searchJob?.cancel()
                         searchJob = coroutineScope.launch {
                             searchQuery.let { query ->
-                                kotlinx.coroutines.delay(1000L)
+                                kotlinx.coroutines.delay(500L)
                                 onSendEvent(EventsContract.Event.Search(query = query))
                             }
                         }
