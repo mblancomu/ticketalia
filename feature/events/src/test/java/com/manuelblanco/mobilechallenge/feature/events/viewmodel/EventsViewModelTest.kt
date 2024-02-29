@@ -70,7 +70,7 @@ class EventsViewModelTest {
                     events = emptyList(),
                     keyword = "",
                     filters = EventsFilter(
-                        sortType = SortType.NONE,
+                        sortType = SortType.NAME,
                         city = Cities.ALL.city
                     ),
                     isLoading = false,

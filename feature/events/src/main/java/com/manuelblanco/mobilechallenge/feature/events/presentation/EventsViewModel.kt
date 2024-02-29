@@ -44,7 +44,7 @@ class EventsViewModel @Inject constructor(
     override fun setInitialState() = EventsContract.State(
         events = emptyList(),
         filters = EventsFilter(
-            sortType = SortType.NONE,
+            sortType = SortType.NAME,
             city = Cities.ALL.city
         ),
         keyword = "",
@@ -149,7 +149,7 @@ class EventsViewModel @Inject constructor(
             copy(
                 page = 1,
                 filters = EventsFilter(
-                    sortType = SortType.NONE,
+                    sortType = SortType.NAME,
                     city = Cities.ALL.city
                 )
             )

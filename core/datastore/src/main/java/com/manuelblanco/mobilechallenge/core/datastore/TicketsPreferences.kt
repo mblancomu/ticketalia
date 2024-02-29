@@ -1,57 +1,27 @@
 package com.manuelblanco.mobilechallenge.core.datastore
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-import com.manuelblanco.mobilechallenge.core.datastore.TicketsPreferences.PreferenceKeys.filterBy
-import com.manuelblanco.mobilechallenge.core.datastore.TicketsPreferences.PreferenceKeys.sortType
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
- * Created by Manuel Blanco Murillo on 26/6/23.
+ * Created by Manuel Blanco Murillo on 29/2/24.
  */
-
-@Singleton
 class TicketsPreferences @Inject constructor(
-    @ApplicationContext private val context: Context
-) {
-
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "tickets")
-
-    private val dataStore = context.dataStore
-
-    private object PreferenceKeys {
-        val sortType = stringPreferencesKey("sort_type")
-        val filterBy = stringPreferencesKey("filter_by")
-
+    private val dataStore: TicketsDataStore
+) : Preferences {
+    override fun getSortType(): Flow<String?> {
+        return dataStore.getSortType
     }
 
-    val getSortType: Flow<String?> = dataStore.data
-        .map { preferences ->
-            preferences[sortType]
-        }
-
-    val getFilterBy: Flow<String?> = dataStore.data
-        .map { preferences ->
-            preferences[filterBy]
-        }
-
-    suspend fun saveSortType(type: String) {
-        dataStore.edit { preferences ->
-            preferences[sortType] = type
-        }
+    override fun getFilterBy(): Flow<String?> {
+        return dataStore.getFilterBy
     }
 
-    suspend fun saveFilterBy(filter: String) {
-        dataStore.edit { preferences ->
-            preferences[filterBy] = filter
-        }
+    override suspend fun saveSortType(type: String) {
+        dataStore.saveSortType(type)
+    }
+
+    override suspend fun saveFilterBy(filter: String) {
+        dataStore.saveFilterBy(filter)
     }
 }

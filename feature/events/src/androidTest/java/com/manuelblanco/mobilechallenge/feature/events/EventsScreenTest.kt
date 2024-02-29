@@ -35,7 +35,7 @@ class EventsScreenTest {
                 stateUi = EventsContract.State(
                     events = emptyList(),
                     filters = EventsFilter(
-                        sortType = SortType.NONE,
+                        sortType = SortType.NAME,
                         city = Cities.ALL.city
                     ),
                     keyword = "",
@@ -64,7 +64,7 @@ class EventsScreenTest {
                 stateUi = EventsContract.State(
                     events = emptyList(),
                     filters = EventsFilter(
-                        sortType = SortType.NONE,
+                        sortType = SortType.NAME,
                         city = Cities.ALL.city
                     ),
                     keyword = "",
@@ -93,7 +93,7 @@ class EventsScreenTest {
                 stateUi = EventsContract.State(
                     events = emptyList(),
                     filters = EventsFilter(
-                        sortType = SortType.NONE,
+                        sortType = SortType.NAME,
                         city = Cities.ALL.city
                     ),
                     keyword = "",
@@ -127,7 +127,7 @@ class EventsScreenTest {
                 stateUi = EventsContract.State(
                     events = eventsFromCacheList,
                     filters = EventsFilter(
-                        sortType = SortType.NONE,
+                        sortType = SortType.NAME,
                         city = Cities.ALL.city
                     ),
                     keyword = "",
@@ -170,7 +170,7 @@ class EventsScreenTest {
                 stateUi = EventsContract.State(
                     events = emptyList(),
                     filters = EventsFilter(
-                        sortType = SortType.NONE,
+                        sortType = SortType.NAME,
                         city = Cities.ALL.city
                     ),
                     keyword = "",
@@ -226,7 +226,7 @@ class EventsScreenTest {
                 stateUi = EventsContract.State(
                     events = emptyList(),
                     filters = EventsFilter(
-                        sortType = SortType.NONE,
+                        sortType = SortType.NAME,
                         city = Cities.ALL.city
                     ),
                     keyword = "",

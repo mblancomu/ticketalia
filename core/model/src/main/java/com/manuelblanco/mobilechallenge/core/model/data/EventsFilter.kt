@@ -5,14 +5,14 @@ package com.manuelblanco.mobilechallenge.core.model.data
  */
 
 data class EventsFilter(
-    val sortType: SortType = SortType.NONE,
+    val sortType: SortType = SortType.NAME,
     val city: String
 )
 
 enum class SortType {
-    NONE,
-    DATE_ASC,
-    PRICE_ASC
+    NAME,
+    DATE,
+    PRICE
 }
 
 enum class Cities(val city: String) {
@@ -30,16 +30,16 @@ fun List<Event>.sortAndFilterEvents(filters: EventsFilter): List<Event> {
         this.filter { it.city == filters.city }
     } else this
 
-    val finalFilter = if (filters.sortType == SortType.PRICE_ASC) {
+    val finalFilter = if (filters.sortType == SortType.PRICE) {
         filterEvents.filter { it.price != 0.0 }
     } else filterEvents
 
     return finalFilter.sortedWith(
         compareBy {
             when (filters.sortType) {
-                SortType.NONE -> it.name
-                SortType.PRICE_ASC -> it.price
-                SortType.DATE_ASC -> it.dateTime
+                SortType.NAME -> it.name
+                SortType.PRICE -> it.price
+                SortType.DATE -> it.dateTime
             }
         }
     )

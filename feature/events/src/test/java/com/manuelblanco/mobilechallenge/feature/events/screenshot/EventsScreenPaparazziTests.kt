@@ -37,7 +37,7 @@ class EventsScreenPaparazziTests {
                         events = eventsFromCacheList,
                         keyword = "",
                         filters = EventsFilter(
-                            sortType = SortType.NONE,
+                            sortType = SortType.NAME,
                             city = Cities.ALL.city
                         ),
                         isLoading = false,
@@ -63,7 +63,7 @@ class EventsScreenPaparazziTests {
                         events = emptyList(),
                         keyword = "",
                         filters = EventsFilter(
-                            sortType = SortType.NONE,
+                            sortType = SortType.NAME,
                             city = Cities.ALL.city
                         ),
                         isLoading = false,
@@ -88,7 +88,7 @@ class EventsScreenPaparazziTests {
                         events = emptyList(),
                         keyword = "",
                         filters = EventsFilter(
-                            sortType = SortType.NONE,
+                            sortType = SortType.NAME,
                             city = Cities.ALL.city
                         ),
                         isLoading = true,
@@ -113,7 +113,7 @@ class EventsScreenPaparazziTests {
                         events = emptyList(),
                         keyword = "",
                         filters = EventsFilter(
-                            sortType = SortType.NONE,
+                            sortType = SortType.NAME,
                             city = Cities.ALL.city
                         ),
                         isLoading = false,
@@ -138,7 +138,7 @@ class EventsScreenPaparazziTests {
                         events = eventsFromCacheList,
                         keyword = "",
                         filters = EventsFilter(
-                            sortType = SortType.NONE,
+                            sortType = SortType.NAME,
                             city = Cities.ALL.city
                         ),
                         isLoading = false,

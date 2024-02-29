@@ -12,6 +12,7 @@ dependencies {
 
     implementation(projects.core.common)
     implementation(projects.core.database)
+    implementation(projects.core.datastore)
     implementation(projects.core.network)
 
     api(libs.androidx.paging.runtime)

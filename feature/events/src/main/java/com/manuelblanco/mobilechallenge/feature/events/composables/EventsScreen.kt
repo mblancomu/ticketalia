@@ -53,8 +53,6 @@ import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
 import com.manuelblanco.mobilechallenge.feature.events.R
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -249,7 +247,7 @@ fun EventsScreenPreviewPopulated(
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = events,
-                    filters = EventsFilter(sortType = SortType.NONE, city = Cities.ALL.city),
+                    filters = EventsFilter(sortType = SortType.NAME, city = Cities.ALL.city),
                     keyword = "",
                     isLoading = false,
                     isSearching = false,
