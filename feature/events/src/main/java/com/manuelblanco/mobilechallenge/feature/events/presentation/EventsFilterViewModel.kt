@@ -22,12 +22,8 @@ class EventsFilterViewModel @Inject constructor(
     private val setEventsFilterUseCase: SetEventsFilterUseCase
 ) : ViewModel() {
 
-    private val _filters = MutableStateFlow(
-        EventsFilter(
-            sortType = SortType.NAME,
-            city = Cities.ALL.city
-        )
-    )
+    private var _filters: MutableStateFlow<EventsFilter> =
+        MutableStateFlow(EventsFilter(sortType = SortType.NAME, city = Cities.ALL.city))
     val filters: StateFlow<EventsFilter> = _filters
 
     init {
@@ -46,6 +42,14 @@ class EventsFilterViewModel @Inject constructor(
                 _filters.value = it
             }
         }
+    }
+
+    fun onSelectedSortItem(sortType: SortType) {
+        _filters.value = _filters.value.copy(sortType = sortType)
+    }
+
+    fun onSelectedFilterItem(filter: String) {
+        _filters.value = _filters.value.copy(city = filter)
     }
 
 }

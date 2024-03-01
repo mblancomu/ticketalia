@@ -86,6 +86,8 @@ class EventsViewModel @Inject constructor(
     }
 
     private fun getEventsOfflineFirst() {
+
+
         eventsJob = viewModelScope.launch {
             if (viewState.value.page == 1 || (viewState.value.page != 1 && canPaginate)) {
                 delay(1000L)

@@ -15,10 +15,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -76,9 +72,6 @@ private fun FilterOptions(
 ) {
     val filters = viewModel.filters.collectAsStateWithLifecycle()
 
-    var sortBy by rememberSaveable { mutableStateOf(filters.value.sortType) }
-    var filterBy by rememberSaveable { mutableStateOf(filters.value.city) }
-
     Box(
         modifier = Modifier.padding(all = TicketsTheme.dimensions.paddingMedium),
         contentAlignment = Alignment.TopCenter
@@ -93,10 +86,10 @@ private fun FilterOptions(
                     bottom = TicketsTheme.dimensions.paddingLarge
                 ),
                 title = stringResource(id = R.string.sort_events),
-                selectedItem = sortBy.name,
+                selectedItem = filters.value.sortType.name,
                 states = enumValues<SortType>().map { it.name },
                 onSelectedItem = { item, _ ->
-                    sortBy = SortType.valueOf(item)
+                    viewModel.onSelectedSortItem(SortType.valueOf(item))
                 }
             )
             TicketsMultiToggleButton(
@@ -105,10 +98,10 @@ private fun FilterOptions(
                     bottom = TicketsTheme.dimensions.paddingLarge
                 ),
                 title = stringResource(id = R.string.filter_events),
-                selectedItem = filterBy,
+                selectedItem = filters.value.city,
                 states = enumValues<Cities>().map { it.city },
                 onSelectedItem = { item, _ ->
-                    filterBy = item
+                    viewModel.onSelectedFilterItem(item)
                 }
             )
             Row(
@@ -126,8 +119,8 @@ private fun FilterOptions(
                         .height(TicketsTheme.dimensions.buttonDefaultHeight)
                         .width(TicketsTheme.dimensions.buttonDetailWidth),
                     onClick = {
-                        sortBy = SortType.NAME
-                        filterBy = Cities.ALL.city
+                        viewModel.onSelectedSortItem(SortType.NAME)
+                        viewModel.onSelectedFilterItem(Cities.ALL.city)
                     }, label = stringResource(id = R.string.filter_reset).uppercase()
                 )
                 Spacer(modifier = Modifier.padding(horizontal = TicketsTheme.dimensions.paddingLarge))
@@ -137,12 +130,8 @@ private fun FilterOptions(
                         .height(TicketsTheme.dimensions.buttonDefaultHeight)
                         .width(TicketsTheme.dimensions.buttonDetailWidth),
                     onClick = {
-                        onApply(
-                            EventsFilter(
-                                sortType = sortBy,
-                                city = filterBy
-                            )
-                        )
+                        onApply(filters.value)
+                        viewModel.setEventsFilter(filters.value)
                     }, label = stringResource(id = R.string.filter_apply).uppercase()
                 )
             }
