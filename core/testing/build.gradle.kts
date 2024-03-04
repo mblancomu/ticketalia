@@ -13,13 +13,6 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.common)
 
-    implementation(libs.androidx.paging.common)
-    implementation(libs.androidx.paging.compose)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.robolectric.shadows)
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.accompanist.testharness)
-
     api(kotlin("test"))
     api(libs.androidx.compose.ui.test)
     api(libs.androidx.test.core)

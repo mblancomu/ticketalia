@@ -12,7 +12,6 @@ val secretKey: String = com.android.build.gradle.internal.cxx.configure.gradleLo
 
 android {
     namespace = "com.manuelblanco.mobilechallenge.core.network"
-    compileSdk = 33
 
     buildFeatures {
         buildConfig = true
@@ -32,11 +31,6 @@ android {
         }
     }
 
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
 }
 
 dependencies {

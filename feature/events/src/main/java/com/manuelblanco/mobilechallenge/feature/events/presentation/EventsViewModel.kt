@@ -44,7 +44,7 @@ class EventsViewModel @Inject constructor(
     override fun setInitialState() = EventsContract.State(
         events = emptyList(),
         filters = EventsFilter(
-            sortType = SortType.NONE,
+            sortType = SortType.NAME,
             city = Cities.ALL.city
         ),
         keyword = "",
@@ -86,6 +86,8 @@ class EventsViewModel @Inject constructor(
     }
 
     private fun getEventsOfflineFirst() {
+
+
         eventsJob = viewModelScope.launch {
             if (viewState.value.page == 1 || (viewState.value.page != 1 && canPaginate)) {
                 delay(1000L)
@@ -149,7 +151,7 @@ class EventsViewModel @Inject constructor(
             copy(
                 page = 1,
                 filters = EventsFilter(
-                    sortType = SortType.NONE,
+                    sortType = SortType.NAME,
                     city = Cities.ALL.city
                 )
             )

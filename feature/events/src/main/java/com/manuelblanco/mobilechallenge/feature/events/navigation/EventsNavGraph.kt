@@ -1,6 +1,7 @@
 package com.manuelblanco.mobilechallenge.feature.events.navigation
 
 import androidx.compose.runtime.Stable
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -47,7 +48,9 @@ fun NavGraphBuilder.eventsGraph(
                 eventId = eventId,
                 eventTitle = eventTitle,
                 navigateTo = {
-                    navController.popBackStack()
+                    if (navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+                        navController.popBackStack()
+                    }
                 },
             )
         }

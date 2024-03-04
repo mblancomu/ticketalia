@@ -24,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,8 +53,6 @@ import com.manuelblanco.mobilechallenge.core.ui.components.TicketsTopBar
 import com.manuelblanco.mobilechallenge.core.ui.mvi.SIDE_EFFECTS_KEY
 import com.manuelblanco.mobilechallenge.feature.events.R
 import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -81,7 +80,7 @@ fun EventsScreen(
 
     var showFilters by remember { mutableStateOf(false) }
 
-    val coroutineScope = CoroutineScope(Dispatchers.Main)
+    val coroutineScope = rememberCoroutineScope()
 
     var searchJob: Job? = null
 
@@ -141,7 +140,7 @@ fun EventsScreen(
                         searchJob?.cancel()
                         searchJob = coroutineScope.launch {
                             searchQuery.let { query ->
-                                kotlinx.coroutines.delay(1000L)
+                                kotlinx.coroutines.delay(500L)
                                 onSendEvent(EventsContract.Event.Search(query = query))
                             }
                         }
@@ -177,6 +176,7 @@ fun EventsScreen(
                 ) {
 
                     if (isShimmerVisible(
+                            isEmpty = stateUi.events.isEmpty(),
                             isLoaded = isDataLoaded,
                             isRefreshing = stateUi.isRefreshing,
                             isSearching = stateUi.isSearching
@@ -229,11 +229,12 @@ fun EventsScreen(
 }
 
 private fun isShimmerVisible(
+    isEmpty: Boolean,
     isLoaded: Boolean,
     isRefreshing: Boolean,
     isSearching: Boolean
 ): Boolean =
-    !isLoaded || isRefreshing || isSearching
+    isEmpty && !isLoaded || isRefreshing || isSearching
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview
@@ -246,7 +247,7 @@ fun EventsScreenPreviewPopulated(
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = events,
-                    filters = EventsFilter(sortType = SortType.NONE, city = Cities.ALL.city),
+                    filters = EventsFilter(sortType = SortType.NAME, city = Cities.ALL.city),
                     keyword = "",
                     isLoading = false,
                     isSearching = false,

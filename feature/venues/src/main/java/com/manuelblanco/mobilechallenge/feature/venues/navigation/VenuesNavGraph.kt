@@ -1,6 +1,7 @@
 package com.manuelblanco.mobilechallenge.feature.venues.navigation
 
 import androidx.compose.runtime.Stable
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -48,7 +49,9 @@ fun NavGraphBuilder.venuesGraph(
                 venueId = venueId,
                 venueTitle = venueTitle,
                 navigateTo = {
-                    navController.popBackStack()
+                    if (navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+                        navController.popBackStack()
+                    }
                 },
             )
         }

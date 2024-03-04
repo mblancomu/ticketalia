@@ -22,7 +22,7 @@ import javax.inject.Singleton
  * Created by Manuel Blanco Murillo on 26/6/23.
  */
 
-private const val USER_PREFERENCES = "user_preferences"
+private const val FILTER_PREFERENCES = "filters"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -34,9 +34,9 @@ object DataStoreModule {
             corruptionHandler = ReplaceFileCorruptionHandler(
                 produceNewData = { emptyPreferences() }
             ),
-            migrations = listOf(SharedPreferencesMigration(appContext, USER_PREFERENCES)),
+            migrations = listOf(SharedPreferencesMigration(appContext, FILTER_PREFERENCES)),
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
-            produceFile = { appContext.preferencesDataStoreFile(USER_PREFERENCES) }
+            produceFile = { appContext.preferencesDataStoreFile(FILTER_PREFERENCES) }
         )
     }
 }
