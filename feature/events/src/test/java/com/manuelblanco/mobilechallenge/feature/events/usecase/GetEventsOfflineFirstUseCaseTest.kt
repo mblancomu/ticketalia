@@ -1,8 +1,8 @@
 package com.manuelblanco.mobilechallenge.feature.events.usecase
 
-import com.manuelblanco.mobilechallenge.core.domain.GetEventsOfflineFirstUseCase
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetEventsOfflineFirstUseCase
 import com.manuelblanco.mobilechallenge.core.testing.repository.usecase.FakeEventsRepository
-import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventsOfflineFirstUseCaseImpl
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetEventsOfflineFirstUseCaseImpl
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test

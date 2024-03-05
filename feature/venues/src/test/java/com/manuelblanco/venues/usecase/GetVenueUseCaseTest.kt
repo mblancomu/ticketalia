@@ -1,16 +1,10 @@
 package com.manuelblanco.venues.usecase
 
 import com.manuelblanco.mobilechallenge.core.common.result.Result
-import com.manuelblanco.mobilechallenge.core.domain.GetVenueUseCase
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetVenueUseCase
 import com.manuelblanco.mobilechallenge.core.testing.repository.usecase.FakeVenuesRepository
-import com.manuelblanco.mobilechallenge.feature.venues.usecases.GetVenueUseCaseImpl
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetVenueUseCaseImpl
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertTrue

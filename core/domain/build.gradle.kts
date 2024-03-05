@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.mobilechallenge.android.library)
+    alias(libs.plugins.mobilechallenge.android.hilt)
     kotlin("kapt")
 }
 
@@ -8,7 +9,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.model)
     implementation(projects.core.common)
 
     implementation(libs.androidx.paging.runtime)

@@ -1,9 +1,9 @@
 package com.manuelblanco.mobilechallenge.feature.events.usecase
 
 import com.manuelblanco.mobilechallenge.core.common.result.Result
-import com.manuelblanco.mobilechallenge.core.domain.GetEventFromCacheUseCase
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetEventFromCacheUseCase
 import com.manuelblanco.mobilechallenge.core.testing.repository.usecase.FakeEventsRepository
-import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventFromCacheUseCaseImpl
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetEventFromCacheUseCaseImpl
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test

@@ -11,8 +11,8 @@ import androidx.compose.ui.test.performClick
 import com.manuelblanco.mobilechallenge.core.testing.data.venueDetail
 import com.manuelblanco.mobilechallenge.core.testing.data.venueDetailWithoutInfo
 import com.manuelblanco.mobilechallenge.core.testing.data.venueDetailWithoutLocation
-import com.manuelblanco.mobilechallenge.feature.venues.composables.VenueDetailScreen
-import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenueDetailContract
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.composables.VenueDetailScreen
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.contracts.VenueDetailContract
 import kotlinx.coroutines.flow.flow
 import org.junit.Rule
 import org.junit.Test

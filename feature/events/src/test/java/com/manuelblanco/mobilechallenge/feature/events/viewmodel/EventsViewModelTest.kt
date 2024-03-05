@@ -2,16 +2,16 @@ package com.manuelblanco.mobilechallenge.feature.events.viewmodel
 
 import com.manuelblanco.mobilechallenge.core.common.result.Result
 import com.manuelblanco.mobilechallenge.core.common.result.asResult
-import com.manuelblanco.mobilechallenge.core.model.data.Cities
-import com.manuelblanco.mobilechallenge.core.model.data.EventsFilter
-import com.manuelblanco.mobilechallenge.core.model.data.SortType
+import com.manuelblanco.mobilechallenge.core.domain.model.Cities
+import com.manuelblanco.mobilechallenge.core.domain.model.EventsFilter
+import com.manuelblanco.mobilechallenge.core.domain.model.SortType
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
 import com.manuelblanco.mobilechallenge.core.testing.repository.viewmodel.TestEventsRepository
 import com.manuelblanco.mobilechallenge.core.testing.utils.MainCoroutineRule
-import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
-import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsViewModel
-import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventsOfflineFirstUseCaseImpl
-import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventsRemoteFirstUseCaseImpl
+import com.manuelblanco.mobilechallenge.feature.events.presentation.contracts.EventsContract
+import com.manuelblanco.mobilechallenge.feature.events.presentation.viewmodels.EventsViewModel
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetEventsOfflineFirstUseCaseImpl
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetEventsRemoteFirstUseCaseImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect

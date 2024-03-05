@@ -25,7 +25,6 @@ include(":core:database")
 include(":core:datastore")
 include(":core:network")
 include(":core:ui")
-include(":core:model")
 include(":core:testing")
 include(":core:common")
 

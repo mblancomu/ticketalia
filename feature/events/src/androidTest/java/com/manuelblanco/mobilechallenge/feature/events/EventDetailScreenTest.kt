@@ -2,25 +2,20 @@ package com.manuelblanco.mobilechallenge.feature.events
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertHasClickAction
-import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsNotFocused
-import androidx.compose.ui.test.hasScrollToNodeAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollToNode
 import com.manuelblanco.mobilechallenge.core.testing.data.eventDetail
 import com.manuelblanco.mobilechallenge.core.testing.data.eventDetailWithoutLocation
 import com.manuelblanco.mobilechallenge.core.testing.data.eventDetailWithoutUrl
-import com.manuelblanco.mobilechallenge.feature.events.composables.EventDetailScreen
-import com.manuelblanco.mobilechallenge.feature.events.presentation.EventDetailContract
+import com.manuelblanco.mobilechallenge.feature.events.presentation.composables.EventDetailScreen
+import com.manuelblanco.mobilechallenge.feature.events.presentation.contracts.EventDetailContract
 import kotlinx.coroutines.flow.flow
 import org.junit.Rule
 import org.junit.Test
-import kotlin.test.assertTrue
 
 /**
  * Created by Manuel Blanco Murillo on 15/2/24.

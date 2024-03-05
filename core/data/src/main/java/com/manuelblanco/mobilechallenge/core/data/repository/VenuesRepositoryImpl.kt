@@ -7,10 +7,11 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.manuelblanco.mobilechallenge.core.common.result.Result
 import com.manuelblanco.mobilechallenge.core.common.result.asResult
+import com.manuelblanco.mobilechallenge.core.data.mapper.asExternalModel
 import com.manuelblanco.mobilechallenge.core.data.mediator.VenuesRemoteMediator
 import com.manuelblanco.mobilechallenge.core.database.dao.VenueDao
-import com.manuelblanco.mobilechallenge.core.database.model.asExternalModel
-import com.manuelblanco.mobilechallenge.core.model.data.Venue
+import com.manuelblanco.mobilechallenge.core.domain.model.Venue
+import com.manuelblanco.mobilechallenge.core.domain.repository.VenuesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
