@@ -1,9 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    id("mobilechallenge.android.library")
-    id("mobilechallenge.android.library.compose")
-    id("mobilechallenge.android.hilt")
+    alias(libs.plugins.mobilechallenge.android.library)
+    alias(libs.plugins.mobilechallenge.android.library.compose)
+    alias(libs.plugins.mobilechallenge.android.hilt)
 }
 
 android {
@@ -11,12 +9,11 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.data)
+    implementation(projects.core.common)
+    implementation(projects.core.domain)
 
-    implementation(project(":core:data"))
-    implementation(project(":core:model"))
-    implementation(project(":core:common"))
-    implementation(project(":core:designsystem"))
-
+    api(kotlin("test"))
     api(libs.androidx.compose.ui.test)
     api(libs.androidx.test.core)
     api(libs.androidx.test.espresso.core)
@@ -25,15 +22,8 @@ dependencies {
     api(libs.hilt.android.testing)
     api(libs.junit4)
     api(libs.kotlinx.coroutines.test)
-
-    implementation(libs.androidx.paging.common)
-    implementation(libs.androidx.paging.compose)
+    api(libs.androidx.navigation.testing)
+    api(libs.androidx.test.ext)
 
     debugApi(libs.androidx.compose.ui.testManifest)
-    implementation(libs.androidx.activity.compose)
-
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.robolectric)
-    api(libs.roborazzi)
-    implementation(libs.accompanist.testharness)
 }

@@ -6,6 +6,9 @@ import coil.ImageLoaderFactory
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.CoroutineDispatcher
+import okhttp3.Dispatcher
+import java.util.concurrent.ExecutorService
 
 @HiltAndroidApp
 class TicketsApplication: Application(), ImageLoaderFactory {

@@ -3,11 +3,11 @@ package com.manuelblanco.venues.usecase
 import androidx.paging.map
 import com.manuelblanco.mobilechallenge.core.common.result.Result
 import com.manuelblanco.mobilechallenge.core.common.result.asResult
-import com.manuelblanco.mobilechallenge.core.domain.GetVenuesUseCase
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetVenuesUseCase
 import com.manuelblanco.mobilechallenge.core.testing.data.firstVenue
 import com.manuelblanco.mobilechallenge.core.testing.data.lastVenue
 import com.manuelblanco.mobilechallenge.core.testing.repository.usecase.FakeVenuesRepository
-import com.manuelblanco.mobilechallenge.feature.venues.usecases.GetVenuesUseCaseImpl
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetVenuesUseCaseImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

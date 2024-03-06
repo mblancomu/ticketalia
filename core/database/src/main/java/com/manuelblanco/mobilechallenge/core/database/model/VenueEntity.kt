@@ -3,8 +3,6 @@ package com.manuelblanco.mobilechallenge.core.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.manuelblanco.mobilechallenge.core.common.utils.stringToLocation
-import com.manuelblanco.mobilechallenge.core.model.data.Venue
 
 @Entity(tableName = "venues")
 data class VenueEntity(
@@ -24,17 +22,4 @@ data class VenueEntity(
     var page: Int,
     @ColumnInfo(defaultValue = "")
     var url: String
-)
-
-fun VenueEntity.asExternalModel() = Venue(
-    id = id,
-    name = name,
-    description = description,
-    location = stringToLocation(location),
-    imageUrl = imageUrl,
-    country = country,
-    city = city,
-    address = address,
-    distance = distance,
-    url = url
 )

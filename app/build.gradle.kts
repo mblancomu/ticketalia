@@ -1,9 +1,10 @@
 plugins {
-    id("mobilechallenge.android.application")
-    id("mobilechallenge.android.application.compose")
-    id("mobilechallenge.android.hilt")
     id("jacoco")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.mobilechallenge.android.application)
+    alias(libs.plugins.mobilechallenge.android.application.compose)
+    alias(libs.plugins.mobilechallenge.android.hilt)
+    alias(libs.plugins.mobilechallenge.android.application.jacoco)
+    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
@@ -56,31 +57,17 @@ android {
 
 dependencies {
 
-    implementation(project(":feature:events"))
-    implementation(project(":feature:venues"))
-    implementation(project(":feature:favorites"))
+    implementation(projects.feature.events)
+    implementation(projects.feature.venues)
+    implementation(projects.feature.favorites)
 
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:data"))
-    implementation(project(":core:ui"))
-    implementation(project(":core:common"))
+    implementation(projects.core.designsystem)
+    implementation(projects.core.data)
+    implementation(projects.core.ui)
+    implementation(projects.core.common)
 
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.lifecycle.runtimeCompose)
-    implementation(libs.androidx.compose.runtime.tracing)
-    implementation(libs.androidx.compose.bom)
     implementation(libs.androidx.compose.material3.windowSizeClass)
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.kt)
     implementation(libs.lottie.compose)
-
-    androidTestImplementation(libs.androidx.navigation.testing)
-    androidTestImplementation(libs.androidx.test.core)
-    androidTestImplementation(libs.androidx.test.ext)
-    androidTestImplementation(libs.accompanist.testharness)
-    debugImplementation(libs.androidx.compose.ui.testManifest)
 }

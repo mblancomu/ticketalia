@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -31,7 +33,9 @@ import com.manuelblanco.mobilechallenge.core.ui.R
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun Progress(modifier: Modifier = Modifier) {
-    BoxWithConstraints(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    BoxWithConstraints(modifier = modifier
+        .semantics { contentDescription = "Progress" }
+        .fillMaxSize(), contentAlignment = Alignment.Center) {
 
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.progress))
         val lottieAnimatable = rememberLottieAnimatable()
@@ -62,6 +66,8 @@ fun Progress(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun ProgressPreview() {
-    Progress()
+fun ProgressComponentPreview() {
+    TicketsTheme {
+        Progress()
+    }
 }

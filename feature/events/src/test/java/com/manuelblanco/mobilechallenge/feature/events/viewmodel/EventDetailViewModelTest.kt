@@ -4,9 +4,9 @@ import com.manuelblanco.mobilechallenge.core.common.result.Result
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
 import com.manuelblanco.mobilechallenge.core.testing.repository.viewmodel.TestEventsRepository
 import com.manuelblanco.mobilechallenge.core.testing.utils.MainCoroutineRule
-import com.manuelblanco.mobilechallenge.feature.events.presentation.EventDetailContract
-import com.manuelblanco.mobilechallenge.feature.events.presentation.EventDetailViewModel
-import com.manuelblanco.mobilechallenge.feature.events.usecases.GetEventFromCacheUseCaseImpl
+import com.manuelblanco.mobilechallenge.feature.events.presentation.contracts.EventDetailContract
+import com.manuelblanco.mobilechallenge.feature.events.presentation.viewmodels.EventDetailViewModel
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetEventFromCacheUseCaseImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect

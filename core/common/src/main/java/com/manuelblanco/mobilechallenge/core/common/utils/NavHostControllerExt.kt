@@ -28,13 +28,3 @@ fun NavHostController.navigateSingleTopToGraph(route: String) =
         launchSingleTop = true
         restoreState = true
     }
-
-fun NavHostController.navigateSingleTopTo(route: String) =
-    navigate(route) {
-        popUpTo(route) {
-            saveState = true
-        }
-
-        launchSingleTop = true
-        restoreState = true
-    }

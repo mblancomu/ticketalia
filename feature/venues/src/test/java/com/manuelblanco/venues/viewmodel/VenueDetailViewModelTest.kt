@@ -5,9 +5,9 @@ import com.manuelblanco.mobilechallenge.core.common.result.asResult
 import com.manuelblanco.mobilechallenge.core.testing.data.pagingVenues
 import com.manuelblanco.mobilechallenge.core.testing.repository.viewmodel.TestVenuesRepository
 import com.manuelblanco.mobilechallenge.core.testing.utils.MainCoroutineRule
-import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenueDetailContract
-import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenueDetailViewModel
-import com.manuelblanco.mobilechallenge.feature.venues.usecases.GetVenueUseCaseImpl
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.contracts.VenueDetailContract
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.viewmodels.VenueDetailViewModel
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetVenueUseCaseImpl
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

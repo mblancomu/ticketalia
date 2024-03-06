@@ -12,8 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
@@ -29,18 +32,24 @@ fun TicketsTopBar(
     title: String = "",
     onBack: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
+    searchBar: @Composable (() -> Unit?)? = null,
     containerColor: Color = TicketsTheme.colors.primary,
     isCentered: Boolean,
     isNavigable: Boolean = false
 ) {
     if (isCentered) {
         CenterAlignedTopAppBar(
+            modifier = Modifier.semantics { contentDescription = "Top bar" },
             title = {
-                Text(
-                    text = stringResource(id = R.string.name_app),
-                    color = TicketsTheme.colors.surface,
-                    textAlign = TextAlign.Center
-                )
+                if (searchBar != null) {
+                    searchBar()
+                } else {
+                    Text(
+                        text = stringResource(id = R.string.name_app),
+                        color = TicketsTheme.colors.surface,
+                        textAlign = TextAlign.Center
+                    )
+                }
             },
             navigationIcon = {
                 if (isNavigable) {
@@ -71,13 +80,16 @@ fun TicketsTopBar(
 
 @Preview(showBackground = true)
 @Composable
-fun TicketsTopBarPreview() {
-    TicketsTopBar("Events", isCentered = true)
+fun TicketsTopBarComponentPreview() {
+    TicketsTheme {
+        TicketsTopBar("Events", isCentered = true)
+    }
 }
 
 @Composable
 private fun BackArrow(onBack: () -> Unit = {}) {
     FilledIconButton(
+        modifier = Modifier.semantics { contentDescription = "Back Button" },
         onClick = { onBack() },
         colors = IconButtonDefaults.iconButtonColors(containerColor = TicketsTheme.colors.primary)
     ) {

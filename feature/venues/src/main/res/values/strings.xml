@@ -7,4 +7,5 @@
     <string name="initial_loading">Initial Loading</string>
     <string name="global_error">Ops…Something was wrong</string>
     <string name="empty_list_venues">No Venues available</string>
+    <string name="search_venues">Search venues</string>
 </resources>

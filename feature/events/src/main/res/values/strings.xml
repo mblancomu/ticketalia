@@ -8,4 +8,13 @@
     <string name="subtitle_genre">Genre</string>
     <string name="global_error">Check your network. Something was wrong</string>
     <string name="empty_list_events">No Events available</string>
+    <string name="search_events">Search events</string>
+    <string name="sort_events">Sort Events by:</string>
+    <string name="filter_events">Filter by City:</string>
+    <string name="sort_name">Name</string>
+    <string name="sort_date">Date</string>
+    <string name="sort_price">Price</string>
+    <string name="filter_apply">Apply</string>
+    <string name="filter_reset">Reset</string>
+    <string name="no_data">No Data</string>
 </resources>

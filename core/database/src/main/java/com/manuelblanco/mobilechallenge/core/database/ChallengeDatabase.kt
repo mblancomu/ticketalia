@@ -19,7 +19,7 @@ import com.manuelblanco.mobilechallenge.core.database.model.VenueEntity
         RemoteKeyEntity::class
     ],
     version = 2,
-    exportSchema = true
+    exportSchema = false
 )
 abstract class ChallengeDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao

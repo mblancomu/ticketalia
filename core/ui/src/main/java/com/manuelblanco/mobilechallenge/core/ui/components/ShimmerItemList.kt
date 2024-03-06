@@ -31,6 +31,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -42,13 +44,14 @@ import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
  */
 
 enum class ItemType {
-    EVENT,VENUE
+    EVENT, VENUE
 }
 
 @Composable
 fun ShimmerEffectList(type: ItemType) {
     LazyColumn(
         modifier = Modifier
+            .semantics { contentDescription = "Shimmer effect" }
             .fillMaxSize(),
         contentPadding = PaddingValues(
             start = TicketsTheme.dimensions.paddingMedium,
@@ -111,7 +114,7 @@ fun ShimmerItemList(modifier: Modifier = Modifier, type: ItemType) {
                                 .shimmerEffect()
                         )
                     }
-                    if (type == ItemType.EVENT){
+                    if (type == ItemType.EVENT) {
                         Box(
                             modifier = Modifier
                                 .padding(start = 32.dp, top = 12.dp)
@@ -158,6 +161,8 @@ fun Modifier.shimmerEffect(): Modifier = composed {
 
 @Preview
 @Composable
-fun ShimmerAnimationPreview() {
-    ShimmerItemList(type = ItemType.EVENT)
+fun ShimmerAnimationComponentPreview() {
+    TicketsTheme {
+        ShimmerItemList(type = ItemType.EVENT)
+    }
 }

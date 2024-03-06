@@ -15,6 +15,8 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "mobilechallenge"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":core:designsystem")
 include(":core:data")
@@ -23,9 +25,9 @@ include(":core:database")
 include(":core:datastore")
 include(":core:network")
 include(":core:ui")
-include(":core:model")
 include(":core:testing")
 include(":core:common")
+
 include(":feature:events")
 include(":feature:venues")
 include(":feature:favorites")

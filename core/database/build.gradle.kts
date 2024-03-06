@@ -1,7 +1,7 @@
 plugins {
-    id("mobilechallenge.android.library")
-    id("mobilechallenge.android.hilt")
-    id("mobilechallenge.android.room")
+    alias(libs.plugins.mobilechallenge.android.library)
+    alias(libs.plugins.mobilechallenge.android.hilt)
+    alias(libs.plugins.mobilechallenge.android.room)
 }
 
 android {
@@ -9,12 +9,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:model"))
-    implementation(project(":core:common"))
+    implementation(projects.core.common)
+    implementation(projects.core.domain)
 
-    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.paging.common)
     implementation(libs.room.paging)
-
-    androidTestImplementation(project(":core:testing"))
 }

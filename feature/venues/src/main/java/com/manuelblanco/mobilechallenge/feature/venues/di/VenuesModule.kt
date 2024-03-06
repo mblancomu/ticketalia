@@ -1,9 +1,9 @@
 package com.manuelblanco.mobilechallenge.feature.venues.di
 
-import com.manuelblanco.mobilechallenge.core.domain.GetVenueUseCase
-import com.manuelblanco.mobilechallenge.core.domain.GetVenuesUseCase
-import com.manuelblanco.mobilechallenge.feature.venues.usecases.GetVenueUseCaseImpl
-import com.manuelblanco.mobilechallenge.feature.venues.usecases.GetVenuesUseCaseImpl
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetVenueUseCase
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetVenuesUseCase
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetVenueUseCaseImpl
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetVenuesUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
