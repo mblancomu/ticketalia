@@ -9,8 +9,8 @@ android {
 }
 
 dependencies {
-    api(projects.core.model)
     implementation(projects.core.common)
+    implementation(projects.core.domain)
 
     implementation(libs.androidx.paging.common)
     implementation(libs.room.paging)

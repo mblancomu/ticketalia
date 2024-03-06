@@ -11,11 +11,11 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.manuelblanco.mobilechallenge.core.model.data.Venue
+import com.manuelblanco.mobilechallenge.core.domain.model.Venue
 import com.manuelblanco.mobilechallenge.core.testing.data.firstVenue
 import com.manuelblanco.mobilechallenge.core.testing.data.pagingVenues
-import com.manuelblanco.mobilechallenge.feature.venues.composables.VenuesScreen
-import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContract
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.composables.VenuesScreen
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.contracts.VenuesContract
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

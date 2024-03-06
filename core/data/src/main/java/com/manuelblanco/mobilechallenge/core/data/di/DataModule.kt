@@ -1,8 +1,8 @@
 package com.manuelblanco.mobilechallenge.core.data.di
 
-import com.manuelblanco.mobilechallenge.core.data.repository.EventsRepository
+import com.manuelblanco.mobilechallenge.core.domain.repository.EventsRepository
 import com.manuelblanco.mobilechallenge.core.data.repository.EventsRepositoryImpl
-import com.manuelblanco.mobilechallenge.core.data.repository.VenuesRepository
+import com.manuelblanco.mobilechallenge.core.domain.repository.VenuesRepository
 import com.manuelblanco.mobilechallenge.core.data.repository.VenuesRepositoryImpl
 import com.manuelblanco.mobilechallenge.core.data.util.ConnectivityManagerNetworkMonitor
 import com.manuelblanco.mobilechallenge.core.data.util.NetworkMonitor

@@ -1,22 +1,25 @@
 package com.manuelblanco.mobilechallenge.core.testing.data
 
 import com.manuelblanco.mobilechallenge.core.common.result.Result
-import com.manuelblanco.mobilechallenge.core.model.data.Event
-import com.manuelblanco.mobilechallenge.core.model.data.Location
+import com.manuelblanco.mobilechallenge.core.domain.model.Event
+import com.manuelblanco.mobilechallenge.core.domain.model.Location
 
 /**
  * Created by Manuel Blanco Murillo on 13/2/24.
  */
 
 val eventDetail = Result.Success(
-    data = Event(
+    data = com.manuelblanco.mobilechallenge.core.domain.model.Event(
         id = "1",
         name = "Alanis Stream",
         description = "",
         url = "https://www.google.com/",
         city = "Madrid",
         country = "Spain",
-        location = Location(latitude = 30.1, longitude = 4.0),
+        location = com.manuelblanco.mobilechallenge.core.domain.model.Location(
+            latitude = 30.1,
+            longitude = 4.0
+        ),
         dateTime = "2024-02-14T17:00:00Z",
         genres = "Pop",
         segment = "Music",
@@ -28,14 +31,17 @@ val eventDetail = Result.Success(
 )
 
 val eventDetailWithoutLocation = Result.Success(
-    data = Event(
+    data = com.manuelblanco.mobilechallenge.core.domain.model.Event(
         id = "1",
         name = "Alanis Stream",
         description = "",
         url = "https://www.google.com/",
         city = "Madrid",
         country = "Spain",
-        location = Location(latitude = 0.0, longitude = 0.0),
+        location = com.manuelblanco.mobilechallenge.core.domain.model.Location(
+            latitude = 0.0,
+            longitude = 0.0
+        ),
         dateTime = "2024-02-14T17:00:00Z",
         genres = "Pop",
         segment = "Music",
@@ -47,14 +53,17 @@ val eventDetailWithoutLocation = Result.Success(
 )
 
 val eventDetailWithoutUrl = Result.Success(
-    data = Event(
+    data = com.manuelblanco.mobilechallenge.core.domain.model.Event(
         id = "1",
         name = "Alanis Stream",
         description = "",
         url = "",
         city = "Madrid",
         country = "Spain",
-        location = Location(latitude = 0.0, longitude = 0.0),
+        location = com.manuelblanco.mobilechallenge.core.domain.model.Location(
+            latitude = 0.0,
+            longitude = 0.0
+        ),
         dateTime = "2024-02-14T17:00:00Z",
         genres = "Pop",
         segment = "Music",
@@ -65,15 +74,18 @@ val eventDetailWithoutUrl = Result.Success(
     )
 )
 
-val eventsFromCacheList = listOf<Event>(
-    Event(
+val eventsFromCacheList = listOf<com.manuelblanco.mobilechallenge.core.domain.model.Event>(
+    com.manuelblanco.mobilechallenge.core.domain.model.Event(
         id = "1",
         name = "Camela",
         description = "",
         url = "https://www.google.com/",
         city = "Madrid",
         country = "Spain",
-        location = Location(latitude = 30.1, longitude = 4.0),
+        location = com.manuelblanco.mobilechallenge.core.domain.model.Location(
+            latitude = 30.1,
+            longitude = 4.0
+        ),
         dateTime = "2024-02-14T17:00:00Z",
         genres = "Pop",
         segment = "Music",
@@ -82,14 +94,17 @@ val eventsFromCacheList = listOf<Event>(
         price = 30.0,
         currency = "EUR"
     ),
-    Event(
+    com.manuelblanco.mobilechallenge.core.domain.model.Event(
         id = "2",
         name = "Alanis Morissette",
         description = "",
         url = "https://www.google.com/",
         city = "Madrid",
         country = "Spain",
-        location = Location(latitude = 30.1, longitude = 4.0),
+        location = com.manuelblanco.mobilechallenge.core.domain.model.Location(
+            latitude = 30.1,
+            longitude = 4.0
+        ),
         dateTime = "2024-02-14T17:00:00Z",
         genres = "Pop",
         segment = "Music",
@@ -98,14 +113,17 @@ val eventsFromCacheList = listOf<Event>(
         price = 30.0,
         currency = "EUR"
     ),
-    Event(
+    com.manuelblanco.mobilechallenge.core.domain.model.Event(
         id = "3",
         name = "Metallica",
         description = "",
         url = "https://www.google.com/",
         city = "Madrid",
         country = "Spain",
-        location = Location(latitude = 30.1, longitude = 4.0),
+        location = com.manuelblanco.mobilechallenge.core.domain.model.Location(
+            latitude = 30.1,
+            longitude = 4.0
+        ),
         dateTime = "2024-02-14T17:00:00Z",
         genres = "pop",
         segment = "music",
@@ -114,14 +132,17 @@ val eventsFromCacheList = listOf<Event>(
         price = 30.0,
         currency = "EUR"
     ),
-    Event(
+    com.manuelblanco.mobilechallenge.core.domain.model.Event(
         id = "4",
         name = "Real Madrid - Betis",
         description = "",
         url = "https://www.google.com/",
         city = "Madrid",
         country = "Spain",
-        location = Location(latitude = 30.1, longitude = 4.0),
+        location = com.manuelblanco.mobilechallenge.core.domain.model.Location(
+            latitude = 30.1,
+            longitude = 4.0
+        ),
         dateTime = "2024-02-14T17:00:00Z",
         genres = "pop",
         segment = "music",

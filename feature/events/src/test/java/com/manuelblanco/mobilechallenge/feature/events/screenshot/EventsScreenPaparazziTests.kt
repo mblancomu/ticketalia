@@ -4,12 +4,12 @@ import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
-import com.manuelblanco.mobilechallenge.core.model.data.Cities
-import com.manuelblanco.mobilechallenge.core.model.data.EventsFilter
-import com.manuelblanco.mobilechallenge.core.model.data.SortType
+import com.manuelblanco.mobilechallenge.core.domain.model.Cities
+import com.manuelblanco.mobilechallenge.core.domain.model.EventsFilter
+import com.manuelblanco.mobilechallenge.core.domain.model.SortType
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
-import com.manuelblanco.mobilechallenge.feature.events.composables.EventsScreen
-import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
+import com.manuelblanco.mobilechallenge.feature.events.presentation.composables.EventsScreen
+import com.manuelblanco.mobilechallenge.feature.events.presentation.contracts.EventsContract
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test

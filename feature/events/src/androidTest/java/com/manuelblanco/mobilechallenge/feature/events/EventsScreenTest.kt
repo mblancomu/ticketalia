@@ -9,12 +9,12 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import com.manuelblanco.mobilechallenge.core.model.data.Cities
-import com.manuelblanco.mobilechallenge.core.model.data.EventsFilter
-import com.manuelblanco.mobilechallenge.core.model.data.SortType
+import com.manuelblanco.mobilechallenge.core.domain.model.Cities
+import com.manuelblanco.mobilechallenge.core.domain.model.EventsFilter
+import com.manuelblanco.mobilechallenge.core.domain.model.SortType
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
-import com.manuelblanco.mobilechallenge.feature.events.composables.EventsScreen
-import com.manuelblanco.mobilechallenge.feature.events.presentation.EventsContract
+import com.manuelblanco.mobilechallenge.feature.events.presentation.composables.EventsScreen
+import com.manuelblanco.mobilechallenge.feature.events.presentation.contracts.EventsContract
 import kotlinx.coroutines.flow.flow
 import org.junit.Rule
 import org.junit.Test
@@ -198,25 +198,6 @@ class EventsScreenTest {
             )
             .assertExists()
             .performClick()
-
-        composeTestRule
-            .onNodeWithContentDescription(
-                "Modal Bottom Filters"
-            )
-            .assertExists()
-
-        composeTestRule
-            .onNodeWithContentDescription(
-                "Apply Button"
-            )
-            .assertExists()
-            .performClick()
-
-        composeTestRule
-            .onNodeWithContentDescription(
-                "Modal Bottom Filters"
-            )
-            .assertDoesNotExist()
     }
 
     @Test

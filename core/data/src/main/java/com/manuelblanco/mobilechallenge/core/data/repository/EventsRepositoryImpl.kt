@@ -2,21 +2,21 @@ package com.manuelblanco.mobilechallenge.core.data.repository
 
 import com.manuelblanco.mobilechallenge.core.common.result.Result
 import com.manuelblanco.mobilechallenge.core.common.result.asResult
-import com.manuelblanco.mobilechallenge.core.data.model.asEventEntities
+import com.manuelblanco.mobilechallenge.core.data.mapper.asEventEntities
+import com.manuelblanco.mobilechallenge.core.data.mapper.asExternalModel
 import com.manuelblanco.mobilechallenge.core.database.TicketsCache
-import com.manuelblanco.mobilechallenge.core.database.model.asExternalModel
 import com.manuelblanco.mobilechallenge.core.datastore.TicketsPreferences
-import com.manuelblanco.mobilechallenge.core.model.data.Cities
-import com.manuelblanco.mobilechallenge.core.model.data.Event
-import com.manuelblanco.mobilechallenge.core.model.data.EventsFilter
-import com.manuelblanco.mobilechallenge.core.model.data.SortType
+import com.manuelblanco.mobilechallenge.core.domain.model.Cities
+import com.manuelblanco.mobilechallenge.core.domain.model.Event
+import com.manuelblanco.mobilechallenge.core.domain.model.EventsFilter
+import com.manuelblanco.mobilechallenge.core.domain.model.SortType
+import com.manuelblanco.mobilechallenge.core.domain.repository.EventsRepository
 import com.manuelblanco.mobilechallenge.core.network.retrofit.TicketsRemote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -71,13 +71,15 @@ class EventsRepositoryImpl @Inject constructor(
     override fun getEventsFilter(): Flow<EventsFilter> =
         preferences.getSortType().combine(preferences.getFilterBy()) { sort, city ->
             EventsFilter(
-                sortType = SortType.valueOf(sort ?: SortType.NAME.name),
+                sortType = com.manuelblanco.mobilechallenge.core.domain.model.SortType.valueOf(
+                    sort ?: SortType.NAME.name
+                ),
                 city = city ?: Cities.ALL.city
             )
         }
 
     override suspend fun setEventsFilter(filters: EventsFilter) {
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             preferences.saveFilterBy(filter = filters.city)
             preferences.saveSortType(type = filters.sortType.name)
         }

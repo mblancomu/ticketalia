@@ -10,8 +10,8 @@ android {
 
 dependencies {
     implementation(projects.core.data)
-    implementation(projects.core.model)
     implementation(projects.core.common)
+    implementation(projects.core.domain)
 
     api(kotlin("test"))
     api(libs.androidx.compose.ui.test)

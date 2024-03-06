@@ -1,7 +1,6 @@
 package com.manuelblanco.mobilechallenge.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.manuelblanco.mobilechallenge.core.common.navigation.Navigation
@@ -10,9 +9,9 @@ import com.manuelblanco.mobilechallenge.core.common.navigation.Navigation.Routes
 import com.manuelblanco.mobilechallenge.core.common.navigation.Navigation.Routes.FAVORITES_START
 import com.manuelblanco.mobilechallenge.core.common.navigation.Navigation.Routes.VENUES_HOME
 import com.manuelblanco.mobilechallenge.core.common.navigation.Navigation.Routes.VENUES_START
-import com.manuelblanco.mobilechallenge.favorites.navigation.favoritesGraph
-import com.manuelblanco.mobilechallenge.feature.events.navigation.eventsGraph
-import com.manuelblanco.mobilechallenge.feature.venues.navigation.venuesGraph
+import com.manuelblanco.mobilechallenge.favorites.presentation.navigation.favoritesGraph
+import com.manuelblanco.mobilechallenge.feature.events.presentation.navigation.eventsGraph
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.navigation.venuesGraph
 
 /**
  * Created by Manuel Blanco Murillo on 31/1/24.

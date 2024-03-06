@@ -4,7 +4,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.manuelblanco.mobilechallenge.core.data.model.asVenueEntities
+import com.manuelblanco.mobilechallenge.core.data.mapper.asVenueEntities
 import com.manuelblanco.mobilechallenge.core.database.dao.RemoteKeysDao
 import com.manuelblanco.mobilechallenge.core.database.dao.VenueDao
 import com.manuelblanco.mobilechallenge.core.database.model.RemoteKeyEntity

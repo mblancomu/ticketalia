@@ -5,8 +5,8 @@ import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.testing.data.firstVenue
-import com.manuelblanco.mobilechallenge.feature.venues.composables.VenueDetailScreen
-import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenueDetailContract
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.composables.VenueDetailScreen
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.contracts.VenueDetailContract
 import org.junit.Rule
 import org.junit.Test
 

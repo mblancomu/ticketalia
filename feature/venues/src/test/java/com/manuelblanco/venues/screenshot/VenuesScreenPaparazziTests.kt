@@ -7,8 +7,8 @@ import com.android.ide.common.rendering.api.SessionParams
 import com.manuelblanco.mobilechallenge.core.designsystem.theme.TicketsTheme
 import com.manuelblanco.mobilechallenge.core.testing.data.pagingVenues
 import com.manuelblanco.mobilechallenge.core.testing.data.pagingVenuesEmpty
-import com.manuelblanco.mobilechallenge.feature.venues.composables.VenuesScreen
-import com.manuelblanco.mobilechallenge.feature.venues.presentation.VenuesContract
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.composables.VenuesScreen
+import com.manuelblanco.mobilechallenge.feature.venues.presentation.contracts.VenuesContract
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
