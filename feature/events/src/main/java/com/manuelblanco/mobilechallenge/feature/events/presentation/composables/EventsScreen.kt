@@ -19,6 +19,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarDuration.*
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,6 +30,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -86,8 +88,7 @@ fun EventsScreen(
 
     val listState = rememberLazyListState()
     val pullRefreshState =
-        rememberPullRefreshState(
-            stateUi.isRefreshing,
+        rememberPullRefreshState(stateUi.isRefreshing,
             { onSendEvent(EventsContract.Event.Refresh) })
     var isDataLoaded by remember { mutableStateOf(false) }
     var searchQuery by rememberSaveable { mutableStateOf("") }
@@ -102,15 +103,6 @@ fun EventsScreen(
                 is EventsContract.Effect.Navigation.ToEvent -> onNavigationRequested(effect)
             }
         }?.collect()
-    }
-
-    if (stateUi.isError) {
-        LaunchedEffect(snackBarHostState) {
-            snackBarHostState.showSnackbar(
-                message = snackBarMessage,
-                duration = SnackbarDuration.Short
-            )
-        }
     }
 
     if (showFilters) {
@@ -175,16 +167,23 @@ fun EventsScreen(
                     contentAlignment = Alignment.Center
                 ) {
 
-                    if (isShimmerVisible(
-                            isEmpty = stateUi.events.isEmpty(),
-                            isLoaded = isDataLoaded,
-                            isRefreshing = stateUi.isRefreshing,
-                            isSearching = stateUi.isSearching
-                        )
-                    ) {
-                        ShimmerEffectList(type = ItemType.EVENT)
-                    } else {
-                        if (stateUi.events.isEmpty()) {
+                    when (stateUi.screenState) {
+
+                        is EventsContract.State.ScreenState.Error -> {
+                            LaunchedEffect(snackBarHostState) {
+                                snackBarHostState.showSnackbar(
+                                    message = snackBarMessage,
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
+                        }
+
+                        EventsContract.State.ScreenState.Idle,
+                        is EventsContract.State.ScreenState.Loading -> {
+                                ShimmerEffectList(type = ItemType.EVENT, isVisible = stateUi.events.isEmpty())
+                        }
+
+                        is EventsContract.State.ScreenState.Empty -> {
                             EmptyListScreen(
                                 modifier = Modifier
                                     .fillMaxSize()
@@ -195,7 +194,7 @@ fun EventsScreen(
                     }
 
                     EndlessLazyColumn(
-                        loading = stateUi.isLoading,
+                        loading = stateUi.isPaginating,
                         listState = listState,
                         items = stateUi.events,
                         itemContent = { event ->
@@ -206,7 +205,6 @@ fun EventsScreen(
                                 onSendEvent(EventsContract.Event.EventSelection(id, title))
                             }
                         },
-                        emptyList = { ErrorRow(stringResource(R.string.no_events_found)) },
                         loadMore = { onSendEvent(EventsContract.Event.Paginate) },
                         loadingItem = {
                             Box(modifier = Modifier.height(160.dp)) {
@@ -228,14 +226,6 @@ fun EventsScreen(
     )
 }
 
-private fun isShimmerVisible(
-    isEmpty: Boolean,
-    isLoaded: Boolean,
-    isRefreshing: Boolean,
-    isSearching: Boolean
-): Boolean =
-    isEmpty && !isLoaded || isRefreshing || isSearching
-
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview
 @Composable
@@ -246,13 +236,12 @@ fun EventsScreenPreviewPopulated(
         TicketsTheme {
             EventsScreen(
                 stateUi = EventsContract.State(
-                    events = events,
-                    filters = EventsFilter(sortType = SortType.NAME, city = Cities.ALL.city),
+                    events = eventsFromCacheList,
+                    screenState = EventsContract.State.ScreenState.Loading,
+                    filter = EventsFilter(sortType = SortType.NAME, city = Cities.ALL.city),
                     keyword = "",
-                    isLoading = false,
-                    isSearching = false,
                     isRefreshing = false,
-                    isError = false
+                    isPaginating = false
                 ),
                 effect = flow { },
                 onSendEvent = {},

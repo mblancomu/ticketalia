@@ -37,7 +37,7 @@ The following image shows the basic structure of the app:
 - ROOM as database
 - Coil for images
 - Hilt as Dependency Injector
-- Paging3 as pagination & caching enginee
+- Paging3 as pagination & caching engine
 - Compose for the views
 - Flow/Coroutines
 - Kotlin DSL
@@ -62,8 +62,7 @@ Below is an informative table about the content of the different modules:
 | database     | All the information regarding the ddbb (Daos, models, useful)                                                                                          | core          |
 | datastore    | Contains the share preferences used in the app for filter                                                                                              | core          |
 | designsystem | Everything related to the app's design system (theme, colors, typography, etc.), with custom components (buttons, background, etc.).                   | core          |
-| domain       | Interface of the app use cases (business logic)                                                                                                        | core          |
-| model        | Business logic models that will be used in the presentation layer of the app                                                                           | core          |
+| domain       | It includes everything related to the business logic, such as use cases, models and repository interfaces.                                             | core          |
 | network      | Models associated with network data from the API (DTOs), implementation of the network API(endpoints) and the Retrofit singleton.                      | core          |
 | testing      | Utilities for testing and fake data to carry out the testing (data, repositories, etc.).                                                               | core          |
 | ui           | Composables that are used in different parts of the app (such as list items, loading, error view, etc.).                                               | core          |

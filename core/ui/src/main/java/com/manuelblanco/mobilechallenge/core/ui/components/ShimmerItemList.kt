@@ -48,7 +48,7 @@ enum class ItemType {
 }
 
 @Composable
-fun ShimmerEffectList(type: ItemType) {
+fun ShimmerEffectList(type: ItemType, isVisible: Boolean = true) {
     LazyColumn(
         modifier = Modifier
             .semantics { contentDescription = "Shimmer effect" }
@@ -64,8 +64,10 @@ fun ShimmerEffectList(type: ItemType) {
             Alignment.CenterVertically
         ),
     ) {
-        items(10) {
-            ShimmerItemList(type = type)
+        if (isVisible){
+            items(10) {
+                ShimmerItemList(type = type)
+            }
         }
     }
 }
