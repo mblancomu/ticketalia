@@ -27,7 +27,7 @@ class EventsRepositoryImpl @Inject constructor(
 ) : EventsRepository {
 
     private val PAGE_SIZE = "20"
-    private val SORT_BY = "name,desc"
+    private val SORT_BY = ""
     private val COUNTRY_CODE = "ES"
 
     override suspend fun getEventsFromRemote(
@@ -59,7 +59,8 @@ class EventsRepositoryImpl @Inject constructor(
             .map { event -> event.map { it::asExternalModel.invoke() } }.onEach {
                 if (it.isEmpty()) {
                     getEventsFromRemote(
-                        page = page, isRefreshing = false,
+                        page = page,
+                        isRefreshing = false,
                         keyword = keyword
                     )
                 }
@@ -72,7 +73,7 @@ class EventsRepositoryImpl @Inject constructor(
         preferences.getSortType().combine(preferences.getFilterBy()) { sort, city ->
             EventsFilter(
                 sortType = com.manuelblanco.mobilechallenge.core.domain.model.SortType.valueOf(
-                    sort ?: SortType.NAME.name
+                    sort ?: SortType.NONE.name
                 ),
                 city = city ?: Cities.ALL.city
             )

@@ -19,16 +19,16 @@ interface EventDao {
     @Query(value = "SELECT * FROM events WHERE id = :eventId")
     fun getEventEntity(eventId: String): Flow<EventEntity>
 
-    @Query(value = "SELECT * FROM events Order By name LIMIT :limit OFFSET :offset")
+    @Query(value = "SELECT * FROM events LIMIT :limit OFFSET :offset")
     fun getEventEntities(limit: Int, offset: Int): Flow<List<EventEntity>>
 
-    @Query(value = "SELECT * FROM events WHERE city = :city Order By name LIMIT :limit OFFSET :offset")
+    @Query(value = "SELECT * FROM events WHERE city = :city LIMIT :limit OFFSET :offset")
     fun getEventEntitiesByCity(city: String, limit: Int, offset: Int): Flow<List<EventEntity>>
 
-    @Query(value = "SELECT * FROM events WHERE genres LIKE '%' || :type || '%' Order By name LIMIT :limit OFFSET :offset")
+    @Query(value = "SELECT * FROM events WHERE genres LIKE '%' || :type || '%' LIMIT :limit OFFSET :offset")
     fun getEventEntitiesByType(type: String, limit: Int, offset: Int): Flow<List<EventEntity>>
 
-    @Query(value = "SELECT * FROM events WHERE country = :country Order By name LIMIT :limit OFFSET :offset")
+    @Query(value = "SELECT * FROM events WHERE country = :country LIMIT :limit OFFSET :offset")
     fun getEventEntitiesByCountry(country: String, limit: Int, offset: Int): Flow<List<EventEntity>>
 
     @Query(value = "DELETE FROM events")

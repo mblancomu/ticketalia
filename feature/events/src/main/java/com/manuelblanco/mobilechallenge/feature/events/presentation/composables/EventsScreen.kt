@@ -19,7 +19,6 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarDuration.*
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,7 +29,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -45,7 +43,6 @@ import com.manuelblanco.mobilechallenge.core.domain.model.SortType
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
 import com.manuelblanco.mobilechallenge.core.ui.components.EmptyListScreen
 import com.manuelblanco.mobilechallenge.core.ui.components.EndlessLazyColumn
-import com.manuelblanco.mobilechallenge.core.ui.components.ErrorRow
 import com.manuelblanco.mobilechallenge.core.ui.components.ItemType
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.ShimmerEffectList
@@ -180,10 +177,15 @@ fun EventsScreen(
 
                         EventsContract.State.ScreenState.Idle,
                         is EventsContract.State.ScreenState.Loading -> {
-                                ShimmerEffectList(type = ItemType.EVENT, isVisible = stateUi.events.isEmpty())
+                            if (stateUi.isRefreshing) searchQuery = ""
+                            ShimmerEffectList(
+                                type = ItemType.EVENT,
+                                isVisible = stateUi.events.isEmpty()
+                            )
                         }
 
                         is EventsContract.State.ScreenState.Empty -> {
+                            if (stateUi.isRefreshing) searchQuery = ""
                             EmptyListScreen(
                                 modifier = Modifier
                                     .fillMaxSize()
@@ -238,7 +240,7 @@ fun EventsScreenPreviewPopulated(
                 stateUi = EventsContract.State(
                     events = eventsFromCacheList,
                     screenState = EventsContract.State.ScreenState.Loading,
-                    filter = EventsFilter(sortType = SortType.NAME, city = Cities.ALL.city),
+                    filter = EventsFilter(sortType = SortType.NONE, city = Cities.ALL.city),
                     keyword = "",
                     isRefreshing = false,
                     isPaginating = false

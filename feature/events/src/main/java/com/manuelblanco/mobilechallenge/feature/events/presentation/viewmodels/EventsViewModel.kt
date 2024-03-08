@@ -50,7 +50,7 @@ class EventsViewModel @Inject constructor(
         events = emptyList(),
         screenState = State.ScreenState.Idle,
         filter = EventsFilter(
-            sortType = SortType.NAME,
+            sortType = SortType.NONE,
             city = Cities.ALL.city
         ),
         keyword = "",
@@ -71,19 +71,15 @@ class EventsViewModel @Inject constructor(
             }
 
             is EventsContract.Event.Refresh -> {
-                refresh()
+                freshEvents(isRefreshing = true, query = "")
             }
 
             is EventsContract.Event.Search -> {
-                search(event.query.trim().lowercase())
+                freshEvents(isRefreshing = false, query = event.query.trim().lowercase())
             }
 
             is EventsContract.Event.Paginate -> {
-                loadMoreEvents()
-            }
-
-            is EventsContract.Event.ClearFilters -> {
-                clearFilters()
+                getEventsOfflineFirst()
             }
         }
     }
@@ -91,7 +87,7 @@ class EventsViewModel @Inject constructor(
     private fun getEventsOfflineFirst() {
         eventsJob?.cancel()
         eventsJob = viewModelScope.launch {
-            if (currentPage == 1 || canPaginate) {
+            if (currentPage == 1 || (currentPage > 1 && canPaginate)) {
                 delay(1000L)
                 setState { copy(screenState = State.ScreenState.Loading) }
                 getEventsOfflineFirstUseCase(
@@ -147,40 +143,15 @@ class EventsViewModel @Inject constructor(
     }
 
     private fun sortAndFilter(filters: EventsFilter) {
-        resetPagination()
+        resetEvents()
         setState { copy(filter = filters) }
-        loadMoreEvents()
-    }
-
-    private fun search(keyword: String) {
-        resetPagination()
-        clearEvents()
-        setState { copy(keyword = keyword) }
-        getEventsFromRemote()
-    }
-
-    private fun clearFilters() {
-        resetPagination()
-        setState {
-            copy(
-                filter = EventsFilter(
-                    sortType = SortType.NAME,
-                    city = Cities.ALL.city
-                )
-            )
-        }
-        loadMoreEvents()
-    }
-
-    private fun refresh() {
-        resetPagination()
-        clearEvents()
-        setState { copy(isRefreshing = true) }
-        getEventsFromRemote()
-    }
-
-    private fun loadMoreEvents() {
         getEventsOfflineFirst()
+    }
+
+    private fun freshEvents(isRefreshing: Boolean, query: String) {
+        resetEvents()
+        setState { copy(isRefreshing = isRefreshing, keyword = query) }
+        getEventsFromRemote()
     }
 
     private fun getEventsFromRemote() {
@@ -203,9 +174,12 @@ class EventsViewModel @Inject constructor(
     private fun addNewEvents(newEvents: List<Event>, oldEvents: List<Event>) {
         val events = ArrayList(oldEvents)
         events.addAll(newEvents)
+        val filterEvents = events.sortAndFilterEvents(viewState.value.filter)
         setState {
             copy(
-                events = events.sortAndFilterEvents(viewState.value.filter),
+                events = filterEvents,
+                screenState = if (filterEvents.isEmpty()) State.ScreenState.Empty else
+                    State.ScreenState.Loading,
                 isRefreshing = false,
                 isPaginating = false
             )
@@ -213,16 +187,18 @@ class EventsViewModel @Inject constructor(
         setEffect { Effect.DataWasLoaded }
     }
 
-    private fun resetPagination() {
+    private fun resetEvents(clearList: Boolean = true) {
         canPaginate = false
         currentPage = 1
-        setState { copy(isPaginating = false, ) }
-    }
-
-    private fun clearEvents(){
-        setState { copy(events = emptyList(), filter = EventsFilter(
-            sortType = SortType.NAME,
-            city = Cities.ALL.city
-        )) }
+        setState {
+            copy(
+                isPaginating = false,
+                events = if (clearList) emptyList() else viewState.value.events,
+                filter = EventsFilter(
+                    sortType = SortType.NONE,
+                    city = Cities.ALL.city
+                )
+            )
+        }
     }
 }

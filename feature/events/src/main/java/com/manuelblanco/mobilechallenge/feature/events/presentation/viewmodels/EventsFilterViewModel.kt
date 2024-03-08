@@ -23,7 +23,7 @@ class EventsFilterViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _filters: MutableStateFlow<EventsFilter> =
-        MutableStateFlow(EventsFilter(sortType = SortType.NAME, city = Cities.ALL.city))
+        MutableStateFlow(EventsFilter(sortType = SortType.NONE, city = Cities.ALL.city))
     val filters: StateFlow<EventsFilter> = _filters
 
     init {

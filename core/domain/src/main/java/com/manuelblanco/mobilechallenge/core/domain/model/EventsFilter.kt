@@ -10,6 +10,7 @@ data class EventsFilter(
 )
 
 enum class SortType {
+    NONE,
     NAME,
     DATE,
     PRICE
@@ -40,6 +41,7 @@ fun List<Event>.sortAndFilterEvents(filters: EventsFilter): List<Event> {
                 SortType.NAME -> it.name
                 SortType.PRICE -> it.price
                 SortType.DATE -> it.dateTime
+                SortType.NONE -> ""
             }
         }
     )

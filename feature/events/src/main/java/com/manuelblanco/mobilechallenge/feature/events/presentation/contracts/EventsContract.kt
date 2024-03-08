@@ -13,7 +13,6 @@ class EventsContract {
     sealed class Event : ViewEvent {
         data object Refresh : Event()
         data object Paginate : Event()
-        data object ClearFilters : Event()
         data class Search(val query: String) : Event()
         data class Filter(val filters: EventsFilter) : Event()
         data class EventSelection(val eventId: String, val eventTitle: String) :
