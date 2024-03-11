@@ -34,15 +34,14 @@ class EventsScreenTest {
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = emptyList(),
-                    filters = EventsFilter(
+                    keyword = "",
+                    screenState = EventsContract.State.ScreenState.Loading,
+                    filter = EventsFilter(
                         sortType = SortType.NAME,
                         city = Cities.ALL.city
                     ),
-                    keyword = "",
-                    isError = false,
                     isRefreshing = false,
-                    isSearching = false,
-                    isLoading = true
+                    isPaginating = false
                 ),
                 effect = flow {},
                 onSendEvent = {},
@@ -62,16 +61,15 @@ class EventsScreenTest {
         composeTestRule.setContent {
             EventsScreen(
                 stateUi = EventsContract.State(
-                    events = emptyList(),
-                    filters = EventsFilter(
+                    events = eventsFromCacheList,
+                    keyword = "",
+                    screenState = EventsContract.State.ScreenState.Loading,
+                    filter = EventsFilter(
                         sortType = SortType.NAME,
                         city = Cities.ALL.city
                     ),
-                    keyword = "",
-                    isError = false,
                     isRefreshing = true,
-                    isSearching = false,
-                    isLoading = true
+                    isPaginating = false
                 ),
                 effect = flow {},
                 onSendEvent = {},
@@ -92,15 +90,14 @@ class EventsScreenTest {
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = emptyList(),
-                    filters = EventsFilter(
+                    keyword = "",
+                    screenState = EventsContract.State.ScreenState.Error(message = "Something was wrong"),
+                    filter = EventsFilter(
                         sortType = SortType.NAME,
                         city = Cities.ALL.city
                     ),
-                    keyword = "",
-                    isError = true,
                     isRefreshing = false,
-                    isSearching = false,
-                    isLoading = false
+                    isPaginating = false
                 ),
                 effect = flow {},
                 onSendEvent = {},
@@ -126,15 +123,14 @@ class EventsScreenTest {
             EventsScreen(
                 stateUi = EventsContract.State(
                     events = eventsFromCacheList,
-                    filters = EventsFilter(
-                        sortType = SortType.NAME,
+                    screenState = EventsContract.State.ScreenState.Idle,
+                    keyword = "",
+                    filter = EventsFilter(
+                        sortType = SortType.NONE,
                         city = Cities.ALL.city
                     ),
-                    keyword = "",
-                    isError = false,
                     isRefreshing = false,
-                    isSearching = false,
-                    isLoading = false
+                    isPaginating = false
                 ),
                 effect = flow {},
                 onSendEvent = {},
@@ -168,16 +164,15 @@ class EventsScreenTest {
         composeTestRule.setContent {
             EventsScreen(
                 stateUi = EventsContract.State(
-                    events = emptyList(),
-                    filters = EventsFilter(
-                        sortType = SortType.NAME,
+                    events = eventsFromCacheList,
+                    screenState = EventsContract.State.ScreenState.Idle,
+                    keyword = "",
+                    filter = EventsFilter(
+                        sortType = SortType.NONE,
                         city = Cities.ALL.city
                     ),
-                    keyword = "",
-                    isError = false,
                     isRefreshing = false,
-                    isSearching = false,
-                    isLoading = false
+                    isPaginating = false
                 ),
                 effect = flow {},
                 onSendEvent = {},
@@ -205,16 +200,15 @@ class EventsScreenTest {
         composeTestRule.setContent {
             EventsScreen(
                 stateUi = EventsContract.State(
-                    events = emptyList(),
-                    filters = EventsFilter(
-                        sortType = SortType.NAME,
+                    events = eventsFromCacheList,
+                    screenState = EventsContract.State.ScreenState.Idle,
+                    keyword = "",
+                    filter = EventsFilter(
+                        sortType = SortType.NONE,
                         city = Cities.ALL.city
                     ),
-                    keyword = "",
-                    isError = false,
                     isRefreshing = false,
-                    isSearching = false,
-                    isLoading = false
+                    isPaginating = false
                 ),
                 effect = flow {},
                 onSendEvent = {},

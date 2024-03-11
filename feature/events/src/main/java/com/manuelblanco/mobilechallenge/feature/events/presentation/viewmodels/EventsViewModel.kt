@@ -1,21 +1,24 @@
 package com.manuelblanco.mobilechallenge.feature.events.presentation.viewmodels
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.manuelblanco.mobilechallenge.core.common.result.Result
 import com.manuelblanco.mobilechallenge.core.common.result.asResult
 import com.manuelblanco.mobilechallenge.core.data.mediator.PAGE_SIZE
-import com.manuelblanco.mobilechallenge.core.domain.usecase.GetEventsOfflineFirstUseCase
-import com.manuelblanco.mobilechallenge.core.domain.usecase.GetEventsRemoteFirstUseCase
 import com.manuelblanco.mobilechallenge.core.domain.model.Cities
 import com.manuelblanco.mobilechallenge.core.domain.model.Event
 import com.manuelblanco.mobilechallenge.core.domain.model.EventsFilter
 import com.manuelblanco.mobilechallenge.core.domain.model.SortType
 import com.manuelblanco.mobilechallenge.core.domain.model.sortAndFilterEvents
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetEventsOfflineFirstUseCase
+import com.manuelblanco.mobilechallenge.core.domain.usecase.GetEventsRemoteFirstUseCase
 import com.manuelblanco.mobilechallenge.core.ui.mvi.TicketsViewModel
 import com.manuelblanco.mobilechallenge.feature.events.presentation.contracts.EventsContract
+import com.manuelblanco.mobilechallenge.feature.events.presentation.contracts.EventsContract.Effect
+import com.manuelblanco.mobilechallenge.feature.events.presentation.contracts.EventsContract.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -32,9 +35,10 @@ import javax.inject.Inject
 class EventsViewModel @Inject constructor(
     private val getEventsRemoteFirstUseCase: GetEventsRemoteFirstUseCase,
     private val getEventsOfflineFirstUseCase: GetEventsOfflineFirstUseCase
-) : TicketsViewModel<EventsContract.Event, EventsContract.State, EventsContract.Effect>() {
+) : TicketsViewModel<EventsContract.Event, State, Effect>() {
 
     private var canPaginate by mutableStateOf(false)
+    private var currentPage by mutableIntStateOf(1)
 
     private var eventsJob: Job? = null
 
@@ -42,24 +46,22 @@ class EventsViewModel @Inject constructor(
         getEventsOfflineFirst()
     }
 
-    override fun setInitialState() = EventsContract.State(
+    override fun setInitialState() = State(
         events = emptyList(),
-        filters = EventsFilter(
-            sortType = SortType.NAME,
+        screenState = State.ScreenState.Idle,
+        filter = EventsFilter(
+            sortType = SortType.NONE,
             city = Cities.ALL.city
         ),
         keyword = "",
-        isLoading = false,
-        isSearching = false,
         isRefreshing = false,
-        isError = false,
-        page = 1
+        isPaginating = false
     )
 
     override fun handleEvents(event: EventsContract.Event) {
         when (event) {
             is EventsContract.Event.EventSelection -> setEffect {
-                EventsContract.Effect.Navigation.ToEvent(
+                Effect.Navigation.ToEvent(
                     event.eventId, event.eventTitle
                 )
             }
@@ -69,50 +71,49 @@ class EventsViewModel @Inject constructor(
             }
 
             is EventsContract.Event.Refresh -> {
-                refresh()
+                freshEvents(isRefreshing = true, query = "")
             }
 
             is EventsContract.Event.Search -> {
-                search(event.query.trim().lowercase())
+                freshEvents(isRefreshing = false, query = event.query.trim().lowercase())
             }
 
             is EventsContract.Event.Paginate -> {
-                loadMoreEvents()
-            }
-
-            is EventsContract.Event.ClearFilters -> {
-                clearFilters()
+                getEventsOfflineFirst()
             }
         }
     }
 
     private fun getEventsOfflineFirst() {
-
-
+        eventsJob?.cancel()
         eventsJob = viewModelScope.launch {
-            if (viewState.value.page == 1 || (viewState.value.page != 1 && canPaginate)) {
+            if (currentPage == 1 || (currentPage > 1 && canPaginate)) {
                 delay(1000L)
-                setState { copy(isLoading = true, isError = false) }
+                setState { copy(screenState = State.ScreenState.Loading) }
                 getEventsOfflineFirstUseCase(
-                    page = viewState.value.page.toString(),
+                    page = currentPage.toString(),
                     limit = PAGE_SIZE,
-                    offset = (PAGE_SIZE * (viewState.value.page - 1)),
+                    offset = (PAGE_SIZE * (currentPage - 1)),
                     keyword = viewState.value.keyword
                 ).asResult().collect { result ->
                     when (result) {
                         is Result.Error -> {
                             setState {
                                 copy(
-                                    isLoading = false,
-                                    isSearching = false,
+                                    screenState = State.ScreenState.Error(message = result.exception?.message.toString()),
                                     isRefreshing = false,
-                                    isError = true
+                                    isPaginating = false
                                 )
                             }
                         }
 
                         is Result.Loading -> {
-                            setState { copy(isLoading = true, isError = false) }
+                            setState {
+                                copy(
+                                    screenState = State.ScreenState.Loading,
+                                    isPaginating = currentPage > 1
+                                )
+                            }
                         }
 
                         is Result.Success -> {
@@ -122,9 +123,17 @@ class EventsViewModel @Inject constructor(
                                 addNewEvents(result.data, viewState.value.events)
 
                                 if (canPaginate)
-                                    setState { copy(page = viewState.value.page + 1) }
+                                    currentPage++
                             } else {
-                                setState { copy(isSearching = false) }
+                                if (viewState.value.events.isEmpty()) {
+                                    setState {
+                                        copy(
+                                            screenState = State.ScreenState.Empty,
+                                            isRefreshing = false,
+                                            isPaginating = false
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -134,42 +143,15 @@ class EventsViewModel @Inject constructor(
     }
 
     private fun sortAndFilter(filters: EventsFilter) {
-        canPaginate = false
-        setState { copy(page = 1, filters = filters) }
-        loadMoreEvents()
-    }
-
-    private fun search(keyword: String) {
-        eventsJob?.cancel()
-        canPaginate = false
-        setState { copy(page = 1, keyword = keyword, events = emptyList(), isSearching = true) }
-        getEventsFromRemote()
-    }
-
-    private fun clearFilters() {
-        canPaginate = false
-        setState {
-            copy(
-                page = 1,
-                filters = EventsFilter(
-                    sortType = SortType.NAME,
-                    city = Cities.ALL.city
-                )
-            )
-        }
-        loadMoreEvents()
-    }
-
-    private fun refresh() {
-        eventsJob?.cancel()
-        canPaginate = false
-        setState { copy(page = 1, isRefreshing = true, events = emptyList()) }
-        getEventsFromRemote()
-    }
-
-    private fun loadMoreEvents() {
-        eventsJob?.cancel()
+        resetEvents()
+        setState { copy(filter = filters) }
         getEventsOfflineFirst()
+    }
+
+    private fun freshEvents(isRefreshing: Boolean, query: String) {
+        resetEvents()
+        setState { copy(isRefreshing = isRefreshing, keyword = query) }
+        getEventsFromRemote()
     }
 
     private fun getEventsFromRemote() {
@@ -192,19 +174,31 @@ class EventsViewModel @Inject constructor(
     private fun addNewEvents(newEvents: List<Event>, oldEvents: List<Event>) {
         val events = ArrayList(oldEvents)
         events.addAll(newEvents)
-        finishedDownload(events.sortAndFilterEvents(viewState.value.filters))
-    }
-
-    private fun finishedDownload(events: List<Event>) {
+        val filterEvents = events.sortAndFilterEvents(viewState.value.filter)
         setState {
             copy(
-                isLoading = false,
-                isSearching = false,
+                events = filterEvents,
+                screenState = if (filterEvents.isEmpty()) State.ScreenState.Empty else
+                    State.ScreenState.Loading,
                 isRefreshing = false,
-                isError = false,
-                events = events
+                isPaginating = false
             )
         }
-        setEffect { EventsContract.Effect.DataWasLoaded }
+        setEffect { Effect.DataWasLoaded }
+    }
+
+    private fun resetEvents(clearList: Boolean = true) {
+        canPaginate = false
+        currentPage = 1
+        setState {
+            copy(
+                isPaginating = false,
+                events = if (clearList) emptyList() else viewState.value.events,
+                filter = EventsFilter(
+                    sortType = SortType.NONE,
+                    city = Cities.ALL.city
+                )
+            )
+        }
     }
 }

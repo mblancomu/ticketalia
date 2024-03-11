@@ -35,16 +35,14 @@ class EventsScreenPaparazziTests {
                 EventsScreen(
                     stateUi = EventsContract.State(
                         events = eventsFromCacheList,
+                        screenState = EventsContract.State.ScreenState.Idle,
                         keyword = "",
-                        filters = EventsFilter(
-                            sortType = SortType.NAME,
+                        filter = EventsFilter(
+                            sortType = SortType.NONE,
                             city = Cities.ALL.city
                         ),
-                        isLoading = false,
                         isRefreshing = false,
-                        isSearching = false,
-                        isError = false,
-                        page = 1
+                        isPaginating = false
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
                     onSendEvent = {},
@@ -62,14 +60,13 @@ class EventsScreenPaparazziTests {
                     stateUi = EventsContract.State(
                         events = emptyList(),
                         keyword = "",
-                        filters = EventsFilter(
-                            sortType = SortType.NAME,
+                        screenState = EventsContract.State.ScreenState.Empty,
+                        filter = EventsFilter(
+                            sortType = SortType.NONE,
                             city = Cities.ALL.city
                         ),
-                        isLoading = false,
                         isRefreshing = false,
-                        isSearching = false,
-                        isError = false
+                        isPaginating = false
                     ),
                     effect = flowOf(EventsContract.Effect.DataWasLoaded),
                     onSendEvent = {},
@@ -87,14 +84,13 @@ class EventsScreenPaparazziTests {
                     stateUi = EventsContract.State(
                         events = emptyList(),
                         keyword = "",
-                        filters = EventsFilter(
+                        screenState = EventsContract.State.ScreenState.Loading,
+                        filter = EventsFilter(
                             sortType = SortType.NAME,
                             city = Cities.ALL.city
                         ),
-                        isLoading = true,
                         isRefreshing = false,
-                        isSearching = false,
-                        isError = false
+                        isPaginating = false
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
                     onSendEvent = {},
@@ -112,14 +108,13 @@ class EventsScreenPaparazziTests {
                     stateUi = EventsContract.State(
                         events = emptyList(),
                         keyword = "",
-                        filters = EventsFilter(
+                        screenState = EventsContract.State.ScreenState.Error(message = "Something was wrong"),
+                        filter = EventsFilter(
                             sortType = SortType.NAME,
                             city = Cities.ALL.city
                         ),
-                        isLoading = false,
                         isRefreshing = false,
-                        isSearching = false,
-                        isError = true
+                        isPaginating = false
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
                     onSendEvent = {},
@@ -137,14 +132,13 @@ class EventsScreenPaparazziTests {
                     stateUi = EventsContract.State(
                         events = eventsFromCacheList,
                         keyword = "",
-                        filters = EventsFilter(
+                        screenState = EventsContract.State.ScreenState.Loading,
+                        filter = EventsFilter(
                             sortType = SortType.NAME,
                             city = Cities.ALL.city
                         ),
-                        isLoading = false,
                         isRefreshing = true,
-                        isSearching = false,
-                        isError = false
+                        isPaginating = false
                     ),
                     effect = flowOf(EventsContract.Effect.Navigation.ToEvent("1", "Hi")),
                     onSendEvent = {},
@@ -153,5 +147,4 @@ class EventsScreenPaparazziTests {
             }
         }
     }
-
 }

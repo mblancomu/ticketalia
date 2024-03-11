@@ -13,7 +13,6 @@ class EventsContract {
     sealed class Event : ViewEvent {
         data object Refresh : Event()
         data object Paginate : Event()
-        data object ClearFilters : Event()
         data class Search(val query: String) : Event()
         data class Filter(val filters: EventsFilter) : Event()
         data class EventSelection(val eventId: String, val eventTitle: String) :
@@ -22,14 +21,19 @@ class EventsContract {
 
     data class State(
         val events: List<com.manuelblanco.mobilechallenge.core.domain.model.Event>,
-        val filters: EventsFilter,
+        val screenState: ScreenState,
+        val filter: EventsFilter,
         val keyword: String,
-        val isLoading: Boolean,
-        val isRefreshing: Boolean,
-        val isSearching: Boolean,
-        val isError: Boolean,
-        val page: Int = 1
-    ) : ViewState
+        val isPaginating: Boolean,
+        val isRefreshing: Boolean
+    ) : ViewState {
+        sealed interface ScreenState {
+            data object Loading : ScreenState
+            data object Idle : ScreenState
+            data object Empty : ScreenState
+            data class Error(val message: String) : ScreenState
+        }
+    }
 
     sealed class Effect : ViewSideEffect {
         data object DataWasLoaded : Effect()

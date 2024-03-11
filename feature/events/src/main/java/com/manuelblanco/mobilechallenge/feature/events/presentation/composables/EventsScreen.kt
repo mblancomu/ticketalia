@@ -43,7 +43,6 @@ import com.manuelblanco.mobilechallenge.core.domain.model.SortType
 import com.manuelblanco.mobilechallenge.core.testing.data.eventsFromCacheList
 import com.manuelblanco.mobilechallenge.core.ui.components.EmptyListScreen
 import com.manuelblanco.mobilechallenge.core.ui.components.EndlessLazyColumn
-import com.manuelblanco.mobilechallenge.core.ui.components.ErrorRow
 import com.manuelblanco.mobilechallenge.core.ui.components.ItemType
 import com.manuelblanco.mobilechallenge.core.ui.components.Progress
 import com.manuelblanco.mobilechallenge.core.ui.components.ShimmerEffectList
@@ -86,8 +85,7 @@ fun EventsScreen(
 
     val listState = rememberLazyListState()
     val pullRefreshState =
-        rememberPullRefreshState(
-            stateUi.isRefreshing,
+        rememberPullRefreshState(stateUi.isRefreshing,
             { onSendEvent(EventsContract.Event.Refresh) })
     var isDataLoaded by remember { mutableStateOf(false) }
     var searchQuery by rememberSaveable { mutableStateOf("") }
@@ -102,15 +100,6 @@ fun EventsScreen(
                 is EventsContract.Effect.Navigation.ToEvent -> onNavigationRequested(effect)
             }
         }?.collect()
-    }
-
-    if (stateUi.isError) {
-        LaunchedEffect(snackBarHostState) {
-            snackBarHostState.showSnackbar(
-                message = snackBarMessage,
-                duration = SnackbarDuration.Short
-            )
-        }
     }
 
     if (showFilters) {
@@ -175,16 +164,28 @@ fun EventsScreen(
                     contentAlignment = Alignment.Center
                 ) {
 
-                    if (isShimmerVisible(
-                            isEmpty = stateUi.events.isEmpty(),
-                            isLoaded = isDataLoaded,
-                            isRefreshing = stateUi.isRefreshing,
-                            isSearching = stateUi.isSearching
-                        )
-                    ) {
-                        ShimmerEffectList(type = ItemType.EVENT)
-                    } else {
-                        if (stateUi.events.isEmpty()) {
+                    when (stateUi.screenState) {
+
+                        is EventsContract.State.ScreenState.Error -> {
+                            LaunchedEffect(snackBarHostState) {
+                                snackBarHostState.showSnackbar(
+                                    message = snackBarMessage,
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
+                        }
+
+                        EventsContract.State.ScreenState.Idle,
+                        is EventsContract.State.ScreenState.Loading -> {
+                            if (stateUi.isRefreshing) searchQuery = ""
+                            ShimmerEffectList(
+                                type = ItemType.EVENT,
+                                isVisible = stateUi.events.isEmpty()
+                            )
+                        }
+
+                        is EventsContract.State.ScreenState.Empty -> {
+                            if (stateUi.isRefreshing) searchQuery = ""
                             EmptyListScreen(
                                 modifier = Modifier
                                     .fillMaxSize()
@@ -195,7 +196,7 @@ fun EventsScreen(
                     }
 
                     EndlessLazyColumn(
-                        loading = stateUi.isLoading,
+                        loading = stateUi.isPaginating,
                         listState = listState,
                         items = stateUi.events,
                         itemContent = { event ->
@@ -206,7 +207,6 @@ fun EventsScreen(
                                 onSendEvent(EventsContract.Event.EventSelection(id, title))
                             }
                         },
-                        emptyList = { ErrorRow(stringResource(R.string.no_events_found)) },
                         loadMore = { onSendEvent(EventsContract.Event.Paginate) },
                         loadingItem = {
                             Box(modifier = Modifier.height(160.dp)) {
@@ -228,14 +228,6 @@ fun EventsScreen(
     )
 }
 
-private fun isShimmerVisible(
-    isEmpty: Boolean,
-    isLoaded: Boolean,
-    isRefreshing: Boolean,
-    isSearching: Boolean
-): Boolean =
-    isEmpty && !isLoaded || isRefreshing || isSearching
-
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview
 @Composable
@@ -246,13 +238,12 @@ fun EventsScreenPreviewPopulated(
         TicketsTheme {
             EventsScreen(
                 stateUi = EventsContract.State(
-                    events = events,
-                    filters = EventsFilter(sortType = SortType.NAME, city = Cities.ALL.city),
+                    events = eventsFromCacheList,
+                    screenState = EventsContract.State.ScreenState.Loading,
+                    filter = EventsFilter(sortType = SortType.NONE, city = Cities.ALL.city),
                     keyword = "",
-                    isLoading = false,
-                    isSearching = false,
                     isRefreshing = false,
-                    isError = false
+                    isPaginating = false
                 ),
                 effect = flow { },
                 onSendEvent = {},

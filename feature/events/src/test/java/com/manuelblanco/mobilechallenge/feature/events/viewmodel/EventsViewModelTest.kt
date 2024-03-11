@@ -68,16 +68,14 @@ class EventsViewModelTest {
             assertEquals(
                 EventsContract.State(
                     events = emptyList(),
+                    screenState = EventsContract.State.ScreenState.Idle,
                     keyword = "",
-                    filters = EventsFilter(
-                        sortType = SortType.NAME,
+                    filter = EventsFilter(
+                        sortType = SortType.NONE,
                         city = Cities.ALL.city
                     ),
-                    isLoading = false,
                     isRefreshing = false,
-                    isSearching = false,
-                    isError = false,
-                    page = 1
+                    isPaginating = false
                 ),
                 viewModel.viewState.value,
             )

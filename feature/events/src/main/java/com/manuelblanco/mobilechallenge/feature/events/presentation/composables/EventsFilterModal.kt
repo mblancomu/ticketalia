@@ -119,7 +119,7 @@ private fun FilterOptions(
                         .height(TicketsTheme.dimensions.buttonDefaultHeight)
                         .width(TicketsTheme.dimensions.buttonDetailWidth),
                     onClick = {
-                        viewModel.onSelectedSortItem(SortType.NAME)
+                        viewModel.onSelectedSortItem(SortType.NONE)
                         viewModel.onSelectedFilterItem(Cities.ALL.city)
                     }, label = stringResource(id = R.string.filter_reset).uppercase()
                 )
